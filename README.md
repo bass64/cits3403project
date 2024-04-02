@@ -2,7 +2,7 @@
 
 ## Group Members:
 
-__Cooper Tompson__ (23621342) \
+__Cooper Thompson__ (23621342) \
 Email: 23621342@student.uwa.edu.au \
 GitHub: bass64 
 
