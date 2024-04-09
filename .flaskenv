@@ -1,0 +1,2 @@
+FLASK_APP=ratemymusic.py
+FLASK_ENV=development
