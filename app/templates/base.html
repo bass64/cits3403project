@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Load Page Title -->
+  {% if title %}
+    <title>{{ title }} - Rate My Music</title>
+  {% else %}
+    <title>Rate My Music</title>
+  {% endif %}
+
+  <!-- 
+    This page was created by:
+      - Alexander Nichols
+      - Cooper Tompson
+      - Daniel Le
+      - Sibi Moothedan
+    For a group project as a part of CITS3403 in 2024
+   -->
+   
+</head>
+<body>
+  <!-- Header for page navigation -->
+  <header></header>
+  
+  <!-- Container for block content -->
+  {% block content %}{% endblock %}
+  
+  <!-- Page Footer -->
+  <footer></footer>
+</body>
+</html>
