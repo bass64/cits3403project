@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+    <body>
+        <!--LOGIN FORM-->
+        <div style="padding-left: 250px; padding-top: 50px; width: 50%; float: left">
+            <h1>Login</h1>
+            <form onsubmit="checkFields(this,0)">
+                <div class="form-group" style="width: 70%">
+                <label for="username">Username</label>
+                <input type="username" class="form-control" id="username" placeholder="Enter username">
+                </div>
+                <div class="form-group" style="width: 70%">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Enter Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <!--SIGN UP FORM-->
+        <div style="padding-left: 100px; padding-top: 50px; width: 50%; float: right">
+            <h1>Create your account</h1>
+            <form onsubmit="checkFields(this,1)">
+                <div class="form-group" style="width: 60%">
+                <label for="username">Username</label>
+                <input type="username" class="form-control" id="username" placeholder="Enter username">
+                </div>
+                <div class="form-group" style="width: 60%">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Enter Password">
+                </div>
+                <div class="form-group" style="width: 60%">
+                <label for="password2">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+         <!-- Latest compiled and minified CSS -->
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+         <!-- jQuery library -->
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+ 
+         <!-- Latest compiled JavaScript -->
+         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+         
+         <!--Script for field checking-->
+         <script>
+            //Function to check if fields have been correctly filled 
+            function checkFields(form,identifier) 
+            { 
+                username = form.username.value;
+                password = form.password.value;  
+                            
+                // if username not entered 
+                if (username == '') 
+                {
+                    alert ("Please enter Username"); 
+                    return false;
+                }
+
+                // if password not entered 
+                if (password == '') 
+                {
+                    alert ("Please enter Password"); 
+                    return false;
+                }
+                            
+                //If signing up rather than logging in
+                if(identifier > 0)
+                { 
+                    confirmPassword = form.confirmPassword.value;
+
+                    // if confirm password not entered 
+                    if (confirmPassword == '') 
+                    {
+                        alert ("Please enter confirm password"); 
+                        return false;
+                    }
+                                    
+                    // if not same return false.     
+                    else if (password != confirmPassword) 
+                    { 
+                        alert ("Passwords did not match") 
+                        return false; 
+                    }
+                } 
+            } 
+         </script>
+
+    </body>
+{% endblock %}
