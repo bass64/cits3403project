@@ -1,0 +1,94 @@
+<!-- This code allows users to create , edit and change posts -->
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <h1>
+            Create Post
+        </h1>
+    </head>
+    <body>
+
+        <form>
+            <div>
+
+                <label for="songtitle">Song title : </label>
+                <input type="text" id="songtitle" name="songtitle" placeholder="Track 1 title" required>
+
+            </div>
+            
+            <br>
+
+            <div>
+                <label for="author">Artist/Band name: </label>
+                <input type="text" id="author" name="author" placeholder="Name" required>
+            </div>
+
+            <br>
+
+            <div>
+
+                <label for="songfile">Upload your song: </label>
+                <input class="songfile" type="file" name="songfile" accept=".mp3,audio/*" required>
+
+            </div>
+
+            <br>
+
+            <div class="container">
+                <div class="img-area">
+                    <i class="uploadimg"></i>
+                    <label for="uploadimg">Upload Image: </label>
+                    <p><small>Image size must be less than <span>2MB</span></small></p>
+                
+                <button class="select-image">Select Image</button>
+                </div>
+            </div>
+
+            <br>
+
+            <div>
+
+                <label for="desc">Description: </label>
+                <textarea id="desc" name="desc" placeholder="Tell your followers about your song"></textarea>
+
+            </div>
+
+            <br>
+
+            <div>
+                
+                <label for="date">Release Date: </label>
+                <input type="date" id="rdate" name="rdate" required>
+
+            </div>
+
+            <br>
+
+            <div>
+
+                <label for="language">Language: </label>
+                <select id="language" name="language">
+                    <option value="English">English</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="Vietnamese">Vietnamese</option>
+
+                </select>
+
+            </div>
+
+            <br>
+
+            <div>
+                <input type="reset">
+            </div>
+
+            <br>
+
+            <div>
+                <input type="submit">
+            </div>
+
+        </form>
+    </body>
+</html>
