@@ -10,6 +10,11 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <!-- Bootstrap Icons Link -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  
+  <!-- Load CSS -->
+  <link rel="stylesheet" href="static/style.css">
 
   <!-- Load Page Title -->
   {% if title %}
@@ -30,12 +35,14 @@
 </head>
 <body>
   <!-- Header for page navigation -->
-  <header class="bg-light">
+  <header class="bg-light container-lg">
     <nav class="navbar navbar-expand-md">
       <div class="container-fluid">
         <a href="./home" class="navbar-brand">
-          <i class="bi bi-music-note-list"></i>
-          Rate My Music
+          <h1>
+            <i class="bi bi-music-note-list"></i>
+            Rate My Music
+          </h1>
         </a>
         <button 
           class="navbar-toggler" 
@@ -61,7 +68,7 @@
   </header>
   
   <!-- Container for block content -->
-  <div class="content">
+  <div class="content container-lg">
     {% block content %}{% endblock %}
   </div>
   
