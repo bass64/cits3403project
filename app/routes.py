@@ -9,3 +9,7 @@ def index():
 @app.route('/login')
 def login():
     return render_template("login.html", title="Login")
+
+@app.errorhandler(404)
+def page_not_found(*args):
+    return render_template("error-page.html", title="Page Not Found")
