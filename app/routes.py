@@ -63,9 +63,15 @@ def article(article_id):
 
     return render_template("article_full.html", title = "" + album["artist"] + " - " + album["title"], album=album)
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template("login.html", title="Login")
+    form = LoginForm()
+    createForm = SignUp()
+    if form.validate_on_submit():
+        return redirect(location=url_for("home"))
+    if createForm.validate_on_submit():
+        return redirect(location=url_for("home"))
+    return render_template('login.html', title='Sign In', form=form,createForm=createForm)
 
 @app.errorhandler(404)
 def page_not_found(*args):
