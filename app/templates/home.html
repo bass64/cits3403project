@@ -7,17 +7,27 @@
             cursor:pointer;
             text-align:right;
         }
+        #search_extend > * {
+            font-size:16px;
+            text-align:left;
+        }
         #search_panel {
             background-color: gainsboro;
             border: black solid 3px;
+        }
+        #search_panel > * {
+            position: sticky;
+            top: 0;
+        }
+        .search {
+            width: 100%;
         }
     </style>
 
     <div class="container">
         <div class="row">
-
             <div id="search_panel" class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                <h3 id="search_extend"  onclick="open_search()">&gt; Search</h3>
+                    <h3 id="search_extend">&gt; Search</h3>
             </div>
 
             <div id="articles" class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
@@ -30,12 +40,13 @@
                     {% endwith %}
                 {% endfor %}
             </div>
-
         </div>
     </div>
 
     <script>
-        //on load, check if search is active, and if so open the search panel
+        let panel_open = false;
+
+        //on load, check if search url param is active, and if so open the search panel
         $(document).ready(function() {
             const url_params = new URLSearchParams(window.location.search);
             if(url_params.get("search") != null) {
@@ -43,9 +54,18 @@
             }
         });
 
-        function open_search() {            
+        //jquery click event to call open_search
+        $("#search_extend").click(function(e) {
+            //check so that it only happens on the parent, not children
+            if(e.target == this) {
+                open_search()
+            }
+        });
+    
+        function open_search(){      
             //if search panel is closed
-            if ($("#search_extend").html() == "&gt; Search") {
+            if (!panel_open) {
+                panel_open = true;
 
                 //change text
                 $("#search_extend").html("&lt; Search");
@@ -76,8 +96,8 @@
                 var submit = $("<input>").addClass("submit").attr("type", "submit").html("Submit");
 
                 //add search elements to page
-                $("#search_panel").append(form);
-                $("#search_panel .form").append(search_bar);
+                $("#search_extend").append(form);
+                $("#search_panel .form").append("<div>").append(search_bar).append("</div>");;
                 $("#search_panel .form").append("<div>").append(sort1).append(sort1_label).append("</div>");
                 $("#search_panel .form").append("<div>").append(sort2).append(sort2_label).append("</div>");
                 $("#search_panel .form").append("<div>").append(sort3).append(sort3_label).append("</div>");
@@ -87,8 +107,8 @@
                 $("#search_panel .form").append("<div>").append(submit).append("</div>");
 
             //if search panel is open
-            } else if ($("#search_extend").html() == "&lt; Search") {
-
+            } else if (panel_open) {
+                panel_open = false;
                 //change text
                 $("#search_extend").html("&gt; Search");
 
@@ -112,6 +132,5 @@
             }
         }
     </script>
-
 </body>
 {% endblock %}
