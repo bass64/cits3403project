@@ -3,7 +3,11 @@
 {% endif %}
 {% block content %}
 <body>
+{% if full == False %} 
+    <div class="container" style="border: black solid 3px; cursor:pointer;" onclick="location.href = '/article/{{ album.id }}';">
+{% else %}
     <div class="container" style="border: black solid 3px;">
+{% endif %}
         <div class="row">
             <!-- Album Image -->
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
