@@ -105,11 +105,9 @@
             //if there are URL params, auto-fill the search form
             url_params = new URLSearchParams(window.location.search);
             if (url_params != null) {
-                console.log("hi");
                 $(".search").attr("value", url_params.get("search"));
             }
             if (url_params != null) {
-                console.log("hello");
                 $("input[value='" + url_params.get("sort") + "']").attr("checked", true);
             }
         }
