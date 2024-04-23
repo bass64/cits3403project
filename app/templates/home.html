@@ -40,13 +40,10 @@
             const url_params = new URLSearchParams(window.location.search);
             if(url_params.get("search") != null) {
                 open_search()
-                //set search bar and sort type to url param
-                $(".search").attr("value", url_params.get("search"));
-                $("input[value='" + url_params.get("sort") + "']").attr("checked", true);
             }
         });
 
-        function open_search() {
+        function open_search() {            
             //if search panel is closed
             if ($("#search_extend").html() == "&gt; Search") {
 
@@ -103,6 +100,17 @@
 
                 //remove all search elements except search_extend
                 $("#search_panel *").not("#search_extend").remove()
+            }
+
+            //if there are URL params, auto-fill the search form
+            url_params = new URLSearchParams(window.location.search);
+            if (url_params != null) {
+                console.log("hi");
+                $(".search").attr("value", url_params.get("search"));
+            }
+            if (url_params != null) {
+                console.log("hello");
+                $("input[value='" + url_params.get("sort") + "']").attr("checked", true);
             }
         }
     </script>
