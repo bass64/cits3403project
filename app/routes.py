@@ -29,6 +29,16 @@ def home():
         "star_rating": 1,
         "review_no": 3,
         "rating_no": 17,
+        }, {
+        "id": 2,
+        "title": "Placeholder 3",
+        "album_art": "./../static/artist-placeholder3.png",
+        "artist": "Artist",
+        "year": "1973",
+        "type": "Album",
+        "star_rating": 10,
+        "review_no": 30,
+        "rating_no": 174,
         }]
     return render_template("home.html", title="Home", articles=articles)
 
@@ -59,6 +69,18 @@ def article(article_id):
         "star_rating": 1,
         "review_no": 3,
         "rating_no": 17,
+        }
+    if (article_id == 2):
+        album = {
+        "id": 2,
+        "title": "Placeholder 3",
+        "album_art": "./../static/artist-placeholder3.png",
+        "artist": "Artist",
+        "year": "1973",
+        "type": "Album",
+        "star_rating": 10,
+        "review_no": 30,
+        "rating_no": 174,
         }
 
     return render_template("article_full.html", title = "" + album["artist"] + " - " + album["title"], album=album, full=True)

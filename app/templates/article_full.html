@@ -48,7 +48,7 @@
     <script>
         rating = "{{ album.star_rating }}" - 0;
         for (i = 0; i < 5; i++) { //loop 5 times
-            if ((rating - 2) > 0) { 
+            if ((rating - 2) >= 0) { 
                 $(".star_rating#{{album.id}}").append("<i class='bi bi-star-fill'></i>"); //add full star
                 rating -= 2
             } else if ((rating - 1) == 0) { 
