@@ -1,5 +1,6 @@
 from app import app
-from flask import render_template
+from flask import render_template,redirect, url_for
+from app.forms import LoginForm,SignUp
 
 @app.route('/')
 @app.route('/index')
@@ -85,9 +86,15 @@ def article(article_id):
 
     return render_template("article_full.html", title = "" + album["artist"] + " - " + album["title"], album=album, full=True)
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template("login.html", title="Login")
+    form = LoginForm()
+    createForm = SignUp()
+    if form.validate_on_submit():
+        return redirect(location=url_for("home"))
+    if createForm.validate_on_submit():
+        return redirect(location=url_for("home"))
+    return render_template('login.html', title='Sign In', form=form,createForm=createForm)
 
 @app.errorhandler(404)
 def page_not_found(*args):

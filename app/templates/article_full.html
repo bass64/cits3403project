@@ -1,6 +1,8 @@
+<!-- Only include header/footer if full version of article -->
 {% if full == True %} 
     {% extends "base.html" %}
 {% endif %}
+
 {% block content %}
 <body>
 {% if full == False %} 
