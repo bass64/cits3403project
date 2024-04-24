@@ -62,7 +62,7 @@ def article(article_id):
         "rating_no": 17,
         }
 
-    return render_template("article_full.html", title = "" + album["artist"] + " - " + album["title"], album=album)
+    return render_template("article_full.html", title = "" + album["artist"] + " - " + album["title"], album=album, full=True)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
