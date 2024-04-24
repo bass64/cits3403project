@@ -7,6 +7,7 @@ from app.forms import LoginForm,SignUp
 def index():
     return render_template("index.html", title="Testpage")
 
+@app.route('/')
 @app.route("/home")
 def home():
     #get list of articles from a database in future
@@ -85,6 +86,10 @@ def article(article_id):
         }
 
     return render_template("article_full.html", title = "" + album["artist"] + " - " + album["title"], album=album, full=True)
+
+@app.route('/create-post')
+def create_post():
+    return render_template("create-post.html", title="Create Post")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
