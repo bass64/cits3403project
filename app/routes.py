@@ -21,10 +21,9 @@ def home():
     form=Search()
     return render_template("home.html", title="Home", articles=articles, form=form)
 
-
 @app.route('/article/<int:article_id>')
 def article(article_id):
-    album = article_query(article_id)
+    album = Article.query.get(article_id)
     return render_template("article_full.html", title = "" + album.album_artist + " - " + album.album_title, album=album, full=True)
 
 @app.route('/create-post')

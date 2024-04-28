@@ -16,7 +16,7 @@ class SignUp(FlaskForm):
     submit = SubmitField('Sign In')
 
 class Search(FlaskForm):
-    search = StringField("Search")
+    search = StringField("Search", render_kw={"placeholder": "Search..."})
     sort = SelectField("Sort by", choices=[
         ("album_create_time DESC", "Sort by newest"),
         ("album_create_time ASC", "Sort by oldest"),

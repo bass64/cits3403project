@@ -61,12 +61,16 @@ def create_database():
 def home_query(search, sort):
     if sort != None:
         order = "article_" + sort
+    #default sort, by newest
     elif sort == None:
         order = "article_album_create_time DESC"
     if search != None:
-        return Article.query.order_by(text(order)).filter(Article.album_artist.like(f'%{search}%') | Article.album_title.like(f'%{search}%'))
+        #search checks artist, title, year and type
+        return Article.query.order_by(text(order)).filter(\
+            Article.album_artist.like(f'%{search}%')\
+            | Article.album_title.like(f'%{search}%')\
+            | Article.album_year.like(f'%{search}%')\
+            | Article.album_type.like(f'%{search}%')\
+            )
     else:
         return Article.query.order_by(text(order))
-    
-def article_query(id):
-    return Article.query.get(id)
