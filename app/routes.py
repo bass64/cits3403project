@@ -1,6 +1,6 @@
 from app import app
-from flask import render_template, redirect, url_for
-from app.forms import LoginForm,SignUp
+from flask import render_template, redirect, url_for, request
+from app.forms import LoginForm,SignUp,Search
 from app.database import *
 
 @app.before_request
@@ -15,11 +15,11 @@ def index():
 @app.route('/')
 @app.route("/home")
 def home():
-    #"album_create_time DESC"
-    search = ""
-    sort = "album_rating DESC"
+    search = request.args.get("search")
+    sort = request.args.get("sort")
     articles = home_query(search, sort)
-    return render_template("home.html", title="Home", articles=articles)
+    form=Search()
+    return render_template("home.html", title="Home", articles=articles, form=form)
 
 
 @app.route('/article/<int:article_id>')

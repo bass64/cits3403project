@@ -59,14 +59,14 @@ def create_database():
     db.session.commit()
 
 def home_query(search, sort):
-    #values for sort will be like...
-    #album_create_time.desc()
-    order = "article_" + sort
-    if search != "":
-        return Article.query.order_by(text(order)).filter_by(search in Article.album_artist)
+    if sort != None:
+        order = "article_" + sort
+    elif sort == None:
+        order = "article_album_create_time DESC"
+    if search != None:
+        return Article.query.order_by(text(order)).filter(Article.album_artist.like(f'%{search}%') | Article.album_title.like(f'%{search}%'))
     else:
         return Article.query.order_by(text(order))
-    
     
 def article_query(id):
     return Article.query.get(id)

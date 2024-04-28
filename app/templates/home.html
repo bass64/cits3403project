@@ -19,7 +19,7 @@
             position: sticky;
             top: 0;
         }
-        .search {
+        #search, #sort, #submit {
             width: 100%;
         }
     </style>
@@ -27,7 +27,15 @@
     <div class="container">
         <div class="row">
             <div id="search_panel" class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                    <h3 id="search_extend">&gt; Search</h3>
+                    <form action="/home">
+                        <h3 id="search_extend">&gt; Search</h3>
+                        <div id="search_elements" style="display:none;">
+                            {{ form.search }}
+                            {{ form.sort }}
+                            {{ form.submit }}
+                            <label>Found {{ articles.count() }} results</label>
+                        </div>
+                    </form>
             </div>
 
             <div id="articles" class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
@@ -76,35 +84,8 @@
                 $("#articles").removeClass("col-xs-11 col-sm-11 col-md-11 col-lg-11");
                 $("#articles").addClass("col-xs-9 col-sm-9 col-md-9 col-lg-9");
 
-                //construct search elements
-                var form = $("<form>").addClass("form").attr("onSubmit", "submit_search()")
-                var search_bar = $("<input>").addClass("search").attr("type", "text").attr("name", "search").attr("placeholder", "Search...");
-
-                var sort1 = $("<input>").addClass("sort").attr("type", "radio").attr("name", "sort").attr("value", "date_desc").attr("checked", true);
-                var sort1_label = $("<label>").attr("for", "date_desc").html("Sort by date descending");
-                var sort2 = $("<input>").addClass("sort").attr("type", "radio").attr("name", "sort").attr("value", "date_asc");
-                var sort2_label = $("<label>").attr("for", "date_asc").html("Sort by date ascending");
-                var sort3 = $("<input>").addClass("sort").attr("type", "radio").attr("name", "sort").attr("value", "score_desc");
-                var sort3_label = $("<label>").attr("for", "score_desc").html("Sort by highest score");
-                var sort4 = $("<input>").addClass("sort").attr("type", "radio").attr("name", "sort").attr("value", "score_asc");
-                var sort4_label = $("<label>").attr("for", "score_asc").html("Sort by lowest score");
-                var sort5 = $("<input>").addClass("sort").attr("type", "radio").attr("name", "sort").attr("value", "ratings_desc");
-                var sort5_label = $("<label>").attr("for", "ratings_desc").html("Sort by most ratings");
-                var sort6 = $("<input>").addClass("sort").attr("type", "radio").attr("name", "sort").attr("value", "ratings_asc");
-                var sort6_label = $("<label>").attr("for", "ratings_asc").html("Sort by least ratings");
-
-                var submit = $("<input>").addClass("submit").attr("type", "submit").html("Submit");
-
-                //add search elements to page
-                $("#search_extend").append(form);
-                $("#search_panel .form").append("<div>").append(search_bar).append("</div>");;
-                $("#search_panel .form").append("<div>").append(sort1).append(sort1_label).append("</div>");
-                $("#search_panel .form").append("<div>").append(sort2).append(sort2_label).append("</div>");
-                $("#search_panel .form").append("<div>").append(sort3).append(sort3_label).append("</div>");
-                $("#search_panel .form").append("<div>").append(sort4).append(sort4_label).append("</div>");
-                $("#search_panel .form").append("<div>").append(sort5).append(sort5_label).append("</div>");
-                $("#search_panel .form").append("<div>").append(sort6).append(sort6_label).append("</div>");
-                $("#search_panel .form").append("<div>").append(submit).append("</div>");
+                //unhide search elements
+                $("#search_elements").css("display", "inline");
 
             //if search panel is open
             } else if (panel_open) {
@@ -118,17 +99,15 @@
                 $("#articles").removeClass("col-xs-9 col-sm-9 col-md-9 col-lg-9");
                 $("#articles").addClass("col-xs-11 col-sm-11 col-md-11 col-lg-11");
 
-                //remove all search elements except search_extend
-                $("#search_panel *").not("#search_extend").remove()
+                //set all search elements to hidden
+                $("#search_elements").css("display", "none");
             }
 
-            //if there are URL params, auto-fill the search form
+            //if there is a search param, write it to the searchbar
             url_params = new URLSearchParams(window.location.search);
             if (url_params != null) {
-                $(".search").attr("value", url_params.get("search"));
-            }
-            if (url_params != null) {
-                $("input[value='" + url_params.get("sort") + "']").attr("checked", true);
+                //add search param to search bar
+                $("#search").attr("value", url_params.get("search"));
             }
         }
     </script>
