@@ -1,6 +1,7 @@
-from app import app
-from flask import render_template,redirect, url_for
+from app import app, db
+from flask import render_template,redirect, url_for,request,flash
 from app.forms import LoginForm,SignUp
+from app.models import User
 
 @app.route('/')
 @app.route('/index')
@@ -91,15 +92,57 @@ def article(article_id):
 def create_post():
     return render_template("create-post.html", title="Create Post")
 
-@app.route('/login', methods=['GET', 'POST'])
+#renders the login page (only GET request)
+@app.route('/login')
 def login():
     form = LoginForm()
     createForm = SignUp()
-    if form.validate_on_submit():
-        return redirect(location=url_for("home"))
-    if createForm.validate_on_submit():
-        return redirect(location=url_for("home"))
     return render_template('login.html', title='Sign In', form=form,createForm=createForm)
+
+#processes sign up post requests
+@app.route('/signup', methods=['POST'])
+def signup_post():
+
+    #add user to database
+    username = request.form.get('username')
+    password = request.form.get('password')
+    confirm = request.form.get('confirm')
+
+    if not (password == confirm):
+        flash('Passwords do not match','signup_error')
+        return redirect(url_for('login'))
+
+    #check if user exists
+    existing_user = User.query.filter_by(username=username).first()
+
+    #if user already exists do not create new user with same username
+    if existing_user:
+        flash('User exists','signup_error')
+        return redirect(url_for('login'))
+
+    #if user is new, add to database
+    user = User(username=username, password=password)
+    db.session.add(user)
+    db.session.commit()
+
+    return redirect(location=url_for("home"))
+
+#processes login post requests
+@app.route('/login', methods=['POST'])
+def login_post():
+
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    #check for existing user
+    existing_user = User.query.filter_by(username=username).first()
+
+    #if username couldnt be found or the password doesnt match throw an error
+    if not existing_user or not (existing_user.password == password):
+        flash('Please check your login details','login_failed')
+        return redirect(url_for('login'))
+
+    return redirect(location=url_for("home"))
 
 @app.errorhandler(404)
 def page_not_found(*args):
