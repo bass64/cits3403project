@@ -118,9 +118,6 @@ def login_post():
         remember = False
 
     login_user(existing_user, remember=remember)
-    print('------------------------------------')
-    print(request.form.get('remember_me'))
-    print('----------------------------------------')
     return redirect(location=url_for("home"))
 
 @app.route('/logout')
