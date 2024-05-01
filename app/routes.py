@@ -34,6 +34,10 @@ def create_post():
         return redirect(location=url_for("home"))
     return render_template("create-post.html", title="Create Post",form=form)
 
+@app.route('/post-review')
+def post_review():
+    return render_template("post-review.html", title="Post Review")
+
 #renders the login page (only GET request)
 @app.route('/login')
 def login():
