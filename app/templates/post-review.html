@@ -1,0 +1,147 @@
+<!-- This code allows you to write, rate out of 5 and post reviews -->
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Start of CSS code-->
+  <style>
+    .container {
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .wrapper {
+      background: white;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 50px;
+      width: 100%;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0px 0px 2px 2px;
+    }
+    .wrapper h3{
+      font-size: 40px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .rating {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      grid-gap: 10px;
+      font-size: 30px;
+      color: orange;
+      margin-bottom: 30px;
+    }
+    textarea{
+      width: 100%;
+      padding: 15px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      resize: none;
+      margin-bottom: 6px;
+      background-color: #F1F1F1;
+    }
+    .btn-group {
+      background-color: #F1F1F1;
+      display: flex;
+      grid-gap: 8px;
+    }
+    .btn-group .btn{
+      padding: 10px 16px;
+      border-radius: 8px;
+      border:none;
+      outline:none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .rating .star.active {
+      opacity: 0;
+      animation: animate 0.5s ease-in-out forwards;
+    }
+
+    @keyframes animate{
+      0% {
+        opacity: 0;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    .rating .star{
+      cursor: pointer;
+    }
+
+    .rating .star:hover {
+      transform: scale(1.1);
+    }
+
+  </style>
+<!-- End of CSS code-->
+
+
+
+<!-- Start of HTML code-->
+<body>
+  <div class="container">
+    <div class="wrapper">
+      <h3> Leave us a review!</h3>
+      <form action="#">
+        <div class="rating">
+          <input type="number" name="rating" hidden>
+          <i class="bi bi-star star" style="--i: 0;"></i>
+          <i class="bi bi-star star" style="--i: 1;"></i>
+          <i class="bi bi-star star" style="--i: 2;"></i>
+          <i class="bi bi-star star" style="--i: 3;"></i>
+          <i class="bi bi-star star" style="--i: 4;"></i>
+        </div>
+        <textarea name="opinion" cols="30" rows="5" placeholder="What did you think about my song?"></textarea>
+        <div class="btn-group">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="cancel" class="btn btn-outline-primary">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+<!-- End of HTML code-->
+
+<!-- Start of JavaScript code-->
+  <script>
+    const allStar = document.querySelectorAll('.rating .star')
+    const rating = document.querySelector('.rating input')
+
+    allStar.forEach((item,idx)=> {
+      item.addEventListener('click', function () {
+        let click = 0
+        rating.value = idx + 1
+        console.log(rating.value)
+
+        allStar.forEach(i=> {
+          i.classList.replace('bi-star-fill', 'bi-star')
+          i.classList.remove('active')
+        })
+        for(let i=0; i<allStar.length; i++) {
+          if(i <= idx) {
+            allStar[i].classList.replace('bi-star', 'bi-star-fill')
+            allStar[i].classList.add('active')
+          } else {
+            allStar[i].style.setProperty('--i', click)
+            click++
+          }
+        }
+      })
+    })
+  </script>
+<!-- End of JavaScript-->
+
+</body>
+
+{% endblock %}
