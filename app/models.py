@@ -35,4 +35,4 @@ class Review(db.Model):
     review_create_time = db.Column(db.DateTime, nullable=False) #time review was posted
 
     def __repr__(self):
-        return "[ID: {}, Creator:{}, Album ID: {}]".format(self.review_id, self.review_creator, self.album_id) 
+        return "[ID: {}, Creator:{}, Album ID: {}]".format(self.review_id, self.review_creator, self.album_id)
