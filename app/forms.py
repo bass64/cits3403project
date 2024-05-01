@@ -13,9 +13,9 @@ class LoginForm(FlaskForm):
 class SignUp(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', [DataRequired()])
-    confirm  = PasswordField('Repeat Password',[DataRequired(),EqualTo('password', message='Passwords must match')])
+    confirm  = PasswordField('Repeat Password',[DataRequired()])
     remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
+    submit = SubmitField('Sign Up')
 
 class Search(FlaskForm):
     search = StringField("Search", render_kw={"placeholder": "Search..."})

@@ -2,6 +2,14 @@ from app import db
 
 STRING_MAX = 500
 
+class User(db.Model):
+     user_id = db.Column(db.Integer, primary_key=True) #unique id
+     username = db.Column(db.String(STRING_MAX), unique=True, nullable=False) #username must be unique and non nullable
+     password = db.Column(db.String(STRING_MAX), nullable=False) #must have password (non nullable)
+
+     def __repr__(self) -> str:
+         return f'<User {self.username} {self.password}>'
+
 class Article(db.Model):
     album_id = db.Column(db.Integer, primary_key=True, nullable=False) #unique id
     album_artist = db.Column(db.String(STRING_MAX), nullable=False) #string
