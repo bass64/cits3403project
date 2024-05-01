@@ -3,85 +3,91 @@
 {% block content %}
 
     <body>
-
-        <form>
+        <h1>Create Post</h1>
+        <form action="/create-post" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
             <div>
-
-                <label for="songtitle">Song title : </label>
-                <input type="text" id="songtitle" name="songtitle" placeholder="Track 1 title" required>
-
+                {{ form.songTitle.label }}
+                    {{ form.songTitle(placeholder="Track 1 title",id="songtitle") }} <br>
+                    {% for error in form.songTitle.errors %}
+                    <span style="color: red;">[{{ error }}] </span>
+                    {% endfor %}
             </div>
             
             <br>
 
             <div>
-                <label for="author">Artist/Band name: </label>
-                <input type="text" id="author" name="author" placeholder="Name" required>
+                {{ form.author.label }}
+                    {{ form.author(placeholder="Name",id="author") }} <br>
+                    {% for error in form.author.errors %}
+                    <span style="color: red;">[{{ error }}] </span>
+                    {% endfor %}
             </div>
 
             <br>
 
             <div>
-
-                <label for="songfile">Upload your song: </label>
-                <input class="songfile" type="file" name="songfile" accept=".mp3,audio/*" required>
-
+                {{ form.songFile.label }}
+                    {{ form.songFile(class="songfile") }} <br>
+                    {% for error in form.songFile.errors %}
+                    <span style="color: red;">[{{ error }}] </span>
+                    {% endfor %}
             </div>
 
             <br>
 
             <div class="container">
                 <div class="img-area">
-                    <i class="uploadimg"></i>
-                    <label for="uploadimg">Upload Image: </label>
-                    <p><small>Image size must be less than <span>2MB</span></small></p>
-                
-                <button class="select-image">Select Image</button>
+                    <i class="uploading"></i>
+                    {{ form.imageFile.label }}
+                        <p><small>Image size must be less than <span>2MB</span></small></p>
+                        {{ form.imageFile(class="select-image") }} <br>
+                        {% for error in form.imageFile.errors %}
+                        <span style="color: red;">[{{ error }}] </span>
+                        {% endfor %}
                 </div>
             </div>
 
             <br>
 
             <div>
-
-                <label for="desc">Description: </label>
-                <textarea id="desc" name="desc" placeholder="Tell your followers about your song"></textarea>
-
+                {{ form.description.label }}
+                    {{ form.description(id="desc", placeholder="Tell your followers about your song") }} <br>
+                    {% for error in form.description.errors %}
+                    <span style="color: red;">[{{ error }}] </span>
+                    {% endfor %}
             </div>
 
             <br>
 
             <div>
-                
-                <label for="date">Release Date: </label>
-                <input type="date" id="rdate" name="rdate" required>
-
+                {{ form.date.label }}
+                    {{ form.date(id="rdate") }} <br>
+                    {% for error in form.date.errors %}
+                    <span style="color: red;">[{{ error }}] </span>
+                    {% endfor %}
             </div>
 
             <br>
 
             <div>
-
-                <label for="language">Language: </label>
-                <select id="language" name="language">
-                    <option value="English">English</option>
-                    <option value="Spanish">Spanish</option>
-                    <option value="Vietnamese">Vietnamese</option>
-
-                </select>
-
+                {{ form.language.label }}
+                    {{ form.language(id="language") }} <br>
+                    {% for error in form.language.errors %}
+                    <span style="color: red;">[{{ error }}] </span>
+                    {% endfor %}
             </div>
 
             <br>
 
             <div>
-                <input type="reset">
+                <input type="button" value="Reset" onclick="location.reload()"></input>
             </div>
 
             <br>
 
             <div>
-                <input type="submit">
+                <p>{{ form.submit() }}</p>
             </div>
 
         </form>

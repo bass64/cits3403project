@@ -1,11 +1,12 @@
 from app import app
 from flask import render_template, redirect, url_for, request
-from app.forms import LoginForm,SignUp,Search
+from app.forms import LoginForm,SignUp,Search, CreatePost
 from app.database import *
 
 @app.before_request
 def run_on_start():
     create_database()
+
 
 @app.route('/')
 @app.route('/index')
@@ -26,9 +27,12 @@ def article(article_id):
     album = Article.query.get(article_id)
     return render_template("article_full.html", title = "" + album.album_artist + " - " + album.album_title, album=album, full=True)
 
-@app.route('/create-post')
+@app.route('/create-post', methods=['GET', 'POST'])
 def create_post():
-    return render_template("create-post.html", title="Create Post")
+    form = CreatePost()
+    if form.validate_on_submit():
+        return redirect(location=url_for("home"))
+    return render_template("create-post.html", title="Create Post",form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
