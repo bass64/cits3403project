@@ -2,3 +2,7 @@
 .navbar-nav > a {
     font-size: large;
 }
+
+html, body {
+    height: 100vh;
+}
