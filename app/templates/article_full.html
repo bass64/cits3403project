@@ -5,6 +5,23 @@
 
 {% block content %}
 <body>
+    <!-- Star Rating Script-->
+    <script>
+        function star_rating(rating, id) {
+            for (i = 0; i < 5; i++) { //loop 5 times
+                if ((rating - 2) >= 0) { 
+                    $(".star_rating#" + id).append("<i class='bi bi-star-fill'></i>"); //add full star
+                    rating -= 2
+                } else if ((rating - 1) == 0) { 
+                    $(".star_rating#" + id).append("<i class='bi bi-star-half'></i>"); //add half star
+                    rating -= 1
+                } else { 
+                    $(".star_rating#" + id).append("<i class='bi bi-star'></i>"); //add empty star
+                }
+            }
+        }
+    </script>
+
 {% if full == False %} 
     <div class="container" style="border: black solid 3px; cursor:pointer;" onclick="location.href = '/article/{{ album.album_id }}';">
 {% else %}
@@ -28,7 +45,7 @@
                 </div>
 
                 <div class="row">
-                    <h3 class="star_rating" id="{{ album.album_id }}"></h3>
+                    <h3 class="star_rating" id="album_{{ album.album_id }}"></h3>
                 </div>
 
                 <div class="row">
@@ -43,27 +60,19 @@
         </div>
     </div>
 
-    <!-- Only include comments if full version of article -->
+    <!-- Only include reviews if full version of article -->
     {% if full == True %}
-    <div class="container">
-        <p>put reviews here</p>
-    </div>
+        {% for review in reviews %}
+            {% with %}
+                {% set review=review %}
+                {% include "review.html"%}
+            {% endwith %}
+        {% endfor %}
     {% endif %}
 
-    <!-- Star Rating Script-->
+    <!-- Call star rating script for albums here-->
     <script>
-        rating = "{{ album.album_rating }}" - 0;
-        for (i = 0; i < 5; i++) { //loop 5 times
-            if ((rating - 2) >= 0) { 
-                $(".star_rating#{{album.album_id}}").append("<i class='bi bi-star-fill'></i>"); //add full star
-                rating -= 2
-            } else if ((rating - 1) == 0) { 
-                $(".star_rating#{{album.album_id}}").append("<i class='bi bi-star-half'></i>"); //add half star
-                rating -= 1
-            } else { 
-                $(".star_rating#{{album.album_id}}").append("<i class='bi bi-star'></i>"); //add empty star
-            }
-        }
+        star_rating("{{ album.album_rating }}", "album_" + "{{ album.album_id }}")
     </script>
 </body>
 {% endblock %}

@@ -1,8 +1,8 @@
 from app import app, db
 from flask import render_template, redirect, url_for, request, flash
 from app.forms import LoginForm, SignUp, Search, CreatePost
-from app.models import User
-from app.database import *
+from app.models import User, Article, Review
+from app.database import home_query, create_database
 
 @app.before_request
 def run_on_start():
@@ -24,8 +24,9 @@ def home():
 
 @app.route('/article/<int:article_id>')
 def article(article_id):
-    album = Article.query.get(article_id)
-    return render_template("article_full.html", title = "" + album.album_artist + " - " + album.album_title, album=album, full=True)
+    album = db.session.query(Article).get(article_id)
+    reviews = db.session.query(Review, User).join(User, User.user_id == Review.user_id).filter(Review.album_id == article_id).all()
+    return render_template("article_full.html", title = "" + album.album_artist + " - " + album.album_title, album=album, reviews=reviews, full=True)
 
 @app.route('/create-post', methods=['GET', 'POST'])
 def create_post():

@@ -1,5 +1,5 @@
 #!usr/bin/python
-from app.models import Article, Review
+from app.models import Article, Review, User
 from app import db
 from sqlalchemy.sql import text
 import datetime
@@ -7,11 +7,13 @@ import datetime
 def create_database():
     #create tables
     db.create_all()
-    #clear any info
+    #clear any info FIND A BETTER WAY TO DO THIS THIS METHOD SUCKS
     Article.query.delete()
+    Review.query.delete()
+    User.query.delete()
 
     #just using python objects for now
-    articles = {
+    entries = {
         Article(
             album_id=0,
             album_artist="Artist",
@@ -22,7 +24,7 @@ def create_database():
             album_rating=7.53,
             album_review_no=5,
             album_rating_no=20,
-            album_creator=0,
+            user_id=0,
             album_create_time=datetime.datetime.now()
         ),
         Article(
@@ -35,7 +37,7 @@ def create_database():
             album_rating=0.94,
             album_review_no=3,
             album_rating_no=17,
-            album_creator=0,
+            user_id=1,
             album_create_time=datetime.datetime.now()
         ),
         Article(
@@ -48,13 +50,66 @@ def create_database():
             album_rating=9.99,
             album_review_no=30,
             album_rating_no=170,
-            album_creator=0,
+            user_id=0,
             album_create_time=datetime.datetime.now()
+        ),
+
+        Review(
+            album_id=0,
+            review_id=0,
+            review_text="An amazing first album!",
+            review_rating=7,
+            user_id=0,
+            review_create_time=datetime.datetime.now()
+        ),
+        Review(
+            album_id=0,
+            review_id=1,
+            review_text="",
+            review_rating=6,
+            user_id=1,
+            review_create_time=datetime.datetime.now()
+        ),
+        Review(
+            album_id=1,
+            review_id=2,
+            review_text="",
+            review_rating=1,
+            user_id=1,
+            review_create_time=datetime.datetime.now()
+        ),
+        Review(
+            album_id=2,
+            review_id=3,
+            review_text="A great return to form, 10/10",
+            review_rating=10,
+            user_id=0,
+            review_create_time=datetime.datetime.now()
+        ),
+        Review(
+            album_id=2,
+            review_id=4,
+            review_text="",
+            review_rating=9,
+            user_id=1,
+            review_create_time=datetime.datetime.now()
+        ),
+
+        User(
+            user_id=0,
+            username="berspoke_boy9",
+            password="oopsnohash"
+        ),
+
+        User(
+            user_id=1,
+            username="SilentSimon",
+            password="oopsnohash"
         )
     }
 
     #add info, then commit
-    for entry in articles:
+    for entry in entries:
         db.session.add(entry)
     db.session.commit()
 
