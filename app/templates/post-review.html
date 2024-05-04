@@ -1,15 +1,16 @@
 <!-- This code allows you to write, rate out of 5 and post reviews -->
-{% extends "base.html" %}
-{% block content %}
 
 <!-- Start of CSS code-->
   <style>
-    .container {
-      display:flex;
+    .container#review_box {
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+
+      position: absolute;
+      z-index: 999 !important;
     }
+    
     .wrapper {
       background: white;
       max-width: 500px;
@@ -19,6 +20,12 @@
       border-radius: 10px;
       text-align: center;
       box-shadow: 0px 0px 2px 2px;
+
+      position: absolute;
+      z-index: 999 !important;
+      /* i need to find a better way to centre this */
+      transform: translateX(78%) translateY(20vh);
+      display: none;
     }
     .wrapper h3{
       font-size: 40px;
@@ -90,10 +97,9 @@
 
 
 <!-- Start of HTML code-->
-<body>
-  <div class="container">
+  <div class="container" id="review-box">
     <div class="wrapper">
-      <h3> Leave us a review!</h3>
+      <h3> Leave a rating</h3>
       <form action="#">
         <div class="rating">
           <input type="number" name="rating" hidden>
@@ -103,10 +109,10 @@
           <i class="bi bi-star star" style="--i: 3;"></i>
           <i class="bi bi-star star" style="--i: 4;"></i>
         </div>
-        <textarea name="opinion" cols="30" rows="5" placeholder="What did you think about my song?"></textarea>
+        <textarea name="opinion" cols="30" rows="5" placeholder="Write a review (Optional)"></textarea>
         <div class="btn-group">
           <button type="submit" class="btn btn-primary">Submit</button>
-          <button type="cancel" class="btn btn-outline-primary">Cancel</button>
+          <button type="cancel" onclick="close_review_box()" class="btn btn-outline-primary">Cancel</button>
         </div>
       </form>
     </div>
@@ -121,7 +127,7 @@
     allStar.forEach((item,idx)=> {
       item.addEventListener('click', function () {
         let click = 0
-        rating.value = idx + 1
+        rating.value = (idx + 1)*2
         console.log(rating.value)
 
         allStar.forEach(i=> {
@@ -141,7 +147,3 @@
     })
   </script>
 <!-- End of JavaScript-->
-
-</body>
-
-{% endblock %}

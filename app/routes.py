@@ -26,7 +26,7 @@ def home():
 def article(article_id):
     album = db.session.query(Article).get(article_id)
     reviews = db.session.query(Review, User).join(User, User.user_id == Review.user_id).filter(Review.album_id == article_id).all()
-    return render_template("article_full.html", title = "" + album.album_artist + " - " + album.album_title, album=album, reviews=reviews, full=True)
+    return render_template("article_full.html", title = "" + album.album_artist + " - " + album.album_title, album=album, reviews=reviews, full=True, user="test")
 
 @app.route('/create-post', methods=['GET', 'POST'])
 def create_post():

@@ -3,8 +3,16 @@
     {% extends "base.html" %}
 {% endif %}
 
+
+
 {% block content %}
+
 <body>
+    <!-- Review Box, hidden initially -->
+    {% if user != null %}
+        {% include "post-review.html"%}
+    {% endif %}
+
     <!-- Star Rating Script-->
     <script>
         function star_rating(rating, id) {
@@ -62,6 +70,10 @@
 
     <!-- Only include reviews if full version of article -->
     {% if full == True %}
+        {% if user != null %}
+            <button onclick="open_review_box()">Submit a rating/review</button>
+        {% endif %}
+
         {% for review in reviews %}
             {% with %}
                 {% set review=review %}
@@ -70,9 +82,16 @@
         {% endfor %}
     {% endif %}
 
-    <!-- Call star rating script for albums here-->
     <script>
+        // Call star rating script for albums here, after everythings loaded
         star_rating("{{ album.album_rating }}", "album_" + "{{ album.album_id }}")
+        
+        function open_review_box() {
+            $(".wrapper").css("display", "inline");
+        }
+        function close_review_box() {
+            $(".wrapper").css("display", "none");
+        }
     </script>
 </body>
 {% endblock %}

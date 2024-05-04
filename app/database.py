@@ -94,6 +94,22 @@ def create_database():
             user_id=1,
             review_create_time=datetime.datetime.now()
         ),
+        Review(
+            album_id=2,
+            review_id=5,
+            review_text="What a great album: If you would allow me, I would love to regale you with my magnum opus, a piece of art I simply call, 1000 A's. it goes something like this:\n AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAA",
+            review_rating=8,
+            user_id=2,
+            review_create_time=datetime.datetime.now()
+        ),
+        Review(
+            album_id=2,
+            review_id=6,
+            review_text="",
+            review_rating=10,
+            user_id=3,
+            review_create_time=datetime.datetime.now()
+        ),
 
         User(
             user_id=0,
@@ -104,6 +120,18 @@ def create_database():
         User(
             user_id=1,
             username="SilentSimon",
+            password="oopsnohash"
+        ),
+
+        User(
+            user_id=2,
+            username="The Honourable And Eloquent Adam",
+            password="oopsnohash"
+        ),
+
+        User(
+            user_id=3,
+            username="4rd Guy",
             password="oopsnohash"
         )
     }
