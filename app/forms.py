@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField, PasswordField, BooleanField, SubmitField,TextAreaField,DateField
 
-from wtforms.validators import DataRequired,EqualTo
+from wtforms.validators import DataRequired, EqualTo, InputRequired
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 class LoginForm(FlaskForm):
@@ -34,7 +34,7 @@ class CreatePostManual(FlaskForm):
     title = StringField('Title: ',name="title",validators=[DataRequired()])
     artist = StringField('Artist/Band Name: ',name="artist",validators=[DataRequired()])
     image = FileField('Upload Image: ',name="image",validators=[FileRequired(),FileAllowed(['jpg', 'png'], 'Images only!')])
-    date = DateField('Release Date: ',name="rdate",validators=[DataRequired()])
+    date = DateField('Release Date: ',name="date",validators=[InputRequired()])
     submit = SubmitField('Submit')
 
 class CreatePostAuto(FlaskForm):

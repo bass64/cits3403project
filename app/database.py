@@ -157,3 +157,23 @@ def home_query(search, sort):
             )
     else:
         return Article.query.order_by(text(order))
+    
+def add_album_to_db(form):
+    album = Article(
+        album_id=3,
+        album_artist=form.get("artist"),
+        album_title=form.get("title"),
+        album_art="./../static/artist-placeholder3.png",
+        album_year=form.get("date")[:4],
+        album_type=form.get("type"),
+        album_rating=0,
+        album_review_no=0,
+        album_rating_no=0,
+        user_id=0,
+        album_create_time=datetime.datetime.now()
+    )
+    db.session.add(album)
+    db.session.commit()
+
+def add_review_to_db():
+    return

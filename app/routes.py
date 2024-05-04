@@ -2,17 +2,21 @@ from app import app, db
 from flask import render_template, redirect, url_for, request, flash
 from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto
 from app.models import User, Article, Review
-from app.database import home_query, create_database
+from app.database import home_query, create_database, add_album_to_db, add_review_to_db
 
 @app.before_request
 def run_on_start():
     app.before_request_funcs[None].remove(run_on_start) #removes this function so its only run on startup
     create_database()
 
+
+
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template("index.html", title="Testpage")
+
+
 
 @app.route('/')
 @app.route("/home")
@@ -23,25 +27,45 @@ def home():
     form=Search()
     return render_template("home.html", title="Home", articles=articles, form=form)
 
+
+
 @app.route('/article/<int:article_id>')
 def article(article_id):
     album = db.session.query(Article).get(article_id)
     reviews = db.session.query(Review, User).join(User, User.user_id == Review.user_id).filter(Review.album_id == article_id).all()
     return render_template("article_full.html", title = "" + album.album_artist + " - " + album.album_title, album=album, reviews=reviews, full=True, user="test")
 
-@app.route('/create-post', methods=['GET', 'POST'])
+
+
+@app.route('/create-post', methods=['GET'])
 def create_post():
     form1 = CreatePostAuto()
     form2 = CreatePostManual()
-    if form1.validate_on_submit():
-        return redirect(location=url_for("home"))
-    if form2.validate_on_submit():
-        return redirect(location=url_for("home"))
     return render_template("create-post.html", title="Create Post",form1=form1, form2=form2)
+
+@app.route('/create-post-auto', methods=['POST'])
+def create_post_auto():
+    form = CreatePostAuto()
+    if form.validate_on_submit():
+        #spotify link
+        add_album_to_db(request.form)
+        return redirect(location=url_for("home"))
+    
+@app.route('/create-post-manual', methods=['POST'])
+def create_post_manual():
+    form = CreatePostManual()
+    if form.validate_on_submit():
+        #user entry
+        add_album_to_db(request.form)
+        return redirect(location=url_for("home"))
+
+
 
 @app.route('/post-review')
 def post_review():
     return render_template("post-review.html", title="Post Review")
+
+
 
 #renders the login page (only GET request)
 @app.route('/login')
