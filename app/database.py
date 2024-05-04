@@ -164,11 +164,17 @@ def add_album_to_db(form):
     #queries article, sorts by highest id, gets the first row, gets its id, and adds 1 to it
     new_id = db.session.query(Article).order_by(Article.album_id.desc()).first().album_id + 1
 
+    #default path if no image provided
+    if (form.get("image") == None):
+        path = "./../static/no_image.png"
+
+    #TODO get image
+
     album = Article(
         album_id=new_id,
         album_artist=form.get("artist"),
         album_title=form.get("title"),
-        album_art="",
+        album_art=path,
         album_year=form.get("date")[:4],
         album_type=form.get("type"),
         album_rating=0,
@@ -181,5 +187,16 @@ def add_album_to_db(form):
     db.session.add(album)
     db.session.commit()
 
-def add_review_to_db():
+def add_review_to_db(form, article_id):
+    #queries article, sorts by highest id, gets the first row, gets its id, and adds 1 to it
+    new_id = db.session.query(Review).order_by(Review.review_id.desc()).first().review_id + 1
+
+    Review(
+            album_id=article_id,
+            review_id=new_id,
+            review_text=form.get("text"),
+            review_rating=form.get("rating"),
+            user_id=0,
+            review_create_time=datetime.datetime.now()
+        ),
     return

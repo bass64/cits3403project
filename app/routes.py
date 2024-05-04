@@ -40,7 +40,9 @@ def article(article_id):
                            full=True, 
                            user="test")
 
-
+#@app.route('/article/<int:article_id>/post_review', methods=['POST'])
+#def post_review(article_id):
+    #post review isn't a wtform.... cba reformatting it rn ill save it for later
 
 @app.route('/create-post', methods=['GET'])
 def create_post():
