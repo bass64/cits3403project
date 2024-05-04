@@ -1,6 +1,6 @@
 from app import app, db
 from flask import render_template, redirect, url_for, request, flash
-from app.forms import LoginForm, SignUp, Search, CreatePost
+from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto
 from app.models import User, Article, Review
 from app.database import home_query, create_database
 
@@ -31,10 +31,13 @@ def article(article_id):
 
 @app.route('/create-post', methods=['GET', 'POST'])
 def create_post():
-    form = CreatePost()
-    if form.validate_on_submit():
+    form1 = CreatePostAuto()
+    form2 = CreatePostManual()
+    if form1.validate_on_submit():
         return redirect(location=url_for("home"))
-    return render_template("create-post.html", title="Create Post",form=form)
+    if form2.validate_on_submit():
+        return redirect(location=url_for("home"))
+    return render_template("create-post.html", title="Create Post",form1=form1, form2=form2)
 
 @app.route('/post-review')
 def post_review():

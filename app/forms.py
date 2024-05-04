@@ -29,12 +29,14 @@ class Search(FlaskForm):
     ])
     submit = SubmitField()
 
-class CreatePost(FlaskForm):
-    songTitle = StringField('Song Title: ',name="songtitle",validators=[DataRequired()])
-    author = StringField('Artist/Band Name: ',name="author",validators=[DataRequired()])
-    songFile = FileField('Upload your song: ',name="songfile",validators=[FileRequired(),FileAllowed(['wav', 'mp3'], 'Audio only!')])
-    imageFile = FileField('Upload Image: ',name="imagefile",validators=[FileRequired(),FileAllowed(['jpg', 'png'], 'Images only!')])
-    description = TextAreaField('Description: ',name="desc",validators=[DataRequired()])
+class CreatePostManual(FlaskForm):
+    type = SelectField("Type: ", choices=[("Album", "Album"), ("EP", "EP"), ("Single", "Single")])
+    title = StringField('Title: ',name="title",validators=[DataRequired()])
+    artist = StringField('Artist/Band Name: ',name="artist",validators=[DataRequired()])
+    image = FileField('Upload Image: ',name="image",validators=[FileRequired(),FileAllowed(['jpg', 'png'], 'Images only!')])
     date = DateField('Release Date: ',name="rdate",validators=[DataRequired()])
-    language = SelectField(u'Language: ',name="language",choices=[('en', 'English'), ('es', 'Spanish'), ('vi', 'Vietnamese')],validate_choice=True)
+    submit = SubmitField('Submit')
+
+class CreatePostAuto(FlaskForm):
+    url = StringField('Spotify URL: ',name="url",validators=[DataRequired()])
     submit = SubmitField('Submit')
