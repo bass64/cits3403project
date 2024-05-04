@@ -56,6 +56,7 @@ def create_post_manual():
     form = CreatePostManual()
     if form.validate_on_submit():
         #user entry
+        print(request.form.get("image"))
         add_album_to_db(request.form)
         return redirect(location=url_for("home"))
 

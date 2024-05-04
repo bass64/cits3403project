@@ -33,7 +33,7 @@ class CreatePostManual(FlaskForm):
     type = SelectField("Type: ", choices=[("Album", "Album"), ("EP", "EP"), ("Single", "Single")])
     title = StringField('Title: ',name="title",validators=[DataRequired()])
     artist = StringField('Artist/Band Name: ',name="artist",validators=[DataRequired()])
-    image = FileField('Upload Image: ',name="image",validators=[FileRequired(),FileAllowed(['jpg', 'png'], 'Images only!')])
+    image = FileField('Upload Image: ',name="image",validators=[FileRequired(), FileAllowed(['jpg', 'png'], 'Images only!')])
     date = DateField('Release Date: ',name="date",validators=[InputRequired()])
     submit = SubmitField('Submit')
 

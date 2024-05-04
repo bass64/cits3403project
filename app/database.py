@@ -1,8 +1,9 @@
 #!usr/bin/python
 from app.models import Article, Review, User
 from app import db
+from flask import current_app
 from sqlalchemy.sql import text
-import datetime
+import datetime, os
 
 def create_database():
     #create tables
@@ -159,11 +160,13 @@ def home_query(search, sort):
         return Article.query.order_by(text(order))
     
 def add_album_to_db(form):
+    new_id = db.session.query(Article.album_id).order_by(Article.album_id.desc()).first().album_id + 1
+
     album = Article(
-        album_id=3,
+        album_id=new_id,
         album_artist=form.get("artist"),
         album_title=form.get("title"),
-        album_art="./../static/artist-placeholder3.png",
+        album_art="",
         album_year=form.get("date")[:4],
         album_type=form.get("type"),
         album_rating=0,
