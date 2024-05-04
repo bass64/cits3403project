@@ -55,7 +55,7 @@ def create_post_auto():
     form = CreatePostAuto()
     if form.validate_on_submit():
         #spotify link
-        add_album_to_db(request.form)
+        add_album_to_db(request)
         return redirect(location=url_for("home"))
     
 @app.route('/create-post-manual', methods=['POST'])
@@ -64,7 +64,7 @@ def create_post_manual():
     if form.validate_on_submit():
         #user entry
         print(request.form.get("image"))
-        add_album_to_db(request.form)
+        add_album_to_db(request)
         return redirect(location=url_for("home"))
 
 

@@ -3,15 +3,18 @@ from app.models import Article, Review, User
 from app import db
 from flask import current_app
 from sqlalchemy.sql import text
-import datetime, os
+import datetime, os, glob
 
 def create_database():
     #create tables
     db.create_all()
-    #clear any info FIND A BETTER WAY TO DO THIS THIS METHOD SUCKS
+    #clear any info 
     Article.query.delete()
     Review.query.delete()
     User.query.delete()
+    #delete any images in albums
+    for file in os.listdir("./app/static/albums"):
+        os.remove("./app/static/albums/" + file)
 
     #just using python objects for now
     entries = {
@@ -160,15 +163,20 @@ def home_query(search, sort):
     else:
         return query.order_by(text(order))
     
-def add_album_to_db(form):
+def add_album_to_db(request):
+    form = request.form
     #queries article, sorts by highest id, gets the first row, gets its id, and adds 1 to it
     new_id = db.session.query(Article).order_by(Article.album_id.desc()).first().album_id + 1
 
     #default path if no image provided
-    if (form.get("image") == None):
+    if (request.files["image"] == None):
         path = "./../static/no_image.png"
+    else:
+        upload = request.files["image"]
+        path = os.path.join("app/static/albums/", str(new_id) + ".png")
+        upload.save(path)
+        path = "./../" + path[3:]
 
-    #TODO get image
 
     album = Article(
         album_id=new_id,
@@ -180,7 +188,7 @@ def add_album_to_db(form):
         album_rating=0,
         album_review_no=0,
         album_rating_no=0,
-        user_id=0,
+        user_id=0, #TODO get user id, need to know how its implemented in other branch
         album_create_time=datetime.datetime.now()
     )
 
