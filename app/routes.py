@@ -31,9 +31,14 @@ def home():
 
 @app.route('/article/<int:article_id>')
 def article(article_id):
-    album = db.session.query(Article).get(article_id)
+    album = db.session.query(Article, User).join(User, User.user_id == Article.user_id).filter(Article.album_id == article_id).first()
     reviews = db.session.query(Review, User).join(User, User.user_id == Review.user_id).filter(Review.album_id == article_id).all()
-    return render_template("article_full.html", title = "" + album.album_artist + " - " + album.album_title, album=album, reviews=reviews, full=True, user="test")
+    return render_template("article_full.html", 
+                           title = "" + album.Article.album_artist + " - " + album.Article.album_title, 
+                           album=album, 
+                           reviews=reviews, 
+                           full=True, 
+                           user="test")
 
 
 

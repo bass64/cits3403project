@@ -114,7 +114,7 @@ def create_database():
 
         User(
             user_id=0,
-            username="berspoke_boy9",
+            username="bespoke_boy9",
             password="oopsnohash"
         ),
 
@@ -143,6 +143,7 @@ def create_database():
     db.session.commit()
 
 def home_query(search, sort):
+    query = db.session.query(Article, User).join(User, User.user_id == Article.user_id)
     if sort != None:
         order = "article_" + sort
     #default sort, by newest
@@ -150,17 +151,18 @@ def home_query(search, sort):
         order = "article_album_create_time DESC"
     if search != None:
         #search checks artist, title, year and type
-        return Article.query.order_by(text(order)).filter(\
+        return query.order_by(text(order)).filter(\
             Article.album_artist.like(f'%{search}%')\
             | Article.album_title.like(f'%{search}%')\
             | Article.album_year.like(f'%{search}%')\
             | Article.album_type.like(f'%{search}%')\
             )
     else:
-        return Article.query.order_by(text(order))
+        return query.order_by(text(order))
     
 def add_album_to_db(form):
-    new_id = db.session.query(Article.album_id).order_by(Article.album_id.desc()).first().album_id + 1
+    #queries article, sorts by highest id, gets the first row, gets its id, and adds 1 to it
+    new_id = db.session.query(Article).order_by(Article.album_id.desc()).first().album_id + 1
 
     album = Article(
         album_id=new_id,
@@ -175,6 +177,7 @@ def add_album_to_db(form):
         user_id=0,
         album_create_time=datetime.datetime.now()
     )
+
     db.session.add(album)
     db.session.commit()
 

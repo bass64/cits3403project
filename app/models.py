@@ -1,6 +1,6 @@
 from app import db
 
-STRING_MAX = 500
+STRING_MAX = 500 #temp, get a better max later
 
 class User(db.Model):
      user_id = db.Column(db.Integer, primary_key=True) #unique id
