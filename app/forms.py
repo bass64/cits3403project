@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, StringField, PasswordField, BooleanField, SubmitField, DateField
+from wtforms import SelectField, StringField, PasswordField, BooleanField, SubmitField, DateField, IntegerField
 
 from wtforms.validators import DataRequired, InputRequired
 from flask_wtf.file import FileField, FileRequired, FileAllowed  
@@ -41,4 +41,9 @@ class CreatePostManual(FlaskForm):
 
 class CreatePostAuto(FlaskForm):
     url = StringField('Spotify URL: ',name="url",validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class PostReview(FlaskForm):
+    rating = IntegerField()
+    text = StringField()
     submit = SubmitField('Submit')

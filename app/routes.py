@@ -1,6 +1,6 @@
 from app import app, db
 from flask import render_template, redirect, url_for, request, flash
-from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto
+from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, PostReview
 from app.models import User, Article, Review
 from app.database import home_query, create_database, add_album_to_db, add_review_to_db
 
@@ -38,11 +38,15 @@ def article(article_id):
                            album=album, 
                            reviews=reviews, 
                            full=True, 
-                           user="test")
+                           user="test") #need to figure out how sibi implemented this
 
-#@app.route('/article/<int:article_id>/post_review', methods=['POST'])
-#def post_review(article_id):
-    #post review isn't a wtform.... cba reformatting it rn ill save it for later
+
+@app.route('/article/<int:article_id>/post_review', methods=['POST'])
+def post_review(article_id):
+    form = PostReview()
+    if form.validate_on_submit():
+        add_review_to_db(request, article_id)
+        return redirect(location=url_for("article/<int:article_id>"))
 
 @app.route('/create-post', methods=['GET'])
 def create_post():
