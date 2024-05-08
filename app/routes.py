@@ -41,12 +41,12 @@ def article(article_id):
                            user="test") #need to figure out how sibi implemented this
 
 
-@app.route('/article/<int:article_id>/post_review', methods=['POST'])
-def post_review(article_id):
-    form = PostReview()
-    if form.validate_on_submit():
-        add_review_to_db(request, article_id)
-        return redirect(location=url_for("article/<int:article_id>"))
+#@app.route('/article/<int:article_id>/post_review', methods=['POST'])
+#def post_review(article_id):
+#    form = PostReview()
+#    if form.validate_on_submit():
+#        add_review_to_db(request, article_id)
+#        return redirect(location=url_for("article/<int:article_id>"))
 
 @app.route('/create-post', methods=['GET'])
 def create_post():
