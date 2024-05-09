@@ -23,16 +23,16 @@
             </div>
             <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
             <p>{{ form.submit(class="btn btn-primary") }}</p>
-        </form>
 
-        <!--Error messages when user not found-->
-        {% with messages = get_flashed_messages(category_filter=["login_failed"]) %}
-        {% if messages %}
-            <div style="color: red">
-                {{ messages[0] }}
-            </div>
-        {% endif %}
-        {% endwith %}
+            <!--Error messages when user not found-->
+            {% with messages = get_flashed_messages(category_filter=["login_failed"]) %}
+            {% if messages %}
+                <div style="color: red">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+            {% endwith %}
+        </form>
         
     </div>
 </div>
@@ -66,16 +66,16 @@
             </div>
             <p>{{ createForm.remember_me() }} {{ createForm.remember_me.label }}</p>
             <p>{{ createForm.submit(class="btn btn-primary") }}</p>
-        </form>
 
-        <!--Error messages when username taken-->
-        {% with messages = get_flashed_messages(category_filter=['signup_error']) %}
-        {% if messages %}
-            <div style="color: red">
-                {{ messages[0] }}
-            </div>
-        {% endif %}
-        {% endwith %}
+            <!--Error messages when username taken-->
+            {% with messages = get_flashed_messages(category_filter=['signup_error']) %}
+            {% if messages %}
+                <div style="color: red">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+            {% endwith %}
+        </form>
 
     </div>
 </div>

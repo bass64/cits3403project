@@ -40,7 +40,7 @@ def article(article_id):
                            album=album, 
                            reviews=reviews, 
                            full=True, 
-                           user="test") #need to figure out how sibi implemented this
+                           user=current_user) #need to figure out how sibi implemented this
 
 
 #@app.route('/article/<int:article_id>/post_review', methods=['POST'])
@@ -81,7 +81,28 @@ def create_post_manual():
 def post_review():
     return render_template("post-review.html", title="Post Review")
 
+#follows an article if the user is logged in
+@app.route('/follow_article', methods=['POST'])
+@login_required
+def follow_article():
+    article_id = request.form.get('article_id')
+    article = Article.query.filter_by(album_id=article_id).first()
+    current_user.following_articles.append(article)
+    db.session.commit()
 
+    #redirect to the site that sent the follow request (either article full or home)
+    return redirect(request.referrer)
+
+@app.route('/unfollow_article', methods=['POST'])
+@login_required
+def unfollow_article():
+    article_id = request.form.get('article_id')
+    article = Article.query.filter_by(album_id=article_id).first()
+    current_user.following_articles.remove(article)
+    db.session.commit()
+    
+    #redirect to the site that sent the follow request (either article full or home)
+    return redirect(request.referrer)
 
 #renders the login page (only GET request)
 @app.route('/login')
@@ -121,6 +142,7 @@ def signup_post():
     #if user is new, add to database
     user = User(username=username)
     user.set_password(password)
+    user.following_articles = []
     db.session.add(user)
     db.session.commit()
     
