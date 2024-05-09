@@ -8,7 +8,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 
 @app.before_request
 def run_on_start():
-    #app.before_request_funcs[None].remove(run_on_start) #removes this function so its only run on startup
+    app.before_request_funcs[None].remove(run_on_start) #removes this function so its only run on startup
     create_database()
 
 
