@@ -1,6 +1,6 @@
 from app import app, db
 from flask import render_template, redirect, url_for, request, flash
-from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, PostReview, CreatePost
+from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, PostReview
 from app.models import User, Article, Review
 from app.database import home_query, create_database, add_album_to_db, add_review_to_db
 from flask_login import login_user, logout_user, current_user, login_required
@@ -8,7 +8,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 
 @app.before_request
 def run_on_start():
-    app.before_request_funcs[None].remove(run_on_start) #removes this function so its only run on startup
+    #app.before_request_funcs[None].remove(run_on_start) #removes this function so its only run on startup
     create_database()
 
 
