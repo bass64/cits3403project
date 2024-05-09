@@ -1,8 +1,10 @@
 from app import app, db
 from flask import render_template, redirect, url_for, request, flash
-from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, PostReview
+from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, PostReview, CreatePost
 from app.models import User, Article, Review
 from app.database import home_query, create_database, add_album_to_db, add_review_to_db
+from flask_login import login_user, logout_user, current_user, login_required
+
 
 @app.before_request
 def run_on_start():
@@ -25,7 +27,7 @@ def home():
     sort = request.args.get("sort")
     articles = home_query(search, sort)
     form=Search()
-    return render_template("home.html", title="Home", articles=articles, form=form)
+    return render_template("home.html", title="Home", articles=articles, form=form, user=current_user)
 
 
 
@@ -48,7 +50,8 @@ def article(article_id):
 #        add_review_to_db(request, article_id)
 #        return redirect(location=url_for("article/<int:article_id>"))
 
-@app.route('/create-post', methods=['GET'])
+@app.route('/create-post', methods=['GET', 'POST'])
+@login_required
 def create_post():
     form1 = CreatePostAuto()
     form2 = CreatePostManual()
@@ -74,6 +77,7 @@ def create_post_manual():
 
 
 @app.route('/post-review')
+@login_required
 def post_review():
     return render_template("post-review.html", title="Post Review")
 
@@ -84,12 +88,19 @@ def post_review():
 def login():
     form = LoginForm()
     createForm = SignUp()
-    return render_template('login.html', title='Sign In', form=form,createForm=createForm)
+    redirect = request.args.get('next')
+    return render_template('login.html', title='Sign In', form=form, createForm=createForm, redirect=redirect)
 
 #processes sign up post requests
 @app.route('/signup', methods=['POST'])
 def signup_post():
 
+    form = LoginForm()
+    createForm = SignUp()
+
+    if not createForm.validate_on_submit():
+        render_template('login.html', title='Sign In', form=form,createForm=createForm)
+    
     #add user to database
     username = request.form.get('username')
     password = request.form.get('password')
@@ -108,15 +119,29 @@ def signup_post():
         return redirect(url_for('login'))
 
     #if user is new, add to database
-    user = User(username=username, password=password)
+    user = User(username=username)
+    user.set_password(password)
     db.session.add(user)
     db.session.commit()
+    
+    if request.form.get('remember_me'):
+        remember = True
+    else:
+        remember = False
+
+    login_user(user, remember=remember)
 
     return redirect(location=url_for("home"))
 
 #processes login post requests
 @app.route('/login', methods=['POST'])
 def login_post():
+
+    form = LoginForm()
+    createForm = SignUp()
+
+    if not form.validate_on_submit():
+        render_template('login.html', title='Sign In', form=form,createForm=createForm)
 
     username = request.form.get('username')
     password = request.form.get('password')
@@ -125,10 +150,22 @@ def login_post():
     existing_user = User.query.filter_by(username=username).first()
 
     #if username couldnt be found or the password doesnt match throw an error
-    if not existing_user or not (existing_user.password == password):
+    if not existing_user or not existing_user.check_password(password):
         flash('Please check your login details','login_failed')
         return redirect(url_for('login'))
 
+    if request.form.get('remember_me'):
+        remember = True
+    else:
+        remember = False
+
+    login_user(existing_user, remember=remember)
+    return redirect(location=url_for("home"))
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
     return redirect(location=url_for("home"))
 
 @app.errorhandler(404)
