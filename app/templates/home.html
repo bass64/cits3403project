@@ -112,7 +112,7 @@
                 console.log(url_params.get("sort"))
                 switch (url_params.get("sort")){
                     case "album_create_time ASC":
-                        order = "oldest"; break; 
+                        order = "oldest post"; break; 
                     case "album_rating DESC":
                         order = "higest rated"; break;   
                     case "album_rating ASC":
@@ -121,8 +121,12 @@
                         order = "most rated"; break;   
                     case "album_rating_no + album_review_no ASC":
                         order = "least rated"; break;
+                    case "album_year DESC":
+                        order = "newest album"; break;
+                    case "album_year ASC":
+                        order = "oldest album"; break;
                     default: //"album_create_time DESC" is the default
-                        order = "newest"; break;     
+                        order = "newest post"; break;     
                 }
 
                 //updating found text ("result" if 1, "results" if not 1)

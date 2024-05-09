@@ -1,0 +1,22 @@
+<div class="container" style="border: black solid 3px; margin-top: 3px;">
+    <div class="row">
+        <div class="column col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <!-- Username -->
+            <h4> {{ review.User.username }} </h4>
+        </div>
+        <div class="column col-xs-9 col-sm-9 col-md-9 col-lg-9">
+            <!-- Rating -->
+            <h4 class="star_rating" id="review_{{ review.Review.review_id }}"></h4>
+        </div>
+        </div>
+        <div class="row">
+        <!-- Body -->
+            <p>{{ review.Review.review_text }}</p>
+    </div>
+</div>
+
+
+<script>
+    //call star rating function for review here
+    star_rating("{{ review.Review.review_rating }}", "review_" + "{{ review.Review.review_id }}")
+</script>

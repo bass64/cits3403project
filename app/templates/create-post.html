@@ -3,94 +3,101 @@
 {% block content %}
 
     <body>
-        <h1>Create Post</h1>
-        <form action="/create-post" method="post" enctype="multipart/form-data">
-            {{ form.hidden_tag() }}
-            <div>
-                {{ form.songTitle.label }}
-                    {{ form.songTitle(placeholder="Track 1 title",id="songtitle") }} <br>
-                    {% for error in form.songTitle.errors %}
-                    <span style="color: red;">[{{ error }}] </span>
-                    {% endfor %}
-            </div>
-            
-            <br>
+        <div style="padding-top: 50px; width: 50%; float: left">
+            <h1>Create Post From Link</h1>
+            <form action="/create-post-auto" method="post" enctype="multipart/form-data">
+                {{ form1.hidden_tag() }}
 
-            <div>
-                {{ form.author.label }}
-                    {{ form.author(placeholder="Name",id="author") }} <br>
-                    {% for error in form.author.errors %}
-                    <span style="color: red;">[{{ error }}] </span>
-                    {% endfor %}
-            </div>
+                <br>
 
-            <br>
-
-            <div>
-                {{ form.songFile.label }}
-                    {{ form.songFile(class="songfile") }} <br>
-                    {% for error in form.songFile.errors %}
-                    <span style="color: red;">[{{ error }}] </span>
-                    {% endfor %}
-            </div>
-
-            <br>
-
-            <div class="container">
-                <div class="img-area">
-                    <i class="uploading"></i>
-                    {{ form.imageFile.label }}
-                        <p><small>Image size must be less than <span>2MB</span></small></p>
-                        {{ form.imageFile(class="select-image") }} <br>
-                        {% for error in form.imageFile.errors %}
+                <div>
+                    {{ form1.url.label }}
+                        {{ form1.url }} <br>
+                        {% for error in form1.url.errors %}
                         <span style="color: red;">[{{ error }}] </span>
                         {% endfor %}
                 </div>
-            </div>
+                
+                <br>
 
-            <br>
+                <div>
+                    <p>{{ form1.submit() }}</p>
+                </div>
+            </form>
+        </div>
 
-            <div>
-                {{ form.description.label }}
-                    {{ form.description(id="desc", placeholder="Tell your followers about your song") }} <br>
-                    {% for error in form.description.errors %}
-                    <span style="color: red;">[{{ error }}] </span>
-                    {% endfor %}
-            </div>
+        <div style="padding-top: 50px; width: 50%; float: right">
+            <h1>Create Post Manually</h1>
+            <form action="/create-post-manual" method="post" enctype="multipart/form-data">
+                {{ form2.hidden_tag() }}
 
-            <br>
+                <br>
 
-            <div>
-                {{ form.date.label }}
-                    {{ form.date(id="rdate") }} <br>
-                    {% for error in form.date.errors %}
-                    <span style="color: red;">[{{ error }}] </span>
-                    {% endfor %}
-            </div>
+                <div>
+                    {{ form2.type.label }}
+                        {{ form2.type }} <br>
+                        {% for error in form2.type.errors %}
+                        <span style="color: red;">[{{ error }}] </span>
+                        {% endfor %}
+                </div>
+                
+                <br>
 
-            <br>
+                <div>
+                    {{ form2.artist.label }}
+                        {{ form2.artist(placeholder="Name",id="artist") }} <br>
+                        {% for error in form2.artist.errors %}
+                        <span style="color: red;">[{{ error }}] </span>
+                        {% endfor %}
+                </div>
 
-            <div>
-                {{ form.language.label }}
-                    {{ form.language(id="language") }} <br>
-                    {% for error in form.language.errors %}
-                    <span style="color: red;">[{{ error }}] </span>
-                    {% endfor %}
-            </div>
+                <br>
 
-            <br>
+                <div>
+                    {{ form2.title.label }}
+                        {{ form2.title(placeholder="Title",id="title") }} <br>
+                        {% for error in form2.title.errors %}
+                        <span style="color: red;">[{{ error }}] </span>
+                        {% endfor %}
+                </div>
+                
+                <br>
 
-            <div>
-                <input type="button" value="Reset" onclick="location.reload()"></input>
-            </div>
+                <div class="container">
+                    <div class="img-area">
+                        <i class="uploading"></i>
+                        {{ form2.image.label }}
+                            <p><small>Image size must be less than <span>2MB</span></small></p>
+                            {{ form2.image(class="select-image") }} <br>
+                            {% for error in form2.image.errors %}
+                            <span style="color: red;">[{{ error }}] </span>
+                            {% endfor %}
+                    </div>
+                </div>
 
-            <br>
+                <br>
 
-            <div>
-                <p>{{ form.submit() }}</p>
-            </div>
+                <div>
+                    {{ form2.date.label }}
+                        {{ form2.date(id="date") }} <br>
+                        {% for error in form2.date.errors %}
+                        <span style="color: red;">[{{ error }}] </span>
+                        {% endfor %}
+                </div>
 
-        </form>
+                <br>
+
+                <div>
+                    <input type="button" value="Reset" onclick="location.reload()"></input>
+                </div>
+
+                <br>
+
+                <div>
+                    <p>{{ form2.submit() }}</p>
+                </div>
+            </form>
+        </div>
     </body>
 
 {% endblock %}

@@ -1,5 +1,8 @@
-# Any databases?
+# Any databases
 *.db
+
+# Any images in the albums folder
+/app/static/albums/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
