@@ -6,7 +6,7 @@
 
 <body>
     <!-- Review Box, hidden initially -->
-    {% if user != null %}
+    {% if user.is_authenticated %}
         {% include "post-review.html"%}
     {% endif %}
 
@@ -83,7 +83,7 @@
     <!-- Only include reviews if full version of article -->
     {% if full == True %}
         <!-- Only include create review button if logged in -->
-        {% if user != null %}
+        {% if user.is_authenticated %}
             <button onclick="open_review_box()">Submit a rating/review</button>
         {% endif %}
 

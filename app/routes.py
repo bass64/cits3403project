@@ -1,9 +1,10 @@
 from app import app, db
 from flask import render_template, redirect, url_for, request, flash
 from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, PostReview
-from app.models import User, Article, Review
+from app.models import User, Article, Review, followingTable
 from app.database import home_query, create_database, add_album_to_db, add_review_to_db
 from flask_login import login_user, logout_user, current_user, login_required
+from sqlalchemy import and_
 
 
 @app.before_request
@@ -189,6 +190,13 @@ def login_post():
 def logout():
     logout_user()
     return redirect(location=url_for("home"))
+
+@app.route('/following')
+@login_required
+def following():
+    #query = db.session.query(Article, User).join(User, User.user_id == Article.user_id)
+    query = db.session.query(Article, User).join(User, User.user_id == Article.user_id).join(followingTable, and_(followingTable.c.user_id == User.get_id(current_user), followingTable.c.album_id == Article.album_id))
+    return render_template("following.html", title="Following", query=query)
 
 @app.errorhandler(404)
 def page_not_found(*args):
