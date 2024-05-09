@@ -118,25 +118,25 @@ def create_database():
         User(
             user_id=0,
             username="bespoke_boy9",
-            password="oopsnohash"
+            password_hash="oopsnohash"
         ),
 
         User(
             user_id=1,
             username="SilentSimon",
-            password="oopsnohash"
+            password_hash="oopsnohash"
         ),
 
         User(
             user_id=2,
             username="The Honourable And Eloquent Adam",
-            password="oopsnohash"
+            password_hash="oopsnohash"
         ),
 
         User(
             user_id=3,
             username="4rd Guy",
-            password="oopsnohash"
+            password_hash="oopsnohash"
         )
     }
 
