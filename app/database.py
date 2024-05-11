@@ -1,9 +1,9 @@
 #!usr/bin/python
 from app.models import Article, Review, User
 from app import db
-from flask import current_app
 from sqlalchemy.sql import text
-import datetime, os, glob
+import datetime, os
+from flask_login import current_user
 
 def create_database():
     #create tables
@@ -188,7 +188,7 @@ def add_album_to_db(request):
         album_rating=0,
         album_review_no=0,
         album_rating_no=0,
-        user_id=0, #TODO get user id, need to know how its implemented in other branch
+        user_id=current_user.get_id(),
         album_create_time=datetime.datetime.now()
     )
 
