@@ -6,7 +6,7 @@
 
 <body>
     <!-- Review Box, hidden initially -->
-    {% if user != null %}
+    {% if user.is_authenticated %}
         {% include "post-review.html"%}
     {% endif %}
 
@@ -64,7 +64,18 @@
 
             <!-- Follow Button -->
             <div class = "col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                <p>[button]</p>
+                <!--If user is signed out or not currently following, then add a follow button-->
+                {% if not user.is_authenticated or album.Article not in user.following_articles%}
+                    <form method="POST" action="/follow_article">
+                        <input type="hidden" name='article_id' value={{ album.Article.album_id }}>
+                        <input type="submit" value="Follow Article">
+                    </form>     
+                {% else %}  
+                <form method="POST" action="/unfollow_article">
+                    <input type="hidden" name='article_id' value={{ album.Article.album_id }}>
+                    <input type="submit" value="Unfollow">
+                </form>  
+                {% endif %}       
             </div>
         </div>
     </div>
@@ -72,7 +83,7 @@
     <!-- Only include reviews if full version of article -->
     {% if full == True %}
         <!-- Only include create review button if logged in -->
-        {% if user != null %}
+        {% if user.is_authenticated %}
             <button onclick="open_review_box()">Submit a rating/review</button>
         {% endif %}
 

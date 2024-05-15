@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if current_user.following_articles|length == 0 %}
+    <h1>You are not following any articles</h1>
+    <br>
+    <h2>Keep track of articles by pressing the follow button in the top right hand corner of each article</h2>
+{% else %}
+    <h1>Articles Followed</h1>
+{% endif %}
+<div id="articles" class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+    <!-- For loop to display every article passed to the home page -->
+    {% for album in query %}
+        {% with %}
+            {% set album=album %}
+            {% set full=False %}
+            {% set user=current_user %}
+            {% include "article_full.html"%}
+        {% endwith %}
+    {% endfor %}
+</div>
+
+{% endblock %}
