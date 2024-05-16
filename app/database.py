@@ -4,6 +4,7 @@ from app import db, app
 from sqlalchemy.sql import text
 import datetime, os
 from flask_login import current_user
+import json
 
 def create_database():
     #create tables
@@ -16,133 +17,45 @@ def create_database():
     for file in os.listdir("./app/static/albums"):
         os.remove("./app/static/albums/" + file)
 
-    #just using python objects for now
-    entries = {
-        Article(
-            album_id=0,
-            album_artist="Artist",
-            album_title="Placeholder",
-            album_art="./../static/artist-placeholder.png",
-            album_year=1970,
-            album_type="EP",
-            album_rating=6.5,
-            album_review_no=1,
-            album_rating_no=1,
-            user_id=0,
-            album_create_time=datetime.datetime.now()
-        ),
-        Article(
-            album_id=1,
-            album_artist="Artist",
-            album_title="Placeholder 2",
-            album_art="./../static/artist-placeholder2.png",
-            album_year=1971,
-            album_type="Album",
-            album_rating=0.5,
-            album_review_no=0,
-            album_rating_no=1,
-            user_id=1,
-            album_create_time=datetime.datetime.now()
-        ),
-        Article(
-            album_id=2,
-            album_artist="Artist",
-            album_title="Placeholder 3",
-            album_art="./../static/artist-placeholder3.png",
-            album_year=1973,
-            album_type="Single",
-            album_rating=9.25,
-            album_review_no=2,
-            album_rating_no=2,
-            user_id=0,
-            album_create_time=datetime.datetime.now()
-        ),
-
-        Review(
-            album_id=0,
-            review_id=0,
-            review_text="An amazing first album!",
-            review_rating=7,
-            user_id=0,
-            review_create_time=datetime.datetime.now()
-        ),
-        Review(
-            album_id=0,
-            review_id=1,
-            review_text="",
-            review_rating=6,
-            user_id=1,
-            review_create_time=datetime.datetime.now()
-        ),
-        Review(
-            album_id=1,
-            review_id=2,
-            review_text="",
-            review_rating=1,
-            user_id=1,
-            review_create_time=datetime.datetime.now()
-        ),
-        Review(
-            album_id=2,
-            review_id=3,
-            review_text="A great return to form, 10/10",
-            review_rating=10,
-            user_id=0,
-            review_create_time=datetime.datetime.now()
-        ),
-        Review(
-            album_id=2,
-            review_id=4,
-            review_text="",
-            review_rating=9,
-            user_id=1,
-            review_create_time=datetime.datetime.now()
-        ),
-        Review(
-            album_id=2,
-            review_id=5,
-            review_text="What a great album: If you would allow me, I would love to regale you with my magnum opus, a piece of art I simply call, 1000 A's. it goes something like this:\n AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAA",
-            review_rating=8,
-            user_id=2,
-            review_create_time=datetime.datetime.now()
-        ),
-        Review(
-            album_id=2,
-            review_id=6,
-            review_text="",
-            review_rating=10,
-            user_id=3,
-            review_create_time=datetime.datetime.now()
-        ),
-
-        User(
-            user_id=0,
-            username="bespoke_boy9",
-            password_hash="oopsnohash"
-        ),
-
-        User(
-            user_id=1,
-            username="SilentSimon",
-            password_hash="oopsnohash"
-        ),
-
-        User(
-            user_id=2,
-            username="The Honourable And Eloquent Adam",
-            password_hash="oopsnohash"
-        ),
-
-        User(
-            user_id=3,
-            username="4rd Guy",
-            password_hash="oopsnohash"
+    users = json.loads(open("./app/json/User.json").read())
+    for i in range(4):
+        new_user = User(
+            user_id=users[str(i)]["user_id"],
+            username=users[str(i)]["username"],
+            password_hash=users[str(i)]["password_hash"],
         )
-    }
+        db.session.add(new_user)
+
+    articles = json.loads(open("./app/json/Article.json").read())
+    for i in range(3):
+        new_article = Article (
+            album_id=articles[str(i)]["album_id"],
+            album_artist=articles[str(i)]["album_artist"],
+            album_title=articles[str(i)]["album_title"],
+            album_art=articles[str(i)]["album_art"],
+            album_year=articles[str(i)]["album_year"],
+            album_type=articles[str(i)]["album_type"],
+            album_rating=articles[str(i)]["album_rating"],
+            album_review_no=articles[str(i)]["album_review_no"],
+            album_rating_no=articles[str(i)]["album_rating_no"],
+            user_id=articles[str(i)]["user_id"],
+            album_create_time=datetime.datetime.now()
+        )
+        db.session.add(new_article)
+
+    reviews = json.loads(open("./app/json/Review.json").read())
+    for i in range(7):
+        new_review = Review(
+            album_id=reviews[str(i)]["album_id"],
+            review_id=reviews[str(i)]["review_id"],
+            review_text=reviews[str(i)]["review_text"],
+            review_rating=reviews[str(i)]["review_rating"],
+            user_id=reviews[str(i)]["user_id"],
+            review_create_time=datetime.datetime.now()
+        )
+        db.session.add(new_review)
 
     #add info, then commit
-    for entry in entries:
-        db.session.add(entry)
     db.session.commit()
 
 def home_query(search, sort):
@@ -198,8 +111,7 @@ def add_album_to_db(request):
 def add_review_to_db(form, article_id):
     #if user has already reviewed this album, return early
     if (db.session.query(Review).filter(Review.album_id == article_id).filter(Review.user_id == current_user.get_id()).first() != None):
-        #TODO print a message when multiple reviews by same user
-        return
+        return "duplicate user"
 
     #queries review, sorts by highest id, gets the first row, gets its id, and adds 1 to it
     new_id = db.session.query(Review).order_by(Review.review_id.desc()).first().review_id + 1
@@ -208,7 +120,7 @@ def add_review_to_db(form, article_id):
             album_id=article_id,
             review_id=new_id,
             review_text=form.get("review"),
-            review_rating=form.get("rating"),
+            review_rating=form.get("choose_rating"),
             user_id=current_user.get_id(),
             review_create_time=datetime.datetime.now()
         )
@@ -216,13 +128,14 @@ def add_review_to_db(form, article_id):
     db.session.add(review)
     update_album(article_id, form)
     db.session.commit()
+    return "no errors"
 
 def update_album(album_id, form):
     #get an updated average rating
     current_rating = db.session.query(Article).filter(Article.album_id == album_id).first().album_rating
     num_reviews = db.session.query(Article).filter(Article.album_id == album_id).first().album_review_no
     num_ratings = db.session.query(Article).filter(Article.album_id == album_id).first().album_rating_no
-    new_rating = current_rating + (float(form.get("rating")) / float(num_ratings + num_reviews + 1))
+    new_rating = current_rating + (float(form.get("choose_rating")) / float(num_ratings + num_reviews + 1))
 
     db.session.query(Article).filter(Article.album_id == album_id).\
     update({"album_rating": new_rating}, synchronize_session = False)

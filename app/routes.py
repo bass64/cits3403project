@@ -44,7 +44,10 @@ def article(article_id):
 
 @app.route('/article/<int:article_id>/create_review', methods=['POST'])
 def post_review(article_id):
-    add_review_to_db(request.form, article_id)
+    error = add_review_to_db(request.form, article_id)
+    if error == "duplicate user":
+        #TODO handle error when user posts multiple reivews
+        return redirect(location=url_for("article", article_id=article_id, error="duplicate user"))
     return redirect(location=url_for("article", article_id=article_id))
 
 @app.route('/create-post', methods=['GET', 'POST'])
