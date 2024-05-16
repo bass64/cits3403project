@@ -64,6 +64,9 @@ def create_post_auto():
         #spotify link
         add_album_to_db(request)
         return redirect(location=url_for("home"))
+    #if didn't validate, send back to create post
+    #TODO handle this error
+    return redirect(location=url_for("create_post", error="invalid post"))
     
 @app.route('/create-post-manual', methods=['POST'])
 def create_post_manual():
@@ -72,6 +75,9 @@ def create_post_manual():
         #user entry
         add_album_to_db(request)
         return redirect(location=url_for("home"))
+    #if didn't validate, send back to create post
+    #TODO handle this error
+    return redirect(location=url_for("create_post", error="invalid post"))
 
 
 #renders the login page (only GET request)
