@@ -197,7 +197,8 @@ def add_album_to_db(request):
 
 def add_review_to_db(form, article_id):
     #if user has already reviewed this album, return early
-    if (db.session.query(Review).filter(Review.user_id == current_user.get_id()) == None):
+    if (db.session.query(Review).filter(Review.album_id == article_id).filter(Review.user_id == current_user.get_id()).first() != None):
+        #TODO print a message when multiple reviews by same user
         return
 
     #queries review, sorts by highest id, gets the first row, gets its id, and adds 1 to it
@@ -226,9 +227,9 @@ def update_album(album_id, form):
     db.session.query(Article).filter(Article.album_id == album_id).\
     update({"album_rating": new_rating}, synchronize_session = False)
 
-    if (form.get("review") == None):
+    if (form.get("review") == ""):
         db.session.query(Article).filter(Article.album_id == album_id).\
-        update({"album_ratingno": num_ratings + 1}, synchronize_session = False)
+        update({"album_rating_no": num_ratings + 1}, synchronize_session = False)
     else:
         db.session.query(Article).filter(Article.album_id == album_id).\
         update({"album_review_no": num_reviews + 1}, synchronize_session = False)
