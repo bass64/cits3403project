@@ -1,6 +1,6 @@
 #!usr/bin/python
 from app.models import Article, Review, User
-from app import db
+from app import db, app
 from sqlalchemy.sql import text
 import datetime, os
 from flask_login import current_user
@@ -25,9 +25,9 @@ def create_database():
             album_art="./../static/artist-placeholder.png",
             album_year=1970,
             album_type="EP",
-            album_rating=7.53,
-            album_review_no=5,
-            album_rating_no=20,
+            album_rating=6.5,
+            album_review_no=1,
+            album_rating_no=1,
             user_id=0,
             album_create_time=datetime.datetime.now()
         ),
@@ -38,9 +38,9 @@ def create_database():
             album_art="./../static/artist-placeholder2.png",
             album_year=1971,
             album_type="Album",
-            album_rating=0.94,
-            album_review_no=3,
-            album_rating_no=17,
+            album_rating=0.5,
+            album_review_no=0,
+            album_rating_no=1,
             user_id=1,
             album_create_time=datetime.datetime.now()
         ),
@@ -51,9 +51,9 @@ def create_database():
             album_art="./../static/artist-placeholder3.png",
             album_year=1973,
             album_type="Single",
-            album_rating=9.99,
-            album_review_no=30,
-            album_rating_no=170,
+            album_rating=9.25,
+            album_review_no=2,
+            album_rating_no=2,
             user_id=0,
             album_create_time=datetime.datetime.now()
         ),
@@ -196,15 +196,39 @@ def add_album_to_db(request):
     db.session.commit()
 
 def add_review_to_db(form, article_id):
-    #queries article, sorts by highest id, gets the first row, gets its id, and adds 1 to it
+    #if user has already reviewed this album, return early
+    if (db.session.query(Review).filter(Review.user_id == current_user.get_id()) == None):
+        return
+
+    #queries review, sorts by highest id, gets the first row, gets its id, and adds 1 to it
     new_id = db.session.query(Review).order_by(Review.review_id.desc()).first().review_id + 1
 
-    Review(
+    review = Review(
             album_id=article_id,
             review_id=new_id,
-            review_text=form.get("text"),
+            review_text=form.get("review"),
             review_rating=form.get("rating"),
-            user_id=0,
+            user_id=current_user.get_id(),
             review_create_time=datetime.datetime.now()
-        ),
-    return
+        )
+
+    db.session.add(review)
+    update_album(article_id, form)
+    db.session.commit()
+
+def update_album(album_id, form):
+    #get an updated average rating
+    current_rating = db.session.query(Article).filter(Article.album_id == album_id).first().album_rating
+    num_reviews = db.session.query(Article).filter(Article.album_id == album_id).first().album_review_no
+    num_ratings = db.session.query(Article).filter(Article.album_id == album_id).first().album_rating_no
+    new_rating = current_rating + (float(form.get("rating")) / float(num_ratings + num_reviews + 1))
+
+    db.session.query(Article).filter(Article.album_id == album_id).\
+    update({"album_rating": new_rating}, synchronize_session = False)
+
+    if (form.get("review") == None):
+        db.session.query(Article).filter(Article.album_id == album_id).\
+        update({"album_ratingno": num_ratings + 1}, synchronize_session = False)
+    else:
+        db.session.query(Article).filter(Article.album_id == album_id).\
+        update({"album_review_no": num_reviews + 1}, synchronize_session = False)

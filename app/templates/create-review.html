@@ -1,0 +1,7 @@
+<div class="container" id="create-review">
+  <form action="/article/{{ album.Article.album_id }}/create_review" method="post">
+    {{ form3.rating() }}
+    {{ form3.review() }}
+    {{ form3.submit() }}
+  </form>
+</div>

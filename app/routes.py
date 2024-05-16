@@ -1,6 +1,6 @@
 from app import app, db
 from flask import render_template, redirect, url_for, request, flash
-from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, PostReview
+from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, CreateReview
 from app.models import User, Article, Review
 from app.database import home_query, create_database, add_album_to_db, add_review_to_db
 from flask_login import login_user, logout_user, current_user, login_required
@@ -14,25 +14,23 @@ def run_on_start():
 
 
 @app.route('/')
-@app.route('/index')
-def index():
-    return render_template("index.html", title="Testpage")
+def root():
+    return redirect(location=url_for("home"))
 
-
-
-@app.route('/')
 @app.route("/home")
 def home():
     search = request.args.get("search")
     sort = request.args.get("sort")
     articles = home_query(search, sort)
     form=Search()
-    return render_template("home.html", title="Home", articles=articles, form=form, user=current_user)
+    form3 = CreateReview()
+    return render_template("home.html", title="Home", articles=articles, form=form, form3=form3, user=current_user)
 
 
 
 @app.route('/article/<int:article_id>')
 def article(article_id):
+    form3 = CreateReview()
     album = db.session.query(Article, User).join(User, User.user_id == Article.user_id).filter(Article.album_id == article_id).first()
     reviews = db.session.query(Review, User).join(User, User.user_id == Review.user_id).filter(Review.album_id == article_id).all()
     return render_template("article_full.html", 
@@ -40,15 +38,14 @@ def article(article_id):
                            album=album, 
                            reviews=reviews, 
                            full=True, 
-                           user="test") #need to figure out how sibi implemented this
+                           user=current_user,
+                           form3=form3)
 
 
-#@app.route('/article/<int:article_id>/post_review', methods=['POST'])
-#def post_review(article_id):
-#    form = PostReview()
-#    if form.validate_on_submit():
-#        add_review_to_db(request, article_id)
-#        return redirect(location=url_for("article/<int:article_id>"))
+@app.route('/article/<int:article_id>/create_review', methods=['POST'])
+def post_review(article_id):
+    add_review_to_db(request.form, article_id)
+    return redirect(location=url_for("article", article_id=article_id))
 
 @app.route('/create-post', methods=['GET', 'POST'])
 @login_required
@@ -70,17 +67,8 @@ def create_post_manual():
     form = CreatePostManual()
     if form.validate_on_submit():
         #user entry
-        print(request.form.get("image"))
         add_album_to_db(request)
         return redirect(location=url_for("home"))
-
-
-
-@app.route('/post-review')
-@login_required
-def post_review():
-    return render_template("post-review.html", title="Post Review")
-
 
 
 #renders the login page (only GET request)
