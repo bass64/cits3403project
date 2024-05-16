@@ -1,9 +1,10 @@
 from app import app, db
 from flask import render_template, redirect, url_for, request, flash
 from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, CreateReview
-from app.models import User, Article, Review
+from app.models import User, Article, Review, followingTable
 from app.database import home_query, create_database, add_album_to_db, add_review_to_db
 from flask_login import login_user, logout_user, current_user, login_required
+from sqlalchemy import and_
 
 
 @app.before_request
@@ -40,6 +41,7 @@ def article(article_id):
                            full=True, 
                            user=current_user,
                            form3=form3)
+
 
 
 @app.route('/article/<int:article_id>/create_review', methods=['POST'])
@@ -79,6 +81,28 @@ def create_post_manual():
     #TODO handle this error
     return redirect(location=url_for("create_post", error="invalid post"))
 
+#follows an article if the user is logged in
+@app.route('/follow_article', methods=['POST'])
+@login_required
+def follow_article():
+    article_id = request.form.get('article_id')
+    article = Article.query.filter_by(album_id=article_id).first()
+    current_user.following_articles.append(article)
+    db.session.commit()
+
+    #redirect to the site that sent the follow request (either article full or home)
+    return redirect(request.referrer)
+
+@app.route('/unfollow_article', methods=['POST'])
+@login_required
+def unfollow_article():
+    article_id = request.form.get('article_id')
+    article = Article.query.filter_by(album_id=article_id).first()
+    current_user.following_articles.remove(article)
+    db.session.commit()
+    
+    #redirect to the site that sent the follow request (either article full or home)
+    return redirect(request.referrer)
 
 #renders the login page (only GET request)
 @app.route('/login')
@@ -118,6 +142,7 @@ def signup_post():
     #if user is new, add to database
     user = User(username=username)
     user.set_password(password)
+    user.following_articles = []
     db.session.add(user)
     db.session.commit()
     
@@ -164,6 +189,13 @@ def login_post():
 def logout():
     logout_user()
     return redirect(location=url_for("home"))
+
+@app.route('/following')
+@login_required
+def following():
+    #query = db.session.query(Article, User).join(User, User.user_id == Article.user_id)
+    query = db.session.query(Article, User).join(User, User.user_id == Article.user_id).join(followingTable, and_(followingTable.c.user_id == User.get_id(current_user), followingTable.c.album_id == Article.album_id))
+    return render_template("following.html", title="Following", query=query)
 
 @app.errorhandler(404)
 def page_not_found(*args):
