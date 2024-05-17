@@ -131,6 +131,30 @@ def signup_post():
         flash('Passwords do not match','signup_error')
         return redirect(url_for('login'))
 
+    if len(password) < 8:
+        flash('Password must have at least 8 characters', 'signup_error')
+        return redirect(url_for('login'))
+    
+    contains_upper = False
+    for letter in password:
+        if letter.isupper():
+            contains_upper = True
+            break
+    
+    if not contains_upper:
+        flash('Password must have at least one upper case character', 'signup_error')
+        return redirect(url_for('login'))
+    
+    contains_digit = False
+    for letter in password:
+        if letter.isdigit():
+            contains_digit = True
+            break
+    
+    if not contains_digit:
+        flash('Password must have at least one number', 'signup_error')
+        return redirect(url_for('login'))
+
     #check if user exists
     existing_user = User.query.filter_by(username=username).first()
 
