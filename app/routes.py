@@ -1,18 +1,11 @@
 from app import db
-from ratemymusic import app
 from app.blueprints import main
 from flask import render_template, redirect, url_for, request, flash
 from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, PostReview
 from app.models import User, Article, Review
 from app.database import home_query, create_database, add_album_to_db, add_review_to_db
 from flask_login import login_user, logout_user, current_user, login_required
-
-
-@main.before_request
-def run_on_start():
-    app.before_request_funcs[None].remove(run_on_start) #removes this function so its only run on startup
-    create_database()
-
+from app.controllers import sign_user_up, SignUpError, log_user_in, LoginError
 
 
 @main.route('/')
@@ -108,30 +101,16 @@ def signup_post():
     password = request.form.get('password')
     confirm = request.form.get('confirm')
 
-    if not (password == confirm):
-        flash('Passwords do not match','signup_error')
-        return redirect(url_for('login'))
-
-    #check if user exists
-    existing_user = User.query.filter_by(username=username).first()
-
-    #if user already exists do not create new user with same username
-    if existing_user:
-        flash('User exists','signup_error')
-        return redirect(url_for('login'))
-
-    #if user is new, add to database
-    user = User(username=username)
-    user.set_password(password)
-    db.session.add(user)
-    db.session.commit()
-    
     if request.form.get('remember_me'):
         remember = True
     else:
         remember = False
 
-    login_user(user, remember=remember)
+    try:
+        sign_user_up(username,password,confirm, remember)
+    except SignUpError as e:
+        flash(e.message, 'signup_error')
+        return redirect(url_for('main.login'))
 
     return redirect(location=url_for("main.home"))
 
@@ -148,20 +127,17 @@ def login_post():
     username = request.form.get('username')
     password = request.form.get('password')
 
-    #check for existing user
-    existing_user = User.query.filter_by(username=username).first()
-
-    #if username couldnt be found or the password doesnt match throw an error
-    if not existing_user or not existing_user.check_password(password):
-        flash('Please check your login details','login_failed')
-        return redirect(url_for('login'))
-
     if request.form.get('remember_me'):
         remember = True
     else:
         remember = False
 
-    login_user(existing_user, remember=remember)
+    try:
+        log_user_in(username, password, remember)
+    except LoginError as e:
+        flash(e.message,'login_failed')
+        return redirect(url_for('main.login'))
+        
     return redirect(location=url_for("main.home"))
 
 @main.route('/logout')
@@ -170,6 +146,6 @@ def logout():
     logout_user()
     return redirect(location=url_for("main.home"))
 
-@main.errorhandler(404)
-def page_not_found(*args):
+@main.route("/<path:invalid_path>")
+def page_not_found(invalid_path):
     return render_template("error-page.html", title="Page Not Found")
