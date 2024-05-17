@@ -147,7 +147,6 @@ def signup_post():
         return redirect(url_for('login'))
     
     contains_digit = False
-    contains_char = False
     for letter in password:
         if letter.isdigit():
             contains_digit = True
