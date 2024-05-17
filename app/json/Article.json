@@ -1,0 +1,38 @@
+{
+    "0": {
+        "album_id": 0,
+        "album_artist": "Artist",
+        "album_title": "Placeholder",
+        "album_art": "./../static/artist-placeholder.png",
+        "album_year": 1970,
+        "album_type": "EP",
+        "album_rating": 6.5,
+        "album_review_no": 1,
+        "album_rating_no": 1,
+        "user_id": 0
+    },
+    "1": {
+        "album_id": 1,
+        "album_artist": "Artist",
+        "album_title": "Placeholder 2",
+        "album_art": "./../static/artist-placeholder2.png",
+        "album_year": 1971,
+        "album_type": "Album",
+        "album_rating": 0.5,
+        "album_review_no": 0,
+        "album_rating_no": 1,
+        "user_id": 1
+    },
+    "2": {
+        "album_id": 2,
+        "album_artist": "Artist",
+        "album_title": "Placeholder 3",
+        "album_art": "./../static/artist-placeholder3.png",
+        "album_year": 1973,
+        "album_type": "Single",
+        "album_rating": 9.25,
+        "album_review_no": 2,
+        "album_rating_no": 2,
+        "user_id": 0
+    }   
+}

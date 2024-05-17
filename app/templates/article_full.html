@@ -5,12 +5,8 @@
 {% block content %}
 
 <body>
-    <!-- Review Box, hidden initially -->
-    {% if user.is_authenticated %}
-        {% include "post-review.html"%}
-    {% endif %}
 
-    <!-- Star Rating Script-->
+<!-- Star Rating Script-->
     <script>
         function star_rating(rating, id) {
             for (i = 0; i < 5; i++) { //loop 5 times
@@ -82,9 +78,9 @@
 
     <!-- Only include reviews if full version of article -->
     {% if full == True %}
-        <!-- Only include create review button if logged in -->
-        {% if user.is_authenticated %}
-            <button onclick="open_review_box()">Submit a rating/review</button>
+        {% if user.is_authenticated and full == True %}
+            {% include "create-review.html"%}
+
         {% endif %}
 
         {% for review in reviews %}
@@ -98,14 +94,6 @@
     <script>
         // Call star rating script for albums here, after everythings loaded
         star_rating("{{ album.Article.album_rating }}", "album_" + "{{ album.Article.album_id }}")
-        
-        function open_review_box() {
-            $(".wrapper").css("display", "inline");
-            //TODO: add something to gray out the background
-        }
-        function close_review_box() {
-            $(".wrapper").css("display", "none");
-        }
     </script>
 </body>
 {% endblock %}
