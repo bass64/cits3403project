@@ -33,15 +33,16 @@ class Search(FlaskForm):
 
 class CreatePostManual(FlaskForm):
     type = SelectField("Type: ", choices=[("Album", "Album"), ("EP", "EP"), ("Single", "Single")])
-    title = StringField('Title: ',name="title",validators=[DataRequired()])
-    artist = StringField('Artist/Band Name: ',name="artist",validators=[DataRequired()])
-    image = FileField('Upload Image: ',name="image",validators=[FileRequired(), FileAllowed(['jpg', 'png'], 'Images only!')])
+    title = StringField("Title",name="title",validators=[DataRequired()])
+    artist = StringField('Artist/Band Name ',name="artist",validators=[DataRequired()])
+    image = FileField('Upload Image',name="image",validators=[FileRequired(), FileAllowed(['jpg', 'png'], 'Images only!')])
     date = DateField('Release Date: ',name="date",validators=[InputRequired()])
-    submit = SubmitField('Submit')
+    submit = SubmitField('Publish')
+
 
 class CreatePostAuto(FlaskForm):
-    url = StringField('Spotify URL: ',name="url",validators=[DataRequired()])
-    submit = SubmitField('Submit')
+    url = StringField('Spotify Link', name="url",validators=[DataRequired()])
+    submit = SubmitField('Publish')
 
 class PostReview(FlaskForm):
     rating = IntegerField()
