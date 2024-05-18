@@ -3,6 +3,71 @@
 {% block content %}
 
     <body>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f8f9fa;
+            }
+    
+            .container {
+                width: 80%;
+                margin: 0 auto;
+                padding-top: 50px;
+            }
+    
+    
+            form {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+    
+            label {
+                font-weight: bold;
+            }
+    
+            input[type="text"],
+            input[type="file"] {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+    
+            input[type="button"],
+            input[type="reset"],
+            input[type="submit"] {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                display: inline-block; /* Display buttons side by side */
+            }
+    
+            input[type="button"]:hover,
+            input[type="reset"]:hover,
+            input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+    
+            .error {
+                color: red;
+            }
+    
+            /* Adjust display of buttons to inline-block */
+            .button-container {
+                margin-top: 20px;
+            }
+    
+            .button-container input[type="reset"],
+            .button-container input[type="submit"] {
+                margin-left: 10px; /* Add margin between buttons */
+            }
+        </style>
         <div style="padding-top: 50px; width: 50%; float: left">
             <h1>Create Post From Link</h1>
             <form action="/create-post-auto" method="post" enctype="multipart/form-data">
@@ -64,7 +129,7 @@
                 <br>
 
                 <div class="container">
-                    <div class="img-area">
+                    <div class="upload_box">
                         <i class="uploading"></i>
                         {{ form2.image.label }}
                             <p><small>Image size must be less than <span>2MB</span></small></p>
@@ -87,14 +152,9 @@
 
                 <br>
 
-                <div>
+                <div class="button-container">
                     <input type="button" value="Reset" onclick="location.reload()"></input>
-                </div>
-
-                <br>
-
-                <div>
-                    <p>{{ form2.submit() }}</p>
+                    {{ form2.submit() }}
                 </div>
             </form>
         </div>

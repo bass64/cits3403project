@@ -1,0 +1,19 @@
+<div class="container" id="create-review">
+  <h3 class="star_rating" id="create_review"></h3>
+  <form action="/article/{{ album.Article.album_id }}/create_review" method="post">
+    {{ form3.rating() }}
+    {{ form3.review() }}
+    {{ form3.submit() }}
+  </form>
+</div>
+
+<script>
+  //default to 0 stars
+  star_rating(0, "create_review")
+  //when a rating selection is made, call star_rating to update the render
+  $("#choose_rating").on("change", function() {
+    //clear previous children and add new stars
+    $(".star_rating#create_review *").remove()
+    star_rating($("#choose_rating").val(), "create_review")
+  })
+</script>

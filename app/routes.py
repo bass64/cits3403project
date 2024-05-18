@@ -1,18 +1,12 @@
 from app import db
 from app.blueprints import main
 from flask import render_template, redirect, url_for, request, flash
-from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, PostReview
-from app.models import User, Article, Review
+from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, CreateReview
+from app.models import User, Article, Review, followingTable
 from app.database import home_query, create_database, add_album_to_db, add_review_to_db
 from flask_login import login_user, logout_user, current_user, login_required
 from app.controllers import sign_user_up, SignUpError, log_user_in, LoginError
-
-
-@main.route('/')
-@main.route('/index')
-def index():
-    return render_template("index.html", title="Testpage")
-
+from sqlalchemy import and_
 
 
 @main.route('/')
@@ -22,12 +16,14 @@ def home():
     sort = request.args.get("sort")
     articles = home_query(search, sort)
     form=Search()
-    return render_template("home.html", title="Home", articles=articles, form=form, user=current_user)
+    form3 = CreateReview()
+    return render_template("home.html", title="Home", articles=articles, form=form, form3=form3, user=current_user)
 
 
 
 @main.route('/article/<int:article_id>')
 def article(article_id):
+    form3 = CreateReview()
     album = db.session.query(Article, User).join(User, User.user_id == Article.user_id).filter(Article.album_id == article_id).first()
     reviews = db.session.query(Review, User).join(User, User.user_id == Review.user_id).filter(Review.album_id == article_id).all()
     return render_template("article_full.html", 
@@ -35,15 +31,18 @@ def article(article_id):
                            album=album, 
                            reviews=reviews, 
                            full=True, 
-                           user="test") #need to figure out how sibi implemented this
+                           user=current_user,
+                           form3=form3)
 
 
-#@main.route('/article/<int:article_id>/post_review', methods=['POST'])
-#def post_review(article_id):
-#    form = PostReview()
-#    if form.validate_on_submit():
-#        add_review_to_db(request, article_id)
-#        return redirect(location=url_for("main.article/<int:article_id>"))
+@main.route('/article/<int:article_id>/create_review', methods=['POST'])
+def post_review(article_id):
+    error = add_review_to_db(request.form, article_id)
+    if error == "duplicate user":
+        #TODO handle error when user posts multiple reivews
+        return redirect(location=url_for("main.article", article_id=article_id, error="duplicate user"))
+    return redirect(location=url_for("main.article", article_id=article_id))
+  
 
 @main.route('/create-post', methods=['GET', 'POST'])
 @login_required
@@ -59,24 +58,44 @@ def create_post_auto():
         #spotify link
         add_album_to_db(request)
         return redirect(location=url_for("main.home"))
+    #if didn't validate, send back to create post
+    #TODO handle this error
+    return redirect(location=url_for("main.create_post", error="invalid post"))
+  
     
 @main.route('/create-post-manual', methods=['POST'])
 def create_post_manual():
     form = CreatePostManual()
     if form.validate_on_submit():
         #user entry
-        print(request.form.get("image"))
         add_album_to_db(request)
         return redirect(location=url_for("main.home"))
+    #if didn't validate, send back to create post
+    #TODO handle this error
+    return redirect(location=url_for("main.create_post", error="invalid post"))
 
-
-
-@main.route('/post-review')
+#follows an article if the user is logged in
+@main.route('/follow_article', methods=['POST'])
 @login_required
-def post_review():
-    return render_template("post-review.html", title="Post Review")
+def follow_article():
+    article_id = request.form.get('article_id')
+    article = Article.query.filter_by(album_id=article_id).first()
+    current_user.following_articles.append(article)
+    db.session.commit()
 
+    #redirect to the site that sent the follow request (either article full or home)
+    return redirect(request.referrer)
 
+@main.route('/unfollow_article', methods=['POST'])
+@login_required
+def unfollow_article():
+    article_id = request.form.get('article_id')
+    article = Article.query.filter_by(album_id=article_id).first()
+    current_user.following_articles.remove(article)
+    db.session.commit()
+    
+    #redirect to the site that sent the follow request (either article full or home)
+    return redirect(request.referrer)
 
 #renders the login page (only GET request)
 @main.route('/login')
@@ -146,6 +165,15 @@ def logout():
     logout_user()
     return redirect(location=url_for("main.home"))
 
+
+@main.route('/following')
+@login_required
+def following():
+    #query = db.session.query(Article, User).join(User, User.user_id == Article.user_id)
+    query = db.session.query(Article, User).join(User, User.user_id == Article.user_id).join(followingTable, and_(followingTable.c.user_id == User.get_id(current_user), followingTable.c.album_id == Article.album_id))
+    return render_template("following.html", title="Following", query=query)
+  
 @main.route("/<path:invalid_path>")
 def page_not_found(invalid_path):
     return render_template("error-page.html", title="Page Not Found")
+
