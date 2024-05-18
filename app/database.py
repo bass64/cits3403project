@@ -5,6 +5,11 @@ from sqlalchemy.sql import text
 import datetime, os
 from flask_login import current_user
 import json
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+
+SPOTIPY_CLIENT_ID='c85b55132e4e4e33bf4852c481147a1d'
+SPOTIPY_CLIENT_SECRET='983c70ccd5a949a29f6f7215d96555ea'
 
 def create_database():
     #create tables
@@ -75,6 +80,31 @@ def home_query(search, sort):
             )
     else:
         return query.order_by(text(order))
+    
+def spotify_link(request):
+    link = request.form.get("url")
+    app.logger.info(link)
+    sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET))
+    album = sp.album(album_id=link)
+    app.logger.info(album)
+
+    new_id = db.session.query(Article).order_by(Article.album_id.desc()).first().album_id + 1
+    album_object = Article(
+        album_id=new_id,
+        album_artist=album["artists"][0]["name"],
+        album_title=album["name"],
+        album_art="./../static/no_image.png",
+        album_year=album["release_date"][:4],
+        album_type=str(album["album_type"]).capitalize(),
+        album_rating=0,
+        album_review_no=0,
+        album_rating_no=0,
+        user_id=current_user.get_id(),
+        album_create_time=datetime.datetime.now()
+    )
+
+    db.session.add(album_object)
+    db.session.commit()
     
 def add_album_to_db(request):
     form = request.form

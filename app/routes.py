@@ -2,7 +2,7 @@ from app import app, db
 from flask import render_template, redirect, url_for, request, flash
 from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, CreateReview
 from app.models import User, Article, Review
-from app.database import home_query, create_database, add_album_to_db, add_review_to_db
+from app.database import home_query, create_database, add_album_to_db, add_review_to_db, spotify_link
 from flask_login import login_user, logout_user, current_user, login_required
 
 
@@ -62,7 +62,7 @@ def create_post_auto():
     form = CreatePostAuto()
     if form.validate_on_submit():
         #spotify link
-        add_album_to_db(request)
+        spotify_link(request)
         return redirect(location=url_for("home"))
     #if didn't validate, send back to create post
     #TODO handle this error
