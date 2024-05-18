@@ -5,10 +5,16 @@ import random
 
 STRING_MAX = 500 #temp, get a better max later
 
+#association table to store many to many relationship between the followers (users) and the albums followed (articles)
+followingTable = db.Table('followingTable', db.Column('user_id', db.Integer, db.ForeignKey('user.user_id')), db.Column('album_id', db.Integer, db.ForeignKey('article.album_id')))
+
 class User(UserMixin, db.Model):
     user_id = db.Column(db.Integer, primary_key=True) #unique id
     username = db.Column(db.String(STRING_MAX), unique=True, nullable=False) #username must be unique and non nullable
     password_hash = db.Column(db.String(STRING_MAX), nullable=False) #must have password (non nullable)
+    
+    #define relationship to store the articles followed by the user
+    following_articles = db.relationship("Article", secondary=followingTable, backref=db.backref('followers'))
 
     def get_id(self):
            return (self.user_id)
