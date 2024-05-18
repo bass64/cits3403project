@@ -4,27 +4,24 @@
 {% endif %}
 {% block content %}
 
-<!-- Review Box, hidden initially -->
-{% if user != null %}
-  {% include "post-review.html"%}
-{% endif %}
+<body>
 
 <!-- Star Rating Script-->
-<script>
-  function star_rating(rating, id) {
-    for (i = 0; i < 5; i++) { //loop 5 times
-      if ((rating - 2) >= 0) { 
-        $(".star_rating#" + id).append("<i class='bi bi-star-fill'></i>"); //add full star
-        rating -= 2
-      } else if ((rating - 1) == 0) { 
-        $(".star_rating#" + id).append("<i class='bi bi-star-half'></i>"); //add half star
-        rating -= 1
-      } else { 
-        $(".star_rating#" + id).append("<i class='bi bi-star'></i>"); //add empty star
-      }
-    }
-  }
-</script>
+    <script>
+        function star_rating(rating, id) {
+            for (i = 0; i < 5; i++) { //loop 5 times
+                if ((rating - 2) >= 0) { 
+                    $(".star_rating#" + id).append("<i class='bi bi-star-fill'></i>"); //add full star
+                    rating -= 2
+                } else if ((rating - 1) == 0) { 
+                    $(".star_rating#" + id).append("<i class='bi bi-star-half'></i>"); //add half star
+                    rating -= 1
+                } else { 
+                    $(".star_rating#" + id).append("<i class='bi bi-star'></i>"); //add empty star
+                }
+            }
+        }
+    </script>
 
 {% if full == False %} 
 <article 
@@ -56,32 +53,41 @@
   </div>
 </article>
 
-<!-- Only include reviews if full version of article -->
-{% if full == True %}
-    <!-- Only include create review button if logged in -->
-    {% if user != null %}
-        <button class="btn btn-primary mb-2" onclick="open_review_box()">Submit a rating/review</button>
-    {% endif %}
+                <div class="row">
+                    <h4 class="poster" style="color:gray; font-style: italic;">Posted by {{ album.User.username }} </h4>
+                </div>
+            </div>
 
-    {% for review in reviews %}
-        {% with %}
-            {% set review=review %}
-            {% include "review.html"%}
-        {% endwith %}
-    {% endfor %}
-{% endif %}
+            <!-- Follow Button -->
+            <div class = "col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                <!--If user is signed out or not currently following, then add a follow button-->
+                {% if not user.is_authenticated or album.Article not in user.following_articles%}
+                    <form method="POST" action="/follow_article">
+                        <input type="hidden" name='article_id' value={{ album.Article.album_id }}>
+                        <input type="submit" value="Follow Article">
+                    </form>     
+                {% else %}  
+                <form method="POST" action="/unfollow_article">
+                    <input type="hidden" name='article_id' value={{ album.Article.album_id }}>
+                    <input type="submit" value="Unfollow">
+                </form>  
+                {% endif %}       
+            </div>
+        </div>
+    </div>
 
-<script>
-    // Call star rating script for albums here, after everythings loaded
-    star_rating("{{ album.Article.album_rating }}", "album_" + "{{ album.Article.album_id }}")
-    
-    function open_review_box() {
-        $(".wrapper").css("display", "inline");
-        //TODO: add something to gray out the background
-    }
-    function close_review_box() {
-        $(".wrapper").css("display", "none");
-    }
-</script>
+    <!-- Only include reviews if full version of article -->
+    {% if full == True %}
+        {% if user.is_authenticated and full == True %}
+            {% include "create-review.html"%}
+
+        {% endif %}
+
+
+    <script>
+        // Call star rating script for albums here, after everythings loaded
+        star_rating("{{ album.Article.album_rating }}", "album_" + "{{ album.Article.album_id }}")
+    </script>
+</body>
 
 {% endblock %}

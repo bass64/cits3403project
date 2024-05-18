@@ -1,0 +1,58 @@
+{
+    "0": {
+        "album_id": 0,
+        "review_id": 0,
+        "review_text": "An amazing first album!",
+        "review_rating": 7,
+        "user_id": 0,
+        "review_create_time": "2024-05-16 13:47:46.733749"
+    },
+    "1": {
+        "album_id": 0,
+        "review_id": 1,
+        "review_text": "",
+        "review_rating": 6,
+        "user_id": 1,
+        "review_create_time": "2024-05-16 13:47:46.733749"
+    },
+    "2": {
+        "album_id": 1,
+        "review_id": 2,
+        "review_text": "",
+        "review_rating": 1,
+        "user_id": 1,
+        "review_create_time": "2024-05-16 13:47:46.733749"
+    },
+    "3": {
+        "album_id": 2,
+        "review_id": 3,
+        "review_text": "A great return to form, 10/10",
+        "review_rating": 10,
+        "user_id": 0,
+        "review_create_time": "2024-05-16 13:47:46.733749"
+    },
+    "4": {
+        "album_id": 2,
+        "review_id": 4,
+        "review_text": "",
+        "review_rating": 9,
+        "user_id": 1,
+        "review_create_time": "2024-05-16 13:47:46.733749"
+    },
+    "5": {
+        "album_id": 2,
+        "review_id": 5,
+        "review_text": "What a great album: If you would allow me, I would love to regale you with my magnum opus, a piece of art I simply call, 1000 A's. it goes something like this:\n AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAA",
+        "review_rating": 8,
+        "user_id": 2,
+        "review_create_time": "2024-05-16 13:47:46.733749"
+    },
+    "6": {
+        "album_id": 2,
+        "review_id": 6,
+        "review_text": "",
+        "review_rating": 10,
+        "user_id": 3,
+        "review_create_time": "2024-05-16 13:47:46.733749"
+    }
+}
