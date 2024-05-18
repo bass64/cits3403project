@@ -118,6 +118,7 @@ def signup_post():
     #if user is new, add to database
     user = User(username=username)
     user.set_password(password)
+    print(user)
     db.session.add(user)
     db.session.commit()
     

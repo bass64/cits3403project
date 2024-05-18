@@ -23,7 +23,7 @@ def create_database():
         os.remove("./app/static/albums/" + file)
 
     users = json.loads(open("./app/json/User.json").read())
-    for i in range(4):
+    for i in range(10):
         new_user = User(
             user_id=users[str(i)]["user_id"],
             username=users[str(i)]["username"],
@@ -32,7 +32,7 @@ def create_database():
         db.session.add(new_user)
 
     articles = json.loads(open("./app/json/Article.json").read())
-    for i in range(4):
+    for i in range(20):
         new_article = Article (
             album_id=articles[str(i)]["album_id"],
             album_artist=articles[str(i)]["album_artist"],
