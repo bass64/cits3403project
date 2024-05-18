@@ -18,7 +18,11 @@
   >
     {{ form.search(class_="form-control") }}
     {{ form.sort(class_="form-control form-select") }}
-    {{ form.submit(class_="form-control btn btn-primary") }}  
+    <button class="form-control btn btn-primary" id="submit" name="submit" type="submit">
+        <i class="bi bi-search"></i>
+        Search
+    </button>
+    <!-- {{ form.submit(class_="form-control btn btn-primary") }}   -->
   </span>
   <label id="found">Found {{ articles.count() }} results, sorted by </label>
 </form>

@@ -29,7 +29,7 @@ class Search(FlaskForm):
         ("album_year DESC", "Sort by newest album"),
         ("album_year ASC", "Sort by oldest album"),
     ])
-    submit = SubmitField()
+    submit = SubmitField("Search")
 
 class CreatePostManual(FlaskForm):
     type = SelectField("Type: ", choices=[("Album", "Album"), ("EP", "EP"), ("Single", "Single")])
