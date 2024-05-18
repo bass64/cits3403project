@@ -1,6 +1,6 @@
 <!-- Only include header/footer if full version of article -->
 {% if full == True %} 
-    {% extends "base.html" %}
+  {% extends "base.html" %}
 {% endif %}
 {% block content %}
 
@@ -24,34 +24,34 @@
     </script>
 
 {% if full == False %} 
-    <div class="container" style="border: black solid 3px; cursor:pointer;" onclick="location.href = '/article/{{ album.Article.album_id }}';">
+<article 
+  class="d-sm-flex flex-row" 
+  style="cursor:pointer;" 
+  onclick="location.href = '/article/{{ album.Article.album_id }}';"
+>
 {% else %}
-    <div class="container" style="border: black solid 3px;">
+<article class="d-sm-flex flex-row">
 {% endif %}
-        <div class="row">
-            <!-- Album Image -->
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <img src="{{ album.Article.album_art }}" style="width:300px; margin:10px; border:black solid 3px;">
-            </div>
 
-            <!-- Album Info -->
-            <div class = "col-xs-7 col-sm-7 col-md-7 col-lg-7">
+  <!-- Album Image -->
+  <div class="album-art">
+    <img src="{{ album.Article.album_art }}">
+  </div>
 
-                <div class="row">
-                    <h1 style="font-size: 40pt;">{{ album.Article.album_title }}</h1>
-                </div>
-
-                <div class="row">
-                    <h3>{{ album.Article.album_artist }} / {{ album.Article.album_year }} / {{ album.Article.album_type }}</h3>
-                </div>
-
-                <div class="row">
-                    <h3 class="star_rating" id="album_{{ album.Article.album_id }}"></h3>
-                </div>
-
-                <div class="row">
-                    <h3> {{ album.Article.album_review_no }} reviews, {{ album.Article.album_rating_no }} ratings</h3>
-                </div>
+  <!-- Album Info -->
+  <div class = "album-info flex-grow-1">
+    <h1 style="font-size: 40pt;">{{ album.Article.album_title }}</h1>
+    <h3>{{ album.Article.album_artist }} / {{ album.Article.album_year }} / {{ album.Article.album_type }}</h3>
+    <h3 class="star_rating" id="album_{{ album.Article.album_id }}"></h3>
+    <h3> {{ album.Article.album_review_no }} reviews, {{ album.Article.album_rating_no }} ratings</h3>
+    <h4 class="poster" style="color:gray; font-style: italic;">Posted by {{ album.User.username }}</h4>
+    <!-- Follow Button -->
+    <span class = "btn btn-secondary align-self-start">
+      Follow Review
+    </span>
+   
+  </div>
+</article>
 
                 <div class="row">
                     <h4 class="poster" style="color:gray; font-style: italic;">Posted by {{ album.User.username }} </h4>
@@ -83,17 +83,11 @@
 
         {% endif %}
 
-        {% for review in reviews %}
-            {% with %}
-                {% set review=review %}
-                {% include "review.html"%}
-            {% endwith %}
-        {% endfor %}
-    {% endif %}
 
     <script>
         // Call star rating script for albums here, after everythings loaded
         star_rating("{{ album.Article.album_rating }}", "album_" + "{{ album.Article.album_id }}")
     </script>
 </body>
+
 {% endblock %}
