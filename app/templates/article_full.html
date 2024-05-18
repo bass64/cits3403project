@@ -5,12 +5,8 @@
 {% block content %}
 
 <body>
-    <!-- Review Box, hidden initially -->
-    {% if user != null %}
-        {% include "post-review.html"%}
-    {% endif %}
 
-    <!-- Star Rating Script-->
+<!-- Star Rating Script-->
     <script>
         function star_rating(rating, id) {
             for (i = 0; i < 5; i++) { //loop 5 times
@@ -64,16 +60,27 @@
 
             <!-- Follow Button -->
             <div class = "col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                <p>[button]</p>
+                <!--If user is signed out or not currently following, then add a follow button-->
+                {% if not user.is_authenticated or album.Article not in user.following_articles%}
+                    <form method="POST" action="/follow_article">
+                        <input type="hidden" name='article_id' value={{ album.Article.album_id }}>
+                        <input type="submit" value="Follow Article">
+                    </form>     
+                {% else %}  
+                <form method="POST" action="/unfollow_article">
+                    <input type="hidden" name='article_id' value={{ album.Article.album_id }}>
+                    <input type="submit" value="Unfollow">
+                </form>  
+                {% endif %}       
             </div>
         </div>
     </div>
 
     <!-- Only include reviews if full version of article -->
     {% if full == True %}
-        <!-- Only include create review button if logged in -->
-        {% if user != null %}
-            <button onclick="open_review_box()">Submit a rating/review</button>
+        {% if user.is_authenticated and full == True %}
+            {% include "create-review.html"%}
+
         {% endif %}
 
         {% for review in reviews %}
@@ -87,14 +94,6 @@
     <script>
         // Call star rating script for albums here, after everythings loaded
         star_rating("{{ album.Article.album_rating }}", "album_" + "{{ album.Article.album_id }}")
-        
-        function open_review_box() {
-            $(".wrapper").css("display", "inline");
-            //TODO: add something to gray out the background
-        }
-        function close_review_box() {
-            $(".wrapper").css("display", "none");
-        }
     </script>
 </body>
 {% endblock %}
