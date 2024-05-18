@@ -4,6 +4,7 @@ from app import db
 from sqlalchemy.sql import text
 import datetime, os
 from flask_login import current_user
+from flask import current_app
 import json
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -114,7 +115,7 @@ def spotify_link(request):
     )
 
     #add to db
-    app.logger.info(album_object)
+    #current_app.logger.info(album_object)
     db.session.add(album_object)
     db.session.commit()
     
@@ -147,7 +148,7 @@ def add_album_to_db(request):
         album_create_time=datetime.datetime.now()
     )
 
-    app.logger.info(album)
+    #current_app.logger.info(album)
     db.session.add(album)
     db.session.commit()
 
@@ -169,7 +170,7 @@ def add_review_to_db(form, article_id):
         )
 
     db.session.add(review)
-    app.logger.info(review)
+    #current_app.logger.info(review)
     update_album(article_id, form.get("choose_rating"), form.get("review"))
     db.session.commit()
     return "no errors"
