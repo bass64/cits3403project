@@ -1,143 +1,130 @@
 {% extends "base.html" %}
 {% block content %}
-<body>
-    <style>
-        /* "< Search" styling */
-        #search_extend {
-            font-size:18px;
-            cursor:pointer;
-            text-align:right;
-        }
-        /* Search panel background */
-        #search_panel {
-            background-color: gainsboro;
-            border: black solid 3px;
-        }
-        /* Makes search form sticky */
-        #search_panel > * {
-            position: sticky;
-            top: 0;
-        }
-        /* Makes search bar, sort bar and submit button fill the row */
-        #search, #sort, #submit { 
-            width: 100%;
-        }
-    </style>
+<!-- 
+  class="container" style="height:100vh;"
+  class="row" style="height:100vh;"
+  class="col-xs-1 col-sm-1 col-md-1 col-lg-1"
+  class="col-xs-11 col-sm-11 col-md-11 col-lg-11"
+ -->
 
-    <div class="container" style="height:100vh;">
-        <div class="row" style="height:100vh;">
-            <!-- Search panel -->
-            <div id="search_panel" class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                    <form action="/home">
-                        <h3 id="search_extend" onclick="open_search()">&gt; Search</h3>
-                        <!-- Everything but the extend button defaults to hidden -->
-                        <div id="search_elements" style="display:none;">
-                            {{ form.search }}
-                            {{ form.sort }}
-                            {{ form.submit }}
-                            <label id="found">Found {{ articles.count() }} results, sorted by </label>
-                        </div>
-                    </form>
-            </div>
 
-            <div id="articles" class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                <!-- For loop to display every article passed to the home page -->
-                {% for album in articles %}
-                    {% with %}
-                        {% set album=album %}
-                        {% set full=False %}
-                        {% include "article_full.html"%}
-                    {% endwith %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+<!-- Search panel -->
+<form action="/home" id="search_panel">
+  <!-- <h3 id="search_extend" onclick="open_search()">&gt; Search</h3> -->
+  <!-- Everything but the extend button defaults to hidden -->
+  <span 
+    id="search_elements"
+    class="input-group"
+  >
+    {{ form.search(class_="form-control") }}
+    {{ form.sort(class_="form-control form-select") }}
+    <button class="form-control btn btn-primary" id="submit" name="submit" type="submit">
+        <i class="bi bi-search"></i>
+        Search
+    </button>
+    <!-- {{ form.submit(class_="form-control btn btn-primary") }}   -->
+  </span>
+  <label id="found">Found {{ articles.count() }} results, sorted by </label>
+</form>
 
-    <script>
-        let panel_open = false;
 
-        //on load, check if search url param is active, and if so open the search panel
-        $(document).ready(function() {
-            const url_params = new URLSearchParams(window.location.search);
-            if(url_params.get("search") != null) {
-                open_search()
+<div id="articles">
+  <!-- For loop to display every article passed to the home page -->
+  {% for album in articles %}
+    {% with %}
+      {% set album=album %}
+      {% set full=False %}
+      {% include "article_full.html"%}
+    {% endwith %}
+  {% endfor %}
+</div>
+
+
+
+<script>
+    let panel_open = false;
+
+    //on load, check if search url param is active, and if so open the search panel
+    $(document).ready(function() {
+        const url_params = new URLSearchParams(window.location.search);
+        if(url_params.get("search") != null) {
+            open_search()
+        }
+    });
+
+    function open_search(){      
+        // //if search panel is closed
+        // if (!panel_open) {
+        //     //toggle bool
+        //     panel_open = true;
+
+        //     //change text
+        //     $("#search_extend").html("&lt; Search");
+
+        //     //change column widths
+        //     $("#search_panel").removeClass("col-xs-1 col-sm-1 col-md-1 col-lg-1");
+        //     $("#search_panel").addClass("col-xs-3 col-sm-3 col-md-3 col-lg-3");
+        //     $("#articles").removeClass("col-xs-11 col-sm-11 col-md-11 col-lg-11");
+        //     $("#articles").addClass("col-xs-9 col-sm-9 col-md-9 col-lg-9");
+
+        //     //set all search elements to visible
+        //     $("#search_elements").css("display", "inline");
+
+        // //if search panel is open
+        // } else if (panel_open) {
+        //     //toggle bool
+        //     panel_open = false;
+
+        //     //change text
+        //     $("#search_extend").html("&gt; Search");
+
+        //     //change column widths
+        //     $("#search_panel").removeClass("col-xs-3 col-sm-3 col-md-3 col-lg-3");
+        //     $("#search_panel").addClass("col-xs-1 col-sm-1 col-md-1 col-lg-1");
+        //     $("#articles").removeClass("col-xs-9 col-sm-9 col-md-9 col-lg-9");
+        //     $("#articles").addClass("col-xs-11 col-sm-11 col-md-11 col-lg-11");
+
+        //     //set all search elements to hidden
+        //     $("#search_elements").css("display", "none");
+        // }
+
+        
+        url_params = new URLSearchParams(window.location.search);
+        //if there is a search url param, write it to the search box
+        if (url_params.get("search") != null) {
+            $("#search").attr("value", url_params.get("search"));
+        } 
+
+        //if there is a sort url param, write it to the found text
+        if (url_params.get("sort") != "") {
+            console.log(url_params.get("sort"))
+            switch (url_params.get("sort")){
+                case "album_create_time ASC":
+                    order = "oldest post"; break; 
+                case "album_rating DESC":
+                    order = "higest rated"; break;   
+                case "album_rating ASC":
+                    order = "lowest rated"; break;   
+                case "album_rating_no + album_review_no DESC":
+                    order = "most rated"; break;   
+                case "album_rating_no + album_review_no ASC":
+                    order = "least rated"; break;
+                case "album_year DESC":
+                    order = "newest album"; break;
+                case "album_year ASC":
+                    order = "oldest album"; break;
+                default: //"album_create_time DESC" is the default
+                    order = "newest post"; break;     
             }
-        });
-    
-        function open_search(){      
-            //if search panel is closed
-            if (!panel_open) {
-                //toggle bool
-                panel_open = true;
 
-                //change text
-                $("#search_extend").html("&lt; Search");
-
-                //change column widths
-                $("#search_panel").removeClass("col-xs-1 col-sm-1 col-md-1 col-lg-1");
-                $("#search_panel").addClass("col-xs-3 col-sm-3 col-md-3 col-lg-3");
-                $("#articles").removeClass("col-xs-11 col-sm-11 col-md-11 col-lg-11");
-                $("#articles").addClass("col-xs-9 col-sm-9 col-md-9 col-lg-9");
-
-                //set all search elements to visible
-                $("#search_elements").css("display", "inline");
-
-            //if search panel is open
-            } else if (panel_open) {
-                //toggle bool
-                panel_open = false;
-
-                //change text
-                $("#search_extend").html("&gt; Search");
-
-                //change column widths
-                $("#search_panel").removeClass("col-xs-3 col-sm-3 col-md-3 col-lg-3");
-                $("#search_panel").addClass("col-xs-1 col-sm-1 col-md-1 col-lg-1");
-                $("#articles").removeClass("col-xs-9 col-sm-9 col-md-9 col-lg-9");
-                $("#articles").addClass("col-xs-11 col-sm-11 col-md-11 col-lg-11");
-
-                //set all search elements to hidden
-                $("#search_elements").css("display", "none");
+            //updating found text ("result" if 1, "results" if not 1)
+            if ("{{ articles.count() }}" == 1) {
+                $("#found").html("Found {{ articles.count() }} result, sorted by " + order);
+            } else {
+                $("#found").html("Found {{ articles.count() }} results, sorted by " + order);
             }
-
             
-            url_params = new URLSearchParams(window.location.search);
-            //if there is a search url param, write it to the search box
-            if (url_params.get("search") != null) {
-                $("#search").attr("value", url_params.get("search"));
-            } 
-
-            //if there is a sort url param, write it to the found text
-            if (url_params.get("sort") != "") {
-                console.log(url_params.get("sort"))
-                switch (url_params.get("sort")){
-                    case "album_create_time ASC":
-                        order = "oldest post"; break; 
-                    case "album_rating DESC":
-                        order = "higest rated"; break;   
-                    case "album_rating ASC":
-                        order = "lowest rated"; break;   
-                    case "album_rating_no + album_review_no DESC":
-                        order = "most rated"; break;   
-                    case "album_rating_no + album_review_no ASC":
-                        order = "least rated"; break;
-                    case "album_year DESC":
-                        order = "newest album"; break;
-                    case "album_year ASC":
-                        order = "oldest album"; break;
-                    default: //"album_create_time DESC" is the default
-                        order = "newest post"; break;     
-                }
-
-                //updating found text ("result" if 1, "results" if not 1)
-                if ("{{ articles.count() }}" == 1) {
-                    $("#found").html("Found {{ articles.count() }} result, sorted by " + order);
-                } else {
-                    $("#found").html("Found {{ articles.count() }} results, sorted by " + order);
-                }
-                
-            }
         }
-    </script>
-</body>
+    }
+</script>
 {% endblock %}

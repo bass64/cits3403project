@@ -2,162 +2,85 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <body>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f8f9fa;
-            }
-    
-            .container {
-                width: 80%;
-                margin: 0 auto;
-                padding-top: 50px;
-            }
-    
-    
-            form {
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            }
-    
-            label {
-                font-weight: bold;
-            }
-    
-            input[type="text"],
-            input[type="file"] {
-                width: 100%;
-                padding: 10px;
-                margin-bottom: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-    
-            input[type="button"],
-            input[type="reset"],
-            input[type="submit"] {
-                padding: 10px 20px;
-                background-color: #007bff;
-                color: #fff;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                display: inline-block; /* Display buttons side by side */
-            }
-    
-            input[type="button"]:hover,
-            input[type="reset"]:hover,
-            input[type="submit"]:hover {
-                background-color: #0056b3;
-            }
-    
-            .error {
-                color: red;
-            }
-    
-            /* Adjust display of buttons to inline-block */
-            .button-container {
-                margin-top: 20px;
-            }
-    
-            .button-container input[type="reset"],
-            .button-container input[type="submit"] {
-                margin-left: 10px; /* Add margin between buttons */
-            }
-        </style>
-        <div style="padding-top: 50px; width: 50%; float: left">
-            <h1>Create Post From Link</h1>
-            <form action="/create-post-auto" method="post" enctype="multipart/form-data">
-                {{ form1.hidden_tag() }}
 
-                <br>
+<h1 class="text-center">Create Post</h1>
+<div class="pb-2 box-grey">
+    <h2>1. From Spotify Link</h2>
+    <form 
+        action="/create-post-auto" 
+        method="post" 
+        enctype="multipart/form-data"
+        class="input-group"
+    >
+        <!-- {{ form1.hidden_tag() }} -->
+        {{ form1.url.label(class_="input-group-text") }}
+        {{ form1.url(class_="form-control") }}
+        {% for error in form1.url.errors %}
+            <span style="color: red;">[{{ error }}] </span>
+        {% endfor %}
+        {{ form1.submit(class_="form-control btn btn-primary", style_="flex: 0 0 fit-content;") }}
+    </form>
+</div>
+<div class="box-grey">
+    <h2>2. Manually</h2>
+    <form action="/create-post-manual" method="post" enctype="multipart/form-data" class="row">
+        {{ form2.hidden_tag() }}
+        <div class="col-md-8 label-30 d-flex flex-column">
+            <div class="input-group mb-2">
+                {{ form2.type.label(class_="input-group-text") }}
+                {{ form2.type(class_="form-control form-select") }}
+            </div>
+            <div class="input-group mb-2">
+                {{ form2.artist.label(class_="input-group-text") }}
+                {{ form2.artist(placeholder="Name",id="artist",class_="form-control") }}
+            </div>
+            <div class="input-group mb-2">
+                {{ form2.title.label(class_="input-group-text") }}
+                {{ form2.title(placeholder="Title",id="title",class_="form-control") }} 
+            </div>
+            <div class="input-group">
+                {{ form2.image.label(class_="input-group-text")}}
+                {{ form2.image(class_="form-control") }}
 
-                <div>
-                    {{ form1.url.label }}
-                        {{ form1.url }} <br>
-                        {% for error in form1.url.errors %}
-                        <span style="color: red;">[{{ error }}] </span>
-                        {% endfor %}
-                </div>
                 
-                <br>
-
-                <div>
-                    <p>{{ form1.submit() }}</p>
-                </div>
-            </form>
+            </div>
+            <p class="text-end mt-0 mb-2">
+                <small>Image size must be less than 2MB</small>
+            </p>
+            <div class="input-group mb-2">
+                {{ form2.date.label(class_="input-group-text") }}
+                {{ form2.date(id="date", class_="form-control") }}
+            </div>
+            <div class="input-group justify-content-end mt-auto">
+                <input type="button" value="Reset" onclick="location.reload()" class="btn btn-outline-secondary"></input>
+                {{ form2.submit(class_="btn btn-primary") }}
+            </div>
+            
         </div>
-
-        <div style="padding-top: 50px; width: 50%; float: right">
-            <h1>Create Post Manually</h1>
-            <form action="/create-post-manual" method="post" enctype="multipart/form-data">
-                {{ form2.hidden_tag() }}
-
-                <br>
-
-                <div>
-                    {{ form2.type.label }}
-                        {{ form2.type }} <br>
-                        {% for error in form2.type.errors %}
-                        <span style="color: red;">[{{ error }}] </span>
-                        {% endfor %}
-                </div>
-                
-                <br>
-
-                <div>
-                    {{ form2.artist.label }}
-                        {{ form2.artist(placeholder="Name",id="artist") }} <br>
-                        {% for error in form2.artist.errors %}
-                        <span style="color: red;">[{{ error }}] </span>
-                        {% endfor %}
-                </div>
-
-                <br>
-
-                <div>
-                    {{ form2.title.label }}
-                        {{ form2.title(placeholder="Title",id="title") }} <br>
-                        {% for error in form2.title.errors %}
-                        <span style="color: red;">[{{ error }}] </span>
-                        {% endfor %}
-                </div>
-                
-                <br>
-
-                <div class="container">
-                    <div class="upload_box">
-                        <i class="uploading"></i>
-                        {{ form2.image.label }}
-                            <p><small>Image size must be less than <span>2MB</span></small></p>
-                            {{ form2.image(class="select-image") }} <br>
-                            {% for error in form2.image.errors %}
-                            <span style="color: red;">[{{ error }}] </span>
-                            {% endfor %}
-                    </div>
-                </div>
-
-                <br>
-
-                <div>
-                    {{ form2.date.label }}
-                        {{ form2.date(id="date") }} <br>
-                        {% for error in form2.date.errors %}
-                        <span style="color: red;">[{{ error }}] </span>
-                        {% endfor %}
-                </div>
-
-                <br>
-
-                <div class="button-container">
-                    <input type="button" value="Reset" onclick="location.reload()"></input>
-                    {{ form2.submit() }}
-                </div>
-            </form>
+        <div class="col-md-4">
+            <div id="image-container" class="img-container position-relative" >
+                <p class="position-absolute top-50 start-50 translate-middle text-center">
+                    IMG Goes Here 
+                </p>
+            </div>
         </div>
-    </body>
-
+    </form>
+</div>
+<script>
+    $("#image").on('change', function () {
+        $("#image-container").empty();
+        var image = $('#image').prop('files');
+        console.log(image);
+        if (image.length >= 1) {
+            var imgURL = URL.createObjectURL(image[0]);
+            $("#image-container").append(
+                "<img src=\"" + imgURL + "\"/>"
+            )
+        } else {
+            $("#image-container").append(
+                "<p class=\"position-absolute top-50 start-50 translate-middle text-center\">IMG Goes Here</p>"
+            )
+        }
+    })
+</script>
 {% endblock %}
