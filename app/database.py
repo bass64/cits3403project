@@ -5,6 +5,11 @@ from sqlalchemy.sql import text
 import datetime, os
 from flask_login import current_user
 import json
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+
+SPOTIPY_CLIENT_ID='c85b55132e4e4e33bf4852c481147a1d'
+SPOTIPY_CLIENT_SECRET='983c70ccd5a949a29f6f7215d96555ea'
 
 def create_database():
     #create tables
@@ -18,7 +23,7 @@ def create_database():
         os.remove("./app/static/albums/" + file)
 
     users = json.loads(open("./app/json/User.json").read())
-    for i in range(4):
+    for i in range(10):
         new_user = User(
             user_id=users[str(i)]["user_id"],
             username=users[str(i)]["username"],
@@ -27,7 +32,7 @@ def create_database():
         db.session.add(new_user)
 
     articles = json.loads(open("./app/json/Article.json").read())
-    for i in range(3):
+    for i in range(20):
         new_article = Article (
             album_id=articles[str(i)]["album_id"],
             album_artist=articles[str(i)]["album_artist"],
@@ -44,7 +49,7 @@ def create_database():
         db.session.add(new_article)
 
     reviews = json.loads(open("./app/json/Review.json").read())
-    for i in range(7):
+    for i in range(50):
         new_review = Review(
             album_id=reviews[str(i)]["album_id"],
             review_id=reviews[str(i)]["review_id"],
@@ -54,6 +59,7 @@ def create_database():
             review_create_time=datetime.datetime.now()
         )
         db.session.add(new_review)
+        update_album(reviews[str(i)]["album_id"], reviews[str(i)]["review_rating"], reviews[str(i)]["review_text"])
 
     #add info, then commit
     db.session.commit()
@@ -75,6 +81,42 @@ def home_query(search, sort):
             )
     else:
         return query.order_by(text(order))
+    
+def spotify_link(request):
+    #get link and split it to just id
+    link = request.form.get("url")
+    if "album" not in link:
+        return "error"
+    link = link.split("/")
+    link = link[-1]
+    if "?" in link:
+        link = link.split("?")
+        link = link[0]
+
+    #use api to get info on link
+    sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET))
+    album = sp.album(album_id=link)
+
+    #construct an object for the album info
+    new_id = db.session.query(Article).order_by(Article.album_id.desc()).first().album_id + 1
+    album_object = Article(
+        album_id=new_id,
+        album_artist=album["artists"][0]["name"],
+        album_title=album["name"],
+        album_art= album["images"][1]["url"],
+        album_year=album["release_date"][:4],
+        album_type=str(album["album_type"]).capitalize(),
+        album_rating=0,
+        album_review_no=0,
+        album_rating_no=0,
+        user_id=current_user.get_id(),
+        album_create_time=datetime.datetime.now()
+    )
+
+    #add to db
+    app.logger.info(album_object)
+    db.session.add(album_object)
+    db.session.commit()
     
 def add_album_to_db(request):
     form = request.form
@@ -105,6 +147,7 @@ def add_album_to_db(request):
         album_create_time=datetime.datetime.now()
     )
 
+    app.logger.info(album)
     db.session.add(album)
     db.session.commit()
 
@@ -126,21 +169,23 @@ def add_review_to_db(form, article_id):
         )
 
     db.session.add(review)
-    update_album(article_id, form)
+    app.logger.info(review)
+    update_album(article_id, form.get("choose_rating"), form.get("review"))
     db.session.commit()
     return "no errors"
 
-def update_album(album_id, form):
+def update_album(album_id, rating, review):
     #get an updated average rating
     current_rating = db.session.query(Article).filter(Article.album_id == album_id).first().album_rating
     num_reviews = db.session.query(Article).filter(Article.album_id == album_id).first().album_review_no
     num_ratings = db.session.query(Article).filter(Article.album_id == album_id).first().album_rating_no
-    new_rating = current_rating + (float(form.get("choose_rating")) / float(num_ratings + num_reviews + 1))
+    #average of current_rating and new_rating, factoring in that current_ratings already been averaged n-1 times
+    new_rating = ((current_rating * float(num_ratings + num_reviews)) + float(rating)) / float(num_ratings + num_reviews + 1)
 
     db.session.query(Article).filter(Article.album_id == album_id).\
     update({"album_rating": new_rating}, synchronize_session = False)
 
-    if (form.get("review") == ""):
+    if (review == ""):
         db.session.query(Article).filter(Article.album_id == album_id).\
         update({"album_rating_no": num_ratings + 1}, synchronize_session = False)
     else:

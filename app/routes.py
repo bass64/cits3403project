@@ -3,7 +3,7 @@ from app.blueprints import main
 from flask import render_template, redirect, url_for, request, flash, current_app
 from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, CreateReview
 from app.models import User, Article, Review, followingTable
-from app.database import home_query, create_database, add_album_to_db, add_review_to_db
+from app.database import home_query, create_database, add_album_to_db, add_review_to_db, spotify_link
 from flask_login import login_user, logout_user, current_user, login_required
 from app.controllers import sign_user_up, SignUpError, log_user_in, LoginError
 from sqlalchemy import and_
@@ -65,7 +65,7 @@ def create_post_auto():
     form = CreatePostAuto()
     if form.validate_on_submit():
         #spotify link
-        add_album_to_db(request)
+        spotify_link(request)
         return redirect(location=url_for("main.home"))
     #if didn't validate, send back to create post
     #TODO handle this error

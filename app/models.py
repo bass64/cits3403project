@@ -1,6 +1,7 @@
 from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+import random
 
 STRING_MAX = 500 #temp, get a better max later
 
@@ -24,8 +25,13 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password) 
 
-    def __repr__(self) -> str:
-        return f'<User {self.username} {self.password}>'
+    #this representation is the same format as the json files
+    def __repr__(self):
+        return f"\n\"{self.user_id}\": {{\
+            \n\t\"user_id\": {self.user_id},\
+            \n\t\"username\": \"{self.username}\",\
+            \n\t\"password_hash\": \"{self.password_hash}\"\
+            \n}},"
 
 @login.user_loader
 def load_user(user_id):
@@ -44,8 +50,20 @@ class Article(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable=False) #link to user relation
     album_create_time = db.Column(db.DateTime, nullable=False) #time album was posted
 
+    #this representation is the same format as the json files
     def __repr__(self):
-        return "[ID:{}, {} - {}]".format(self.album_id, self.album_artist, self.album_title)
+        return f"\n\"{self.album_id}\": {{\
+            \n\t\"album_id\": {self.album_id},\
+            \n\t\"album_artist\": \"{self.album_artist}\",\
+            \n\t\"album_title\": \"{self.album_title}\",\
+            \n\t\"album_art\": \"{self.album_art}\",\
+            \n\t\"album_year\": {self.album_year},\
+            \n\t\"album_type\": \"{self.album_type}\",\
+            \n\t\"album_rating\": {self.album_rating},\
+            \n\t\"album_review_no\": {self.album_review_no},\
+            \n\t\"album_rating_no\": {self.album_rating_no},\
+            \n\t\"user_id\": {random.randint(0,9)}\
+            \n}}," #random user used for testing
 
 class Review(db.Model):
     album_id = db.Column(db.Integer, db.ForeignKey("article.album_id"), nullable=False) #link to article relation
@@ -54,3 +72,13 @@ class Review(db.Model):
     review_rating = db.Column(db.Integer, nullable=False) #int between 0-10
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable=False) #link to user relation
     review_create_time = db.Column(db.DateTime, nullable=False) #time review was posted
+
+    #this representation is the same format as the json files
+    def __repr__(self):
+        return f"\n\"{self.review_id}\": {{\
+            \n\t\"album_id\": {self.album_id},\
+            \n\t\"review_id\": {self.review_id},\
+            \n\t\"review_text\": \"{self.review_text}\",\
+            \n\t\"review_rating\": {self.review_rating},\
+            \n\t\"user_id\": {random.randint(0,9)}\
+            \n}},"

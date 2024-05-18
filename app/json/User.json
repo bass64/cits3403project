@@ -1,22 +1,52 @@
 {
-    "0": {
-        "user_id": 0,
-        "username": "bespoke_boy9",
-        "password_hash": "oopsnohash"
+    "0": {            
+        "user_id": 0,            
+        "username": "UltraV1nT4g3_",            
+        "password_hash": "scrypt:32768:8:1$VFBBvkQRS3u3Fy4o$448ed921e358a0f70717d28f37f1bd23fa97121dd9e1cda8552804ccba20239cf6f23b3cc8bbfb09a0f4e4f3d14b19cda153ce41635ab857864f31402ab25594"            
     },
-    "1": {
-        "user_id": 1,
-        "username": "SlientSimon",
-        "password_hash": "oopsnohash"
+    "1": {            
+        "user_id": 1,            
+        "username": "p1xel_p0etry",            
+        "password_hash": "scrypt:32768:8:1$5yl5RS30BDRE4PeN$6be316a8fa2795feecc7e9364d6c9a1dea73086c59548b40578b8f746a79d703448dedf7af38a025af2639d2e80295ea8150e19371efe0d151deefc8c4b01c4f"            
+        },
+    "2": {            
+        "user_id": 2,            
+        "username": "MoonbeamMelodia55",            
+        "password_hash": "scrypt:32768:8:1$ytS3ezL6HbIp9GaF$39ec903884073c9e9d49a252d75887130c76e1af78a208c2cd9510472b73ba4072a8ac94cd0e9d3c6e2c7f21398b30ac0b23619a5e3fea85d1aff959371302ac"            
+        },
+    "3": {            
+        "user_id": 3,            
+        "username": "lucid_r3mix",            
+        "password_hash": "scrypt:32768:8:1$oojrwAdZMV40QzXz$b6d5bb5e0543033afa0d15356450b84500df55e6bfe7263f1e5c5aee96c476fdd55995b1f3426185849a1824596fb8eedfccfb272e8b2657b47735c70bc8f754"            
+        },
+    "4": {            
+        "user_id": 4,            
+        "username": "BASS BOOSTER",            
+        "password_hash": "scrypt:32768:8:1$ozNODPvm07wwVNxP$d80819568a0a15312a109459db08f253f2b5bfc98d224b8735366659f43168618052f3b3886ac29195502e167713b4db1097e0cbb0e2d22400fc1f1d9bd56eac"            
     },
-    "2": {
-        "user_id": 2,
-        "username": "The Honourable And Eloquent Adam",
-        "password_hash": "oopsnohash"
+    "5": {            
+        "user_id": 5,            
+        "username": "SynthFan3",            
+        "password_hash": "scrypt:32768:8:1$XUhUWk0rURacEvMt$4a07fd3cf752224eced9e3774cb6b2b4bb7d3a006378f3ac2c18e972d58d27a9d35e84f655e9a686e6cceb0e50a71ec4966bd8ff3315d4a1e257eba8d64cc8d5"            
     },
-    "3": {
-        "user_id": 3,
-        "username": "4rd Guy",
-        "password_hash": "oopsnohash"
+    "6": {            
+        "user_id": 6,            
+        "username": "ampwizard",            
+        "password_hash": "scrypt:32768:8:1$PjhfdqlaM5vwxqjp$b60ec77260d621024f28da50837dfa9b1cd6341c3d342e29ada540e8c859739fd945608e88db0a5538b1910a8635a4763d948ce09240872dd0cdf0ba609cbb2f"            
+    },
+    "7": {            
+        "user_id": 7,            
+        "username": "disk0",            
+        "password_hash": "scrypt:32768:8:1$c6KcykfGYyNzD6d2$0d6ee444f978ba1865ae4a57ba54c425d9dfbc0602f3b9a340eb4a121acc755f52be094da4c7afdc448e85229803a34762635e231b43965c9c9ee022c0458e11"            
+    },
+    "8": {            
+        "user_id": 8,            
+        "username": "Mr. Mixer",            
+        "password_hash": "scrypt:32768:8:1$6mWpGUrL4m06wD5H$0dc5d97f46f901ce5cad02cf3ae21b6cf3606bb34610b1cedfe3831ecd68150f36ada6aa8f5dc47ff31ee05765bee9910b7b41418f624c847c548cae9006b161"            
+    },
+    "9": {            
+        "user_id": 9,            
+        "username": "lyricpulse",            
+        "password_hash": "scrypt:32768:8:1$DhWczK0hura9bkFW$6e248cbfebd19a26c6ba967034ae620f5e9dfc303ac2433a8df2007af36937d754394f428fe22526a9ad851d99f2fa3566009326b36d5202b4d14282ba13471a"            
     }
 }
