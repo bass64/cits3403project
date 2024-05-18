@@ -1,24 +1,16 @@
-from app import app, db
+from app import db
+from app.blueprints import main
 from flask import render_template, redirect, url_for, request, flash
 from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, CreateReview
 from app.models import User, Article, Review, followingTable
 from app.database import home_query, create_database, add_album_to_db, add_review_to_db
 from flask_login import login_user, logout_user, current_user, login_required
+from app.controllers import sign_user_up, SignUpError, log_user_in, LoginError
 from sqlalchemy import and_
 
 
-@app.before_request
-def run_on_start():
-    app.before_request_funcs[None].remove(run_on_start) #removes this function so its only run on startup
-    create_database()
-
-
-
-@app.route('/')
-def root():
-    return redirect(location=url_for("home"))
-
-@app.route("/home")
+@main.route('/')
+@main.route("/home")
 def home():
     search = request.args.get("search")
     sort = request.args.get("sort")
@@ -29,7 +21,7 @@ def home():
 
 
 
-@app.route('/article/<int:article_id>')
+@main.route('/article/<int:article_id>')
 def article(article_id):
     form3 = CreateReview()
     album = db.session.query(Article, User).join(User, User.user_id == Article.user_id).filter(Article.album_id == article_id).first()
@@ -43,46 +35,47 @@ def article(article_id):
                            form3=form3)
 
 
-
-@app.route('/article/<int:article_id>/create_review', methods=['POST'])
+@main.route('/article/<int:article_id>/create_review', methods=['POST'])
 def post_review(article_id):
     error = add_review_to_db(request.form, article_id)
     if error == "duplicate user":
         #TODO handle error when user posts multiple reivews
-        return redirect(location=url_for("article", article_id=article_id, error="duplicate user"))
-    return redirect(location=url_for("article", article_id=article_id))
+        return redirect(location=url_for("main.article", article_id=article_id, error="duplicate user"))
+    return redirect(location=url_for("main.article", article_id=article_id))
+  
 
-@app.route('/create-post', methods=['GET', 'POST'])
+@main.route('/create-post', methods=['GET', 'POST'])
 @login_required
 def create_post():
     form1 = CreatePostAuto()
     form2 = CreatePostManual()
     return render_template("create-post.html", title="Create Post",form1=form1, form2=form2)
 
-@app.route('/create-post-auto', methods=['POST'])
+@main.route('/create-post-auto', methods=['POST'])
 def create_post_auto():
     form = CreatePostAuto()
     if form.validate_on_submit():
         #spotify link
         add_album_to_db(request)
-        return redirect(location=url_for("home"))
+        return redirect(location=url_for("main.home"))
     #if didn't validate, send back to create post
     #TODO handle this error
-    return redirect(location=url_for("create_post", error="invalid post"))
+    return redirect(location=url_for("main.create_post", error="invalid post"))
+  
     
-@app.route('/create-post-manual', methods=['POST'])
+@main.route('/create-post-manual', methods=['POST'])
 def create_post_manual():
     form = CreatePostManual()
     if form.validate_on_submit():
         #user entry
         add_album_to_db(request)
-        return redirect(location=url_for("home"))
+        return redirect(location=url_for("main.home"))
     #if didn't validate, send back to create post
     #TODO handle this error
-    return redirect(location=url_for("create_post", error="invalid post"))
+    return redirect(location=url_for("main.create_post", error="invalid post"))
 
 #follows an article if the user is logged in
-@app.route('/follow_article', methods=['POST'])
+@main.route('/follow_article', methods=['POST'])
 @login_required
 def follow_article():
     article_id = request.form.get('article_id')
@@ -93,7 +86,7 @@ def follow_article():
     #redirect to the site that sent the follow request (either article full or home)
     return redirect(request.referrer)
 
-@app.route('/unfollow_article', methods=['POST'])
+@main.route('/unfollow_article', methods=['POST'])
 @login_required
 def unfollow_article():
     article_id = request.form.get('article_id')
@@ -105,7 +98,7 @@ def unfollow_article():
     return redirect(request.referrer)
 
 #renders the login page (only GET request)
-@app.route('/login')
+@main.route('/login')
 def login():
     form = LoginForm()
     createForm = SignUp()
@@ -113,7 +106,7 @@ def login():
     return render_template('login.html', title='Sign In', form=form, createForm=createForm, redirect=redirect)
 
 #processes sign up post requests
-@app.route('/signup', methods=['POST'])
+@main.route('/signup', methods=['POST'])
 def signup_post():
 
     form = LoginForm()
@@ -127,60 +120,21 @@ def signup_post():
     password = request.form.get('password')
     confirm = request.form.get('confirm')
 
-    if not (password == confirm):
-        flash('Passwords do not match','signup_error')
-        return redirect(url_for('login'))
-
-    if len(password) < 8:
-        flash('Password must have at least 8 characters', 'signup_error')
-        return redirect(url_for('login'))
-    
-    contains_upper = False
-    for letter in password:
-        if letter.isupper():
-            contains_upper = True
-            break
-    
-    if not contains_upper:
-        flash('Password must have at least one upper case character', 'signup_error')
-        return redirect(url_for('login'))
-    
-    contains_digit = False
-    for letter in password:
-        if letter.isdigit():
-            contains_digit = True
-            break
-    
-    if not contains_digit:
-        flash('Password must have at least one number', 'signup_error')
-        return redirect(url_for('login'))
-
-    #check if user exists
-    existing_user = User.query.filter_by(username=username).first()
-
-    #if user already exists do not create new user with same username
-    if existing_user:
-        flash('User exists','signup_error')
-        return redirect(url_for('login'))
-
-    #if user is new, add to database
-    user = User(username=username)
-    user.set_password(password)
-    user.following_articles = []
-    db.session.add(user)
-    db.session.commit()
-    
     if request.form.get('remember_me'):
         remember = True
     else:
         remember = False
 
-    login_user(user, remember=remember)
+    try:
+        sign_user_up(username,password,confirm, remember)
+    except SignUpError as e:
+        flash(e.message, 'signup_error')
+        return redirect(url_for('main.login'))
 
-    return redirect(location=url_for("home"))
+    return redirect(location=url_for("main.home"))
 
 #processes login post requests
-@app.route('/login', methods=['POST'])
+@main.route('/login', methods=['POST'])
 def login_post():
 
     form = LoginForm()
@@ -192,35 +146,34 @@ def login_post():
     username = request.form.get('username')
     password = request.form.get('password')
 
-    #check for existing user
-    existing_user = User.query.filter_by(username=username).first()
-
-    #if username couldnt be found or the password doesnt match throw an error
-    if not existing_user or not existing_user.check_password(password):
-        flash('Please check your login details','login_failed')
-        return redirect(url_for('login'))
-
     if request.form.get('remember_me'):
         remember = True
     else:
         remember = False
 
-    login_user(existing_user, remember=remember)
-    return redirect(location=url_for("home"))
+    try:
+        log_user_in(username, password, remember)
+    except LoginError as e:
+        flash(e.message,'login_failed')
+        return redirect(url_for('main.login'))
+        
+    return redirect(location=url_for("main.home"))
 
-@app.route('/logout')
+@main.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(location=url_for("home"))
+    return redirect(location=url_for("main.home"))
 
-@app.route('/following')
+
+@main.route('/following')
 @login_required
 def following():
     #query = db.session.query(Article, User).join(User, User.user_id == Article.user_id)
     query = db.session.query(Article, User).join(User, User.user_id == Article.user_id).join(followingTable, and_(followingTable.c.user_id == User.get_id(current_user), followingTable.c.album_id == Article.album_id))
     return render_template("following.html", title="Following", query=query)
-
-@app.errorhandler(404)
-def page_not_found(*args):
+  
+@main.route("/<path:invalid_path>")
+def page_not_found(invalid_path):
     return render_template("error-page.html", title="Page Not Found")
+
