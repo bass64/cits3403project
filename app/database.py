@@ -1,6 +1,6 @@
 #!usr/bin/python
 from app.models import Article, Review, User
-from app import db, app
+from app import db
 from sqlalchemy.sql import text
 import datetime, os
 from flask_login import current_user

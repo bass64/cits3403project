@@ -1,12 +1,21 @@
 from app import db
 from app.blueprints import main
-from flask import render_template, redirect, url_for, request, flash
+from flask import render_template, redirect, url_for, request, flash, current_app
 from app.forms import LoginForm, SignUp, Search, CreatePostManual, CreatePostAuto, CreateReview
 from app.models import User, Article, Review, followingTable
 from app.database import home_query, create_database, add_album_to_db, add_review_to_db
 from flask_login import login_user, logout_user, current_user, login_required
 from app.controllers import sign_user_up, SignUpError, log_user_in, LoginError
 from sqlalchemy import and_
+
+
+@main.before_request
+def run_once_on_start():
+    current_app.logger.info("Populating database")
+    create_database()
+    #replaces code of this function with none
+    run_once_on_start.__code__ = (lambda:None).__code__
+
 
 
 @main.route('/')
