@@ -38,8 +38,20 @@ class Article(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable=False) #link to user relation
     album_create_time = db.Column(db.DateTime, nullable=False) #time album was posted
 
+    #this representation is the same format as the json files loaded in
     def __repr__(self):
-        return "[ID:{}, {} - {}]".format(self.album_id, self.album_artist, self.album_title)
+        return f"\n\"{self.album_id}\": {{\
+            \n\t\"album_id\": {self.album_id},\
+            \n\t\"album_artist\": \"{self.album_artist}\",\
+            \n\t\"album_title\": \"{self.album_title}\",\
+            \n\t\"album_art\": \"{self.album_art}\",\
+            \n\t\"album_year\": {self.album_year},\
+            \n\t\"album_type\": \"{self.album_type}\",\
+            \n\t\"album_rating\": {self.album_rating},\
+            \n\t\"album_review_no\": {self.album_review_no},\
+            \n\t\"album_rating_no\": {self.album_rating_no},\
+            \n\t\"user_id\": 0\
+            \n}},"
 
 class Review(db.Model):
     album_id = db.Column(db.Integer, db.ForeignKey("article.album_id"), nullable=False) #link to article relation

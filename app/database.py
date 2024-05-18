@@ -32,7 +32,7 @@ def create_database():
         db.session.add(new_user)
 
     articles = json.loads(open("./app/json/Article.json").read())
-    for i in range(3):
+    for i in range(4):
         new_article = Article (
             album_id=articles[str(i)]["album_id"],
             album_artist=articles[str(i)]["album_artist"],
@@ -82,18 +82,27 @@ def home_query(search, sort):
         return query.order_by(text(order))
     
 def spotify_link(request):
+    #get link and split it to just id
     link = request.form.get("url")
-    app.logger.info(link)
+    if "album" not in link:
+        return "error"
+    link = link.split("/")
+    link = link[-1]
+    if "?" in link:
+        link = link.split("?")
+        link = link[0]
+
+    #use api to get info on link
     sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET))
     album = sp.album(album_id=link)
-    app.logger.info(album)
 
+    #construct an object for the album info
     new_id = db.session.query(Article).order_by(Article.album_id.desc()).first().album_id + 1
     album_object = Article(
         album_id=new_id,
         album_artist=album["artists"][0]["name"],
         album_title=album["name"],
-        album_art="./../static/no_image.png",
+        album_art= album["images"][1]["url"],
         album_year=album["release_date"][:4],
         album_type=str(album["album_type"]).capitalize(),
         album_rating=0,
@@ -103,6 +112,8 @@ def spotify_link(request):
         album_create_time=datetime.datetime.now()
     )
 
+    #add to db
+    app.logger.info(album_object)
     db.session.add(album_object)
     db.session.commit()
     
