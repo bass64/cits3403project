@@ -12,7 +12,7 @@
         enctype="multipart/form-data"
         class="input-group"
     >
-        <!-- {{ form1.hidden_tag() }} -->
+        {{ form1.hidden_tag() }}
         {{ form1.url.label(class_="input-group-text") }}
         {{ form1.url(class_="form-control") }}
         {% for error in form1.url.errors %}
