@@ -1,58 +1,352 @@
 {
-    "0": {
-        "album_id": 0,
-        "review_id": 0,
-        "review_text": "An amazing first album!",
-        "review_rating": 7,
-        "user_id": 0,
-        "review_create_time": "2024-05-16 13:47:46.733749"
+    "0": {            
+        "album_id": 10,            
+        "review_id": 0,            
+        "review_text": "Overrated...",            
+        "review_rating": 1,            
+        "user_id": 0            
     },
-    "1": {
-        "album_id": 0,
-        "review_id": 1,
-        "review_text": "",
-        "review_rating": 6,
-        "user_id": 1,
-        "review_create_time": "2024-05-16 13:47:46.733749"
+    "1": {            
+        "album_id": 1,            
+        "review_id": 1,            
+        "review_text": "An all time classic",            
+        "review_rating": 10,            
+        "user_id": 9            
     },
-    "2": {
-        "album_id": 1,
-        "review_id": 2,
-        "review_text": "",
-        "review_rating": 1,
-        "user_id": 1,
-        "review_create_time": "2024-05-16 13:47:46.733749"
+    "2": {            
+        "album_id": 17,            
+        "review_id": 2,            
+        "review_text": "Got overplayed on the radio, still good",            
+        "review_rating": 6,            
+        "user_id": 7            
     },
-    "3": {
-        "album_id": 2,
-        "review_id": 3,
-        "review_text": "A great return to form, 10/10",
-        "review_rating": 10,
-        "user_id": 0,
-        "review_create_time": "2024-05-16 13:47:46.733749"
+    "3": {            
+        "album_id": 18,            
+        "review_id": 3,            
+        "review_text": "Not as good as their first album",            
+        "review_rating": 5,            
+        "user_id": 8            
     },
-    "4": {
-        "album_id": 2,
-        "review_id": 4,
-        "review_text": "",
-        "review_rating": 9,
-        "user_id": 1,
-        "review_create_time": "2024-05-16 13:47:46.733749"
+    "4": {            
+        "album_id": 12,            
+        "review_id": 4,            
+        "review_text": "A change in direction, but a really good one",            
+        "review_rating": 8,            
+        "user_id": 8            
     },
-    "5": {
-        "album_id": 2,
-        "review_id": 5,
-        "review_text": "What a great album: If you would allow me, I would love to regale you with my magnum opus, a piece of art I simply call, 1000 A's. it goes something like this:\n AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAA",
-        "review_rating": 8,
-        "user_id": 2,
-        "review_create_time": "2024-05-16 13:47:46.733749"
+    "5": {            
+        "album_id": 13,            
+        "review_id": 5,            
+        "review_text": "One hit wonder",            
+        "review_rating": 4,            
+        "user_id": 1            
     },
-    "6": {
-        "album_id": 2,
-        "review_id": 6,
-        "review_text": "",
-        "review_rating": 10,
-        "user_id": 3,
-        "review_create_time": "2024-05-16 13:47:46.733749"
+    "6": {            
+        "album_id": 4,            
+        "review_id": 6,            
+        "review_text": "A departure in style, but still quite good. I miss the sound of their first album though",            
+        "review_rating": 7,            
+        "user_id": 3            
+    },
+    "7": {            
+        "album_id": 7,            
+        "review_id": 7,            
+        "review_text": "Long and boring, only a few stand out tracks",            
+        "review_rating": 4,            
+        "user_id": 7            
+    },
+    "8": {            
+        "album_id": 3,            
+        "review_id": 8,            
+        "review_text": "A true hidden gem!",            
+        "review_rating": 9,            
+        "user_id": 3            
+    },
+    "9": {            
+        "album_id": 0,            
+        "review_id": 9,            
+        "review_text": "this album sucks, i dont get it!!!",            
+        "review_rating": 1,            
+        "user_id": 7            
+    },
+    "10": {            
+        "album_id": 6,            
+        "review_id": 10,            
+        "review_text": "I wish they made another album like this",            
+        "review_rating": 8,            
+        "user_id": 5            
+    },
+    "11": {            
+        "album_id": 15,            
+        "review_id": 11,            
+        "review_text": "he sold out",            
+        "review_rating": 5,            
+        "user_id": 5            
+    },
+    "12": {            
+        "album_id": 19,            
+        "review_id": 12,            
+        "review_text": "Their best work",            
+        "review_rating": 10,            
+        "user_id": 4            
+    },
+    "13": {            
+        "album_id": 10,            
+        "review_id": 13,            
+        "review_text": "ignore the other guy, this album is PERFECT and you are a contrarian",            
+        "review_rating": 9,            
+        "user_id": 1            
+    },
+    "14": {            
+        "album_id": 13,            
+        "review_id": 14,            
+        "review_text": "forgettable",            
+        "review_rating": 3,            
+        "user_id": 7            
+    },
+    "15": {            
+        "album_id": 5,            
+        "review_id": 15,            
+        "review_text": "An all-time great",            
+        "review_rating": 9,            
+        "user_id": 8            
+    },
+    "16": {            
+        "album_id": 2,            
+        "review_id": 16,            
+        "review_text": "idk i haven't listened to it",            
+        "review_rating": 0,            
+        "user_id": 0            
+    },
+    "17": {            
+        "album_id": 1,            
+        "review_id": 17,            
+        "review_text": "over hyped",            
+        "review_rating": 6,            
+        "user_id": 9            
+    },
+    "18": {            
+        "album_id": 19,            
+        "review_id": 18,            
+        "review_text": "",            
+        "review_rating": 7,            
+        "user_id": 5            
+    },
+    "19": {            
+        "album_id": 18,            
+        "review_id": 19,            
+        "review_text": "",            
+        "review_rating": 7,            
+        "user_id": 7            
+    },
+    "20": {            
+        "album_id": 17,            
+        "review_id": 20,            
+        "review_text": "",            
+        "review_rating": 6,            
+        "user_id": 6            
+    },
+    "21": {            
+        "album_id": 16,            
+        "review_id": 21,            
+        "review_text": "",            
+        "review_rating": 8,            
+        "user_id": 4            
+    },
+    "22": {            
+        "album_id": 14,            
+        "review_id": 22,            
+        "review_text": "",            
+        "review_rating": 4,            
+        "user_id": 0            
+    },
+    "23": {            
+        "album_id": 12,            
+        "review_id": 23,            
+        "review_text": "",            
+        "review_rating": 9,            
+        "user_id": 0            
+    },
+    "24": {            
+        "album_id": 10,            
+        "review_id": 24,            
+        "review_text": "",            
+        "review_rating": 6,            
+        "user_id": 9            
+    },
+    "25": {            
+        "album_id": 2,            
+        "review_id": 25,            
+        "review_text": "",            
+        "review_rating": 7,            
+        "user_id": 3            
+    },
+    "26": {            
+        "album_id": 0,            
+        "review_id": 26,            
+        "review_text": "",            
+        "review_rating": 9,            
+        "user_id": 3            
+    },
+    "27": {            
+        "album_id": 11,            
+        "review_id": 27,            
+        "review_text": "",            
+        "review_rating": 10,            
+        "user_id": 3            
+    },
+    "28": {            
+        "album_id": 8,            
+        "review_id": 28,            
+        "review_text": "",            
+        "review_rating": 4,            
+        "user_id": 1            
+    },
+    "29": {            
+        "album_id": 19,            
+        "review_id": 29,            
+        "review_text": "",            
+        "review_rating": 7,            
+        "user_id": 9            
+    },
+    "30": {            
+        "album_id": 18,            
+        "review_id": 30,            
+        "review_text": "",            
+        "review_rating": 4,            
+        "user_id": 6            
+    },
+    "31": {            
+        "album_id": 16,            
+        "review_id": 31,            
+        "review_text": "",            
+        "review_rating": 2,            
+        "user_id": 9            
+    },
+    "32": {            
+        "album_id": 17,            
+        "review_id": 32,            
+        "review_text": "",            
+        "review_rating": 6,            
+        "user_id": 2            
+    },
+    "33": {            
+        "album_id": 15,            
+        "review_id": 33,            
+        "review_text": "",            
+        "review_rating": 6,            
+        "user_id": 7            
+    },
+    "34": {            
+        "album_id": 14,            
+        "review_id": 34,            
+        "review_text": "",            
+        "review_rating": 6,            
+        "user_id": 9            
+    },
+    "35": {            
+        "album_id": 13,            
+        "review_id": 35,            
+        "review_text": "",            
+        "review_rating": 5,            
+        "user_id": 8            
+    },
+    "36": {            
+        "album_id": 12,            
+        "review_id": 36,            
+        "review_text": "",            
+        "review_rating": 7,            
+        "user_id": 5            
+    },
+    "37": {            
+        "album_id": 11,            
+        "review_id": 37,            
+        "review_text": "",            
+        "review_rating": 7,            
+        "user_id": 1            
+    },
+    "38": {            
+        "album_id": 10,            
+        "review_id": 38,            
+        "review_text": "",            
+        "review_rating": 5,            
+        "user_id": 0            
+    },
+    "39": {            
+        "album_id": 6,            
+        "review_id": 39,            
+        "review_text": "",            
+        "review_rating": 6,            
+        "user_id": 6            
+    },
+    "40": {            
+        "album_id": 7,            
+        "review_id": 40,            
+        "review_text": "",            
+        "review_rating": 5,            
+        "user_id": 1            
+    },
+    "41": {            
+        "album_id": 1,            
+        "review_id": 41,            
+        "review_text": "",            
+        "review_rating": 8,            
+        "user_id": 2            
+    },
+    "42": {            
+        "album_id": 1,            
+        "review_id": 42,            
+        "review_text": "",            
+        "review_rating": 1,            
+        "user_id": 4            
+    },
+    "43": {            
+        "album_id": 1,            
+        "review_id": 43,            
+        "review_text": "",            
+        "review_rating": 9,            
+        "user_id": 0            
+    },
+    "44": {            
+        "album_id": 4,            
+        "review_id": 44,            
+        "review_text": "",            
+        "review_rating": 6,            
+        "user_id": 8            
+    },
+    "45": {            
+        "album_id": 17,            
+        "review_id": 45,            
+        "review_text": "You should really give this album a second chance! The album tracks really shine more than the singles do, and the production is great. I think it's an all time classic.",            
+        "review_rating": 8,            
+        "user_id": 8            
+    },
+    "46": {            
+        "album_id": 5,            
+        "review_id": 46,            
+        "review_text": "I don't like this album as much as his first one. I really feel like he sold out. Can't get into this as much as that one, it feels over produced and corporate. I wish he went indie again and released music more often. ",            
+        "review_rating": 4,            
+        "user_id": 9            
+    },
+    "47": {            
+        "album_id": 0,            
+        "review_id": 47,            
+        "review_text": "",            
+        "review_rating": 3,            
+        "user_id": 4            
+    },
+    "48": {            
+        "album_id": 19,            
+        "review_id": 48,            
+        "review_text": "I've only heard a couple of the songs of this but they're pretty good",            
+        "review_rating": 6,            
+        "user_id": 2            
+    },
+    "49": {            
+        "album_id": 16,            
+        "review_id": 49,            
+        "review_text": "Really prefer this album over their next one",            
+        "review_rating": 8,            
+        "user_id": 5            
     }
 }

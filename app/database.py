@@ -49,7 +49,7 @@ def create_database():
         db.session.add(new_article)
 
     reviews = json.loads(open("./app/json/Review.json").read())
-    for i in range(7):
+    for i in range(50):
         new_review = Review(
             album_id=reviews[str(i)]["album_id"],
             review_id=reviews[str(i)]["review_id"],
@@ -179,7 +179,8 @@ def update_album(album_id, rating, review):
     current_rating = db.session.query(Article).filter(Article.album_id == album_id).first().album_rating
     num_reviews = db.session.query(Article).filter(Article.album_id == album_id).first().album_review_no
     num_ratings = db.session.query(Article).filter(Article.album_id == album_id).first().album_rating_no
-    new_rating = current_rating + (float(rating) / float(num_ratings + num_reviews + 1))
+    #average of current_rating and new_rating, factoring in that current_ratings already been averaged n-1 times
+    new_rating = ((current_rating * float(num_ratings + num_reviews)) + float(rating)) / float(num_ratings + num_reviews + 1)
 
     db.session.query(Article).filter(Article.album_id == album_id).\
     update({"album_rating": new_rating}, synchronize_session = False)
