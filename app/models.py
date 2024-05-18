@@ -69,15 +69,10 @@ class Review(db.Model):
 
     #this representation is the same format as the json files
     def __repr__(self):
-        return f"\n\"{self.album_id}\": {{\
+        return f"\n\"{self.review_id}\": {{\
             \n\t\"album_id\": {self.album_id},\
-            \n\t\"album_artist\": \"{self.album_artist}\",\
-            \n\t\"album_title\": \"{self.album_title}\",\
-            \n\t\"album_art\": \"{self.album_art}\",\
-            \n\t\"album_year\": {self.album_year},\
-            \n\t\"album_type\": \"{self.album_type}\",\
-            \n\t\"album_rating\": {self.album_rating},\
-            \n\t\"album_review_no\": {self.album_review_no},\
-            \n\t\"album_rating_no\": {self.album_rating_no},\
-            \n\t\"user_id\": {random.randint()}\
+            \n\t\"review_id\": {self.review_id},\
+            \n\t\"review_text\": \"{self.review_text}\",\
+            \n\t\"review_rating\": {self.review_rating},\
+            \n\t\"user_id\": {random.randint(0,9)}\
             \n}},"

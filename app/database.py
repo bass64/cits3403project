@@ -59,6 +59,7 @@ def create_database():
             review_create_time=datetime.datetime.now()
         )
         db.session.add(new_review)
+        update_album(reviews[str(i)]["album_id"], reviews[str(i)]["review_rating"], reviews[str(i)]["review_text"])
 
     #add info, then commit
     db.session.commit()
@@ -146,6 +147,7 @@ def add_album_to_db(request):
         album_create_time=datetime.datetime.now()
     )
 
+    app.logger.info(album)
     db.session.add(album)
     db.session.commit()
 
@@ -167,21 +169,22 @@ def add_review_to_db(form, article_id):
         )
 
     db.session.add(review)
-    update_album(article_id, form)
+    app.logger.info(review)
+    update_album(article_id, form.get("choose_rating"), form.get("review"))
     db.session.commit()
     return "no errors"
 
-def update_album(album_id, form):
+def update_album(album_id, rating, review):
     #get an updated average rating
     current_rating = db.session.query(Article).filter(Article.album_id == album_id).first().album_rating
     num_reviews = db.session.query(Article).filter(Article.album_id == album_id).first().album_review_no
     num_ratings = db.session.query(Article).filter(Article.album_id == album_id).first().album_rating_no
-    new_rating = current_rating + (float(form.get("choose_rating")) / float(num_ratings + num_reviews + 1))
+    new_rating = current_rating + (float(rating) / float(num_ratings + num_reviews + 1))
 
     db.session.query(Article).filter(Article.album_id == album_id).\
     update({"album_rating": new_rating}, synchronize_session = False)
 
-    if (form.get("review") == ""):
+    if (review == ""):
         db.session.query(Article).filter(Article.album_id == album_id).\
         update({"album_rating_no": num_ratings + 1}, synchronize_session = False)
     else:
