@@ -6,6 +6,7 @@
 /* Page Layout */
 .content {
   padding-top: 1em;
+  min-height: calc(79vh - 1rem);
 }
 
 /* Homepage Search */
@@ -94,6 +95,14 @@ article, .review, .box-grey {
 
 .min-w-content {
   max-width: fit-content;
+}
+
+.ul-no-styling {
+  padding: 0;
+  margin: 0;
+}
+.ul-no-styling li::marker {
+  content: none;
 }
 /* Article w/ Reviews */
 
