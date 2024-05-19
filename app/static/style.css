@@ -10,15 +10,6 @@
 }
 
 /* Homepage Search */
-/* #search_extend {
-  font-size:18px;
-  cursor:pointer;
-  text-align:right;
-} */
-/* #search_extend > * {
-  font-size:16px;
-  text-align:left;
-} */
 #search_panel {
   width: 100%;
   background-color: #e9ecef;
@@ -34,10 +25,6 @@
   width: fit-content;
 }
 
-/* .search {
-  width: 100%;
-}
-  */
 /* Album/Article Styling */
 .album-art {
   max-width: 250px;
@@ -86,6 +73,10 @@ article, .review, .box-grey {
   width: 30%;
   min-width: fit-content;
   justify-content: end;
+}
+
+.star_rating {
+  font-size: 22pt
 }
 
 #choose_rating {

@@ -3,7 +3,7 @@
 {% block content %}
 
 
-<h1 class="text-center">Create Post</h1>
+<h2 class="text-center">Create Post</h2>
 <div class="pb-2 box-grey">
     <h2>1. From Spotify Link</h2>
     <form 
@@ -43,8 +43,6 @@
             <div class="input-group">
                 {{ form2.image.label(class_="input-group-text")}}
                 {{ form2.image(class_="form-control") }}
-
-                
             </div>
             <p class="text-end mt-0 mb-2">
                 <small>Image size must be less than 2MB, and a .png or .jpg file</small>
@@ -54,7 +52,7 @@
                 {{ form2.date(id="date", class_="form-control") }}
             </div>
             <div class="input-group justify-content-end mt-auto">
-                <input type="button" value="Reset" onclick="location.reload()" class="btn btn-outline-secondary"></input>
+                <input type="button" value="Reset" onclick="location.reload()" class="btn btn-outline-secondary">
                 {{ form2.submit(class_="btn btn-primary") }}
             </div>
             
@@ -77,7 +75,6 @@
     $("#image").on('change', function () {
         $("#image-container").empty();
         var image = $('#image').prop('files');
-        console.log(image);
         if (image.length >= 1) {
             var imgURL = URL.createObjectURL(image[0]);
             $("#image-container").append(
