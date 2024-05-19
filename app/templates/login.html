@@ -32,8 +32,7 @@
                 </div>
             {% endif %}
             {% endwith %}
-        </form>
-        
+        </form> 
     </div>
 </div>
 
@@ -41,7 +40,7 @@
 <div style="padding-top: 50px; width: 50%; float: right">
     <div style="margin: 0px auto; width: 50%;"></div>
         <form action="/signup" method="post" style="width: 80%; float: right;">
-            <h1 style="float: center;">Create your account</h1>
+            <h1>Create your account</h1>
             {{ createForm.hidden_tag() }}
             <div class="form-group" style="width: 70%">
                 {{ createForm.username.label }}<br>
@@ -76,7 +75,6 @@
             {% endif %}
             {% endwith %}
         </form>
-
     </div>
 </div>
 
