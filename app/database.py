@@ -129,12 +129,13 @@ def spotify_link(request):
         return "error"
 
     #add to db
-    #current_app.logger.info(album_object)
+    #current_app.logger.info(album)
     db.session.add(album_object)
+    #add album to following
     follow = Article.query.filter_by(album_id=new_id).first()
     current_user.following_articles.append(follow)
     db.session.commit()
-    
+
 def add_album_to_db(request):
     form = request.form
     #queries article, sorts by highest id, gets the first row, gets its id, and adds 1 to it
@@ -176,6 +177,7 @@ def add_album_to_db(request):
 
     #current_app.logger.info(album)
     db.session.add(album)
+    #add album to following
     follow = Article.query.filter_by(album_id=new_id).first()
     current_user.following_articles.append(follow)
     db.session.commit()
