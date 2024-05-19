@@ -64,6 +64,9 @@ def create_post_auto():
         if "track" in request.form.get("url"):
             flash("URL must be of an album, not a track", "post_auto_error")
             return redirect(location=url_for("main.create_post"))
+        if "artist" in request.form.get("url"):
+            flash("URL must be of an album, not an artist", "post_auto_error")
+            return redirect(location=url_for("main.create_post"))
         #spotify link
         errors = spotify_link(request)
         if errors == None:
@@ -76,8 +79,10 @@ def create_post_manual():
     form = CreatePostManual()
     if form.validate_on_submit():
         #user entry
-        add_album_to_db(request)
-        return redirect(location=url_for("main.home"))
+        errors = add_album_to_db(request)
+        if errors == None:
+            return redirect(location=url_for("main.home"))
+        return redirect(location=url_for("main.create_post"))
     if request.files["image"].filename[-4:] != ".png" or request.files["image"].filename[-4:] != ".jpg" or request.files["image"].filename[-5:] != ".jpeg":
         flash("Invalid file format, accepted files are .png or .jpg", "post_manual_error")
     return redirect(location=url_for("main.create_post"))

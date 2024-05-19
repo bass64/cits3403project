@@ -99,6 +99,8 @@ def spotify_link(request):
     except:
         flash("Invalid URL", "post_auto_error")
         return "error"
+    
+
 
     #construct an object for the album info
     new_id = db.session.query(Article).order_by(Article.album_id.desc()).first().album_id + 1
@@ -115,6 +117,16 @@ def spotify_link(request):
         user_id=current_user.get_id(),
         album_create_time=datetime.datetime.now()
     )
+
+    #check if the exact same albums already in the db
+    if (db.session.query(Article)\
+        .filter(Article.album_artist == album_object.album_artist)\
+        .filter(Article.album_title == album_object.album_title)\
+        .filter(Article.album_year == album_object.album_year)\
+        .filter(Article.album_type == album_object.album_type)\
+        ).first() != None:
+        flash("A post already exists for this album", "post_auto_error")
+        return "error"
 
     #add to db
     #current_app.logger.info(album_object)
@@ -151,6 +163,16 @@ def add_album_to_db(request):
         user_id=current_user.get_id(),
         album_create_time=datetime.datetime.now()
     )
+
+    #check if the exact same albums already in the db
+    if (db.session.query(Article)\
+        .filter(Article.album_artist == album.album_artist)\
+        .filter(Article.album_title == album.album_title)\
+        .filter(Article.album_year == album.album_year)\
+        .filter(Article.album_type == album.album_type)\
+        ).first() != None:
+        flash("A post already exists for this album", "post_manual_error")
+        return "error"
 
     #current_app.logger.info(album)
     db.session.add(album)
