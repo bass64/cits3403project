@@ -74,6 +74,10 @@ article, .review, .box-grey {
   justify-content: end;
 }
 
+.star_rating {
+  font-size: 22pt
+}
+
 /* Article w/ Reviews */
 
 

@@ -37,9 +37,9 @@
 
   <!-- Album Info -->
   <div class = "album-info flex-grow-1">
-    <h1 style="font-size: 40pt;">{{ album.Article.album_title }}</h1>
+    <h2 style="font-size: 40pt;">{{ album.Article.album_title }}</h2>
     <h3>{{ album.Article.album_artist }} / {{ album.Article.album_year }} / {{ album.Article.album_type }}</h3>
-    <h3 class="star_rating" id="album_{{ album.Article.album_id }}"></h3>
+    <span class="star_rating" id="album_{{ album.Article.album_id }}"></span>
     <h3> {{ album.Article.album_review_no }} reviews, {{ album.Article.album_rating_no }} ratings</h3>
     <h4 class="poster" style="color:gray; font-style: italic;">Posted by {{ album.User.username }}</h4>
     <!-- Follow Button -->

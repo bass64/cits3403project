@@ -2,11 +2,11 @@
 {% block content %}
 
 {% if current_user.following_articles|length == 0 %}
-    <h1>You are not following any articles</h1>
+    <h2>You are not following any articles</h2>
     <br>
-    <h2>Keep track of articles by pressing the follow button in the top right hand corner of each article</h2>
+    <h3>Keep track of articles by pressing the follow button in the top right hand corner of each article</h3>
 {% else %}
-    <h1>Articles Followed</h1>
+    <h2>Articles Followed</h2>
 {% endif %}
 <div id="articles" class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
     <!-- For loop to display every article passed to the home page -->

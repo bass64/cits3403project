@@ -4,7 +4,7 @@
 <!--LOGIN FORM-->
 <div style="padding-top: 50px; width: 50%; float: left">
     <div style="margin: 0px auto; width: 50%">
-        <h1>Login</h1>
+        <h2>Login</h2>
         <form action="/login" method="post">
             {{ form.hidden_tag() }}
             <div class="form-group" style="width: 100%">
@@ -40,7 +40,7 @@
 <div style="padding-top: 50px; width: 50%; float: right">
     <div style="margin: 0px auto; width: 50%;"></div>
         <form action="/signup" method="post" style="width: 80%; float: right;">
-            <h1>Create your account</h1>
+            <h2>Create your account</h2>
             {{ createForm.hidden_tag() }}
             <div class="form-group" style="width: 70%">
                 {{ createForm.username.label }}<br>
