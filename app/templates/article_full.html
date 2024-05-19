@@ -37,24 +37,28 @@
 
   <!-- Album Info -->
   <div class = "album-info flex-grow-1">
-    <h2 style="font-size: 40pt;">{{ album.Article.album_title }}</h2>
+    <div class="d-flex flex-row justify-content-between align-items-center pe-3">
+        <h2 style="font-size: 40pt;">{{ album.Article.album_title }}</h2>
+        <!-- Follow Button -->
+        <!--If user is signed out or not currently following, then add a follow button-->
+        {% if not user.is_authenticated or album.Article not in user.following_articles%}
+            <form method="POST" action="/follow_article">
+                <input type="hidden" name='article_id' value={{ album.Article.album_id }}>
+                <input type="submit" value="Follow Article" class="btn btn-secondary align-self-start">
+            </form>     
+        {% else %}  
+        <form method="POST" action="/unfollow_article">
+            <input type="hidden" name='article_id' value={{ album.Article.album_id }}>
+            <input type="submit" value="Unfollow" class="btn btn-secondary align-self-start">
+        </form>  
+        {% endif %}    
+    </div>
+    
     <h3>{{ album.Article.album_artist }} / {{ album.Article.album_year }} / {{ album.Article.album_type }}</h3>
     <span class="star_rating" id="album_{{ album.Article.album_id }}"></span>
     <h3> {{ album.Article.album_review_no }} reviews, {{ album.Article.album_rating_no }} ratings</h3>
     <h4 class="poster" style="color:gray; font-style: italic;">Posted by {{ album.User.username }}</h4>
-    <!-- Follow Button -->
-    <!--If user is signed out or not currently following, then add a follow button-->
-    {% if not user.is_authenticated or album.Article not in user.following_articles%}
-        <form method="POST" action="/follow_article">
-            <input type="hidden" name='article_id' value={{ album.Article.album_id }}>
-            <input type="submit" value="Follow Article" class="btn btn-secondary align-self-start">
-        </form>     
-    {% else %}  
-    <form method="POST" action="/unfollow_article">
-        <input type="hidden" name='article_id' value={{ album.Article.album_id }}>
-        <input type="submit" value="Unfollow" class="btn btn-secondary align-self-start">
-    </form>  
-    {% endif %}    
+    
   </div>
 </article>
 
