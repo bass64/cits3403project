@@ -4,7 +4,7 @@ from app import db
 from sqlalchemy.sql import text
 import datetime, os
 from flask_login import current_user
-from flask import current_app
+from flask import current_app, flash
 import json
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -155,7 +155,8 @@ def add_album_to_db(request):
 def add_review_to_db(form, article_id):
     #if user has already reviewed this album, return early
     if (db.session.query(Review).filter(Review.album_id == article_id).filter(Review.user_id == current_user.get_id()).first() != None):
-        return "duplicate user"
+        flash("You have already posted a review for this album", "review_error")
+        return
 
     #queries review, sorts by highest id, gets the first row, gets its id, and adds 1 to it
     new_id = db.session.query(Review).order_by(Review.review_id.desc()).first().review_id + 1

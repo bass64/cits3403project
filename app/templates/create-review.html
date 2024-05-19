@@ -1,10 +1,15 @@
 <div class="container" id="create-review">
-  <h3 class="star_rating" id="create_review"></h3>
   <form action="/article/{{ album.Article.album_id }}/create_review" method="post">
     {{ form3.rating() }}
+    <h3 class="star_rating" id="create_review"></h3>
     {{ form3.review() }}
     {{ form3.submit() }}
   </form>
+  {% with messages = get_flashed_messages(category_filter=['review_error']) %}
+    {% if messages %}
+      <span style="color: red;">{{ messages[0] }} </span>
+    {% endif %}
+  {% endwith %}
 </div>
 
 <script>
