@@ -4,7 +4,7 @@ from app import db
 from sqlalchemy.sql import text
 import datetime, os
 from flask_login import current_user
-from flask import current_app
+from flask import current_app, flash
 import json
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -86,8 +86,6 @@ def home_query(search, sort):
 def spotify_link(request):
     #get link and split it to just id
     link = request.form.get("url")
-    if "album" not in link:
-        return "error"
     link = link.split("/")
     link = link[-1]
     if "?" in link:
@@ -96,7 +94,13 @@ def spotify_link(request):
 
     #use api to get info on link
     sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET))
-    album = sp.album(album_id=link)
+    try:
+        album = sp.album(album_id=link)
+    except:
+        flash("Invalid URL", "post_auto_error")
+        return "error"
+    
+
 
     #construct an object for the album info
     new_id = db.session.query(Article).order_by(Article.album_id.desc()).first().album_id + 1
@@ -114,11 +118,24 @@ def spotify_link(request):
         album_create_time=datetime.datetime.now()
     )
 
+    #check if the exact same albums already in the db
+    if (db.session.query(Article)\
+        .filter(Article.album_artist == album_object.album_artist)\
+        .filter(Article.album_title == album_object.album_title)\
+        .filter(Article.album_year == album_object.album_year)\
+        .filter(Article.album_type == album_object.album_type)\
+        ).first() != None:
+        flash("A post already exists for this album", "post_auto_error")
+        return "error"
+
     #add to db
-    #current_app.logger.info(album_object)
+    #current_app.logger.info(album)
     db.session.add(album_object)
+    #add album to following
+    follow = Article.query.filter_by(album_id=new_id).first()
+    current_user.following_articles.append(follow)
     db.session.commit()
-    
+
 def add_album_to_db(request):
     form = request.form
     #queries article, sorts by highest id, gets the first row, gets its id, and adds 1 to it
@@ -148,14 +165,28 @@ def add_album_to_db(request):
         album_create_time=datetime.datetime.now()
     )
 
+    #check if the exact same albums already in the db
+    if (db.session.query(Article)\
+        .filter(Article.album_artist == album.album_artist)\
+        .filter(Article.album_title == album.album_title)\
+        .filter(Article.album_year == album.album_year)\
+        .filter(Article.album_type == album.album_type)\
+        ).first() != None:
+        flash("A post already exists for this album", "post_manual_error")
+        return "error"
+
     #current_app.logger.info(album)
     db.session.add(album)
+    #add album to following
+    follow = Article.query.filter_by(album_id=new_id).first()
+    current_user.following_articles.append(follow)
     db.session.commit()
 
 def add_review_to_db(form, article_id):
     #if user has already reviewed this album, return early
     if (db.session.query(Review).filter(Review.album_id == article_id).filter(Review.user_id == current_user.get_id()).first() != None):
-        return "duplicate user"
+        flash("You have already posted a review for this album", "review_error")
+        return
 
     #queries review, sorts by highest id, gets the first row, gets its id, and adds 1 to it
     new_id = db.session.query(Review).order_by(Review.review_id.desc()).first().review_id + 1
@@ -173,7 +204,6 @@ def add_review_to_db(form, article_id):
     #current_app.logger.info(review)
     update_album(article_id, form.get("choose_rating"), form.get("review"))
     db.session.commit()
-    return "no errors"
 
 def update_album(album_id, rating, review):
     #get an updated average rating

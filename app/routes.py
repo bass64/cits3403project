@@ -46,10 +46,7 @@ def article(article_id):
 
 @main.route('/article/<int:article_id>/create_review', methods=['POST'])
 def post_review(article_id):
-    error = add_review_to_db(request.form, article_id)
-    if error == "duplicate user":
-        #TODO handle error when user posts multiple reivews
-        return redirect(location=url_for("main.article", article_id=article_id, error="duplicate user"))
+    add_review_to_db(request.form, article_id)
     return redirect(location=url_for("main.article", article_id=article_id))
   
 
@@ -64,12 +61,17 @@ def create_post():
 def create_post_auto():
     form = CreatePostAuto()
     if form.validate_on_submit():
+        if "track" in request.form.get("url"):
+            flash("URL must be of an album, not a track", "post_auto_error")
+            return redirect(location=url_for("main.create_post"))
+        if "artist" in request.form.get("url"):
+            flash("URL must be of an album, not an artist", "post_auto_error")
+            return redirect(location=url_for("main.create_post"))
         #spotify link
-        spotify_link(request)
-        return redirect(location=url_for("main.home"))
-    #if didn't validate, send back to create post
-    #TODO handle this error
-    return redirect(location=url_for("main.create_post", error="invalid post"))
+        errors = spotify_link(request)
+        if errors == None:
+            return redirect(location=url_for("main.home"))
+    return redirect(location=url_for("main.create_post"))
   
     
 @main.route('/create-post-manual', methods=['POST'])
@@ -77,11 +79,13 @@ def create_post_manual():
     form = CreatePostManual()
     if form.validate_on_submit():
         #user entry
-        add_album_to_db(request)
-        return redirect(location=url_for("main.home"))
-    #if didn't validate, send back to create post
-    #TODO handle this error
-    return redirect(location=url_for("main.create_post", error="invalid post"))
+        errors = add_album_to_db(request)
+        if errors == None:
+            return redirect(location=url_for("main.home"))
+        return redirect(location=url_for("main.create_post"))
+    if request.files["image"].filename[-4:] != ".png" or request.files["image"].filename[-4:] != ".jpg" or request.files["image"].filename[-5:] != ".jpeg":
+        flash("Invalid file format, accepted files are .png or .jpg", "post_manual_error")
+    return redirect(location=url_for("main.create_post"))
 
 #follows an article if the user is logged in
 @main.route('/follow_article', methods=['POST'])
@@ -137,7 +141,7 @@ def signup_post():
     try:
         sign_user_up(username,password,confirm, remember)
     except SignUpError as e:
-        flash(e.message, 'signup_error')
+        flash(str(e.args).strip("(',)"), 'signup_error')
         return redirect(url_for('main.login'))
 
     return redirect(location=url_for("main.home"))
@@ -163,7 +167,7 @@ def login_post():
     try:
         log_user_in(username, password, remember)
     except LoginError as e:
-        flash(e.message,'login_failed')
+        flash(str(e.args).strip("(',)"), 'login_failed')
         return redirect(url_for('main.login'))
         
     return redirect(location=url_for("main.home"))
