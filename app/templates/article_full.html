@@ -43,7 +43,7 @@
     <h1 style="font-size: 40pt;">{{ album.Article.album_title }}</h1>
     <h3>{{ album.Article.album_artist }} / {{ album.Article.album_year }} / {{ album.Article.album_type }}</h3>
     <h3 class="star_rating" id="album_{{ album.Article.album_id }}"></h3>
-    <h3> {{ album.Article.album_review_no }} reviews, {{ album.Article.album_rating_no }} ratings</h3>
+    <h3 id="{{ album.Article.album_id }}_no"> {{ album.Article.album_review_no }} reviews, {{ album.Article.album_rating_no }} ratings</h3>
     <h4 class="poster" style="color:gray; font-style: italic;">Posted by {{ album.User.username }}</h4>
     <!-- Follow Button -->
     <!--If user is signed out or not currently following, then add a follow button-->
@@ -80,6 +80,15 @@
     <script>
         // Call star rating script for albums here, after everythings loaded
         star_rating("{{ album.Article.album_rating }}", "album_" + "{{ album.Article.album_id }}")
+
+        //Update review_no and rating_no to singular if 1
+        if ("{{ album.Article.album_review_no }}" == 1 && "{{ album.Article.album_rating_no }}" == 1) {
+            $("#{{ album.Article.album_id }}_no").html("{{ album.Article.album_review_no }} review, {{ album.Article.album_rating_no }} rating");
+        } else if ("{{ album.Article.album_review_no }}" == 1) {
+                $("#{{ album.Article.album_id }}_no").html("{{ album.Article.album_review_no }} review, {{ album.Article.album_rating_no }} ratings");
+        } else if ("{{ album.Article.album_rating_no }}" == 1) {
+                $("#{{ album.Article.album_id }}_no").html("{{ album.Article.album_review_no }} reviews, {{ album.Article.album_rating_no }} rating");
+        }
     </script>
 </body>
 

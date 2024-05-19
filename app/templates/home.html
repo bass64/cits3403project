@@ -42,89 +42,41 @@
 
 
 <script>
-    let panel_open = false;
+    url_params = new URLSearchParams(window.location.search);
+    //if there is a search url param, write it to the search box
+    if (url_params.get("search") != null) {
+        $("#search").attr("value", url_params.get("search"));
+    } 
 
-    //on load, check if search url param is active, and if so open the search panel
-    $(document).ready(function() {
-        const url_params = new URLSearchParams(window.location.search);
-        if(url_params.get("search") != null) {
-            open_search()
+    //if there is a sort url param, write it to the found text
+    if (url_params.get("sort") != "") {
+        console.log(url_params.get("sort"))
+        switch (url_params.get("sort")){
+            case "album_create_time ASC":
+                order = "oldest post"; break; 
+            case "album_rating DESC":
+                order = "higest rated"; break;   
+            case "album_rating ASC":
+                order = "lowest rated"; break;   
+            case "album_rating_no + album_review_no DESC":
+                order = "most rated"; break;   
+            case "album_rating_no + album_review_no ASC":
+                order = "least rated"; break;
+            case "album_year DESC":
+                order = "newest album"; break;
+            case "album_year ASC":
+                order = "oldest album"; break;
+            default: //"album_create_time DESC" is the default
+                order = "newest post"; break;     
         }
-    });
 
-    function open_search(){      
-        // //if search panel is closed
-        // if (!panel_open) {
-        //     //toggle bool
-        //     panel_open = true;
-
-        //     //change text
-        //     $("#search_extend").html("&lt; Search");
-
-        //     //change column widths
-        //     $("#search_panel").removeClass("col-xs-1 col-sm-1 col-md-1 col-lg-1");
-        //     $("#search_panel").addClass("col-xs-3 col-sm-3 col-md-3 col-lg-3");
-        //     $("#articles").removeClass("col-xs-11 col-sm-11 col-md-11 col-lg-11");
-        //     $("#articles").addClass("col-xs-9 col-sm-9 col-md-9 col-lg-9");
-
-        //     //set all search elements to visible
-        //     $("#search_elements").css("display", "inline");
-
-        // //if search panel is open
-        // } else if (panel_open) {
-        //     //toggle bool
-        //     panel_open = false;
-
-        //     //change text
-        //     $("#search_extend").html("&gt; Search");
-
-        //     //change column widths
-        //     $("#search_panel").removeClass("col-xs-3 col-sm-3 col-md-3 col-lg-3");
-        //     $("#search_panel").addClass("col-xs-1 col-sm-1 col-md-1 col-lg-1");
-        //     $("#articles").removeClass("col-xs-9 col-sm-9 col-md-9 col-lg-9");
-        //     $("#articles").addClass("col-xs-11 col-sm-11 col-md-11 col-lg-11");
-
-        //     //set all search elements to hidden
-        //     $("#search_elements").css("display", "none");
-        // }
-
+        //updating found text ("result" if 1, "results" if not 1)
+        if ("{{ articles.count() }}" == 1) {
+            $("#found").html("Found {{ articles.count() }} result, sorted by " + order);
+        } else {
+            $("#found").html("Found {{ articles.count() }} results, sorted by " + order);
+        }
         
-        url_params = new URLSearchParams(window.location.search);
-        //if there is a search url param, write it to the search box
-        if (url_params.get("search") != null) {
-            $("#search").attr("value", url_params.get("search"));
-        } 
-
-        //if there is a sort url param, write it to the found text
-        if (url_params.get("sort") != "") {
-            console.log(url_params.get("sort"))
-            switch (url_params.get("sort")){
-                case "album_create_time ASC":
-                    order = "oldest post"; break; 
-                case "album_rating DESC":
-                    order = "higest rated"; break;   
-                case "album_rating ASC":
-                    order = "lowest rated"; break;   
-                case "album_rating_no + album_review_no DESC":
-                    order = "most rated"; break;   
-                case "album_rating_no + album_review_no ASC":
-                    order = "least rated"; break;
-                case "album_year DESC":
-                    order = "newest album"; break;
-                case "album_year ASC":
-                    order = "oldest album"; break;
-                default: //"album_create_time DESC" is the default
-                    order = "newest post"; break;     
-            }
-
-            //updating found text ("result" if 1, "results" if not 1)
-            if ("{{ articles.count() }}" == 1) {
-                $("#found").html("Found {{ articles.count() }} result, sorted by " + order);
-            } else {
-                $("#found").html("Found {{ articles.count() }} results, sorted by " + order);
-            }
-            
-        }
     }
 </script>
 {% endblock %}

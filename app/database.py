@@ -86,8 +86,6 @@ def home_query(search, sort):
 def spotify_link(request):
     #get link and split it to just id
     link = request.form.get("url")
-    if "album" not in link:
-        return "error"
     link = link.split("/")
     link = link[-1]
     if "?" in link:
@@ -96,7 +94,11 @@ def spotify_link(request):
 
     #use api to get info on link
     sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET))
-    album = sp.album(album_id=link)
+    try:
+        album = sp.album(album_id=link)
+    except:
+        flash("Invalid URL", "post_auto_error")
+        return "error"
 
     #construct an object for the album info
     new_id = db.session.query(Article).order_by(Article.album_id.desc()).first().album_id + 1
@@ -174,7 +176,6 @@ def add_review_to_db(form, article_id):
     #current_app.logger.info(review)
     update_album(article_id, form.get("choose_rating"), form.get("review"))
     db.session.commit()
-    return "no errors"
 
 def update_album(album_id, rating, review):
     #get an updated average rating
