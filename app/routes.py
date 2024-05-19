@@ -167,7 +167,7 @@ def login_post():
     try:
         log_user_in(username, password, remember)
     except LoginError as e:
-        flash(e.message,'login_failed')
+        flash(str(e.args).strip("(',)"), 'login_failed')
         return redirect(url_for('main.login'))
         
     return redirect(location=url_for("main.home"))
