@@ -1,6 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+{% if redirect %}
+<div class="alert alert-danger" style="font-size: x-large;color: red;">
+    {% if redirect == "/create-post" %}
+        Account required to create post
+    {% endif %}
+    {% if redirect == "/post-review" %}
+        Account required to leave review
+    {% endif %}
+    {% if redirect == "/following" %}
+        Login to see articles followed
+    {% endif %}
+    {% if redirect == "/follow_article" %}
+        Account required to follow article
+    {% endif %}
+</div>
+{% endif %}
+
+
+
 <!--LOGIN FORM-->
 <div class="d-md-flex flex-md-row gap-4 container">
     <div class="box-grey flex-grow-1">    
@@ -74,21 +94,6 @@
     </div>
 </div>
 
-{% if redirect %}
-<div style="font-size: x-large ;padding-top: 30%; text-align: center; color: red;">
-    {% if redirect == "/create-post" %}
-        Account required to create post
-    {% endif %}
-    {% if redirect == "/post-review" %}
-        Account required to leave review
-    {% endif %}
-    {% if redirect == "/following" %}
-        Login to see articles followed
-    {% endif %}
-    {% if redirect == "/follow_article" %}
-        Account required to follow article
-    {% endif %}
-</div>
-{% endif %}
+
 
 {% endblock %}
