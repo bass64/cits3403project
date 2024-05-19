@@ -50,7 +50,6 @@
 
     //if there is a sort url param, write it to the found text
     if (url_params.get("sort") != "") {
-        console.log(url_params.get("sort"))
         switch (url_params.get("sort")){
             case "album_create_time ASC":
                 order = "oldest post"; break; 

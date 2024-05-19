@@ -75,7 +75,6 @@
     $("#image").on('change', function () {
         $("#image-container").empty();
         var image = $('#image').prop('files');
-        console.log(image);
         if (image.length >= 1) {
             var imgURL = URL.createObjectURL(image[0]);
             $("#image-container").append(
