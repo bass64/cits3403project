@@ -119,6 +119,8 @@ def spotify_link(request):
     #add to db
     #current_app.logger.info(album_object)
     db.session.add(album_object)
+    follow = Article.query.filter_by(album_id=new_id).first()
+    current_user.following_articles.append(follow)
     db.session.commit()
     
 def add_album_to_db(request):
@@ -152,6 +154,8 @@ def add_album_to_db(request):
 
     #current_app.logger.info(album)
     db.session.add(album)
+    follow = Article.query.filter_by(album_id=new_id).first()
+    current_user.following_articles.append(follow)
     db.session.commit()
 
 def add_review_to_db(form, article_id):
