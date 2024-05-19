@@ -19,7 +19,9 @@
     </form>
     {% with messages = get_flashed_messages(category_filter=['post_auto_error']) %}
         {% if messages %}
-            <span style="color: red;">{{ messages[0] }} </span>
+            <div class="alert alert-danger mt-2 mb-0">
+                <span style="color: red;">{{ messages[0] }} </span>
+            </div>
         {% endif %}
     {% endwith %}
 </div>
@@ -67,7 +69,9 @@
     </form>
     {% with messages = get_flashed_messages(category_filter=['post_manual_error']) %}
         {% if messages %}
+        <div class="alert alert-danger mt-2 mb-0">
             <span style="color: red;">{{ messages[0] }} </span>
+        </div>
         {% endif %}
     {% endwith %}
 </div>

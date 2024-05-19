@@ -22,29 +22,29 @@
 
 {% if full == False %} 
 <article 
-  class="d-sm-flex flex-row" 
+  class="d-sm-flex flex-sm-row p-2" 
   style="cursor:pointer;" 
   onclick="location.href = '/article/{{ album.Article.album_id }}';"
 >
 {% else %}
-<article class="d-sm-flex flex-row">
+<article class="d-sm-flex flex-sm-row p-2">
 {% endif %}
 
   <!-- Album Image -->
-  <div class="album-art">
+  <div class="album-art p-2 mx-auto">
     <img src="{{ album.Article.album_art }}" alt="Album Art">
   </div>
 
   <!-- Album Info -->
-  <div class = "album-info flex-grow-1">
-    <div class="d-flex flex-row justify-content-between align-items-center pe-3">
+  <div class = "album-info flex-grow-1 ps-2">
+    <div class="d-flex flex-row justify-content-between align-items-center flex-wrap pe-3">
         <h2 style="font-size: 40pt;">{{ album.Article.album_title }}</h2>
         <!-- Follow Button -->
         <!--If user is signed out or not currently following, then add a follow button-->
         {% if not user.is_authenticated or album.Article not in user.following_articles%}
             <form method="POST" action="/follow_article">
                 <input type="hidden" name='article_id' value={{ album.Article.album_id }}>
-                <input type="submit" value="Follow Article" class="btn btn-secondary align-self-start">
+                <input type="submit" value="Follow" class="btn btn-secondary align-self-start">
             </form>     
         {% else %}  
         <form method="POST" action="/unfollow_article">

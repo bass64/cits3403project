@@ -1,11 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+{% if redirect %}
+<div class="alert alert-danger" style="font-size: x-large;color: red;">
+    {% if redirect == "/create-post" %}
+        Account required to create post
+    {% endif %}
+    {% if redirect == "/post-review" %}
+        Account required to leave review
+    {% endif %}
+    {% if redirect == "/following" %}
+        Login to see articles followed
+    {% endif %}
+    {% if redirect == "/follow_article" %}
+        Account required to follow article
+    {% endif %}
+</div>
+{% endif %}
+
+
+
 <!--LOGIN FORM-->
-<div style="padding-top: 50px; width: 50%; float: left">
-    <div style="margin: 0px auto; width: 50%">
-        <h2>Login</h2>
-        <form action="/login" method="post">
+<div class="d-md-flex flex-md-row gap-4 container">
+    <div class="box-grey flex-grow-1">    
+        <h2 class="text-center">Login</h2>
+        <form action="/login" method="post" class="container px-4">
             {{ form.hidden_tag() }}
             <div class="form-group" style="width: 100%">
                 {{ form.username.label }}<br>
@@ -27,36 +47,32 @@
             <!--Error messages when user not found-->
             {% with messages = get_flashed_messages(category_filter=["login_failed"]) %}
             {% if messages %}
-                <div style="color: red">
+                <div class="alert alert-danger mt-2 mb-0" style="color: red">
                     {{ messages[0] }}
                 </div>
             {% endif %}
             {% endwith %}
         </form> 
     </div>
-</div>
-
-<!--CREATE ACCOUNT FORM-->
-<div style="padding-top: 50px; width: 50%; float: right">
-    <div style="margin: 0px auto; width: 50%;"></div>
-        <form action="/signup" method="post" style="width: 80%; float: right;">
-            <h2>Create your account</h2>
+    <div class="box-grey flex-grow-1">
+        <form action="/signup" method="post" class="container px-4">
+            <h2 class="text-center">Create your account</h2>
             {{ createForm.hidden_tag() }}
-            <div class="form-group" style="width: 70%">
+            <div class="form-group">
                 {{ createForm.username.label }}<br>
                 {{ createForm.username(class="form-control", placeholder="Enter Username") }} <br>
                 {% for error in createForm.username.errors %}
                 <span style="color: red;">[{{ error }}] </span>
                 {% endfor %}
             </div>
-            <div class="form-group" style="width: 70%">
+            <div class="form-group">
                 {{ createForm.password.label }}<br>
                 {{ createForm.password(class="form-control", placeholder="Enter Password") }} <br>
                 {% for error in createForm.password.errors %}
                 <span style="color: red;">[{{ error }} ]</span>
                 {% endfor %}
             </div>
-            <div class="form-group" style="width: 70%">
+            <div class="form-group">
                 {{ createForm.confirm.label }}<br>
                 {{ createForm.confirm(class="form-control", placeholder="Confirm Password") }} <br>
                 {% for error in createForm.confirm.errors %}
@@ -69,7 +85,7 @@
             <!--Error messages when username taken-->
             {% with messages = get_flashed_messages(category_filter=['signup_error']) %}
             {% if messages %}
-                <div style="color: red">
+                <div class="alert alert-danger mt-2 mb-0" style="color: red">
                     {{ messages[0] }}
                 </div>
             {% endif %}
@@ -78,21 +94,6 @@
     </div>
 </div>
 
-{% if redirect %}
-<div style="font-size: x-large ;padding-top: 30%; text-align: center; color: red;">
-    {% if redirect == "/create-post" %}
-        Account required to create post
-    {% endif %}
-    {% if redirect == "/post-review" %}
-        Account required to leave review
-    {% endif %}
-    {% if redirect == "/following" %}
-        Login to see articles followed
-    {% endif %}
-    {% if redirect == "/follow_article" %}
-        Account required to follow article
-    {% endif %}
-</div>
-{% endif %}
+
 
 {% endblock %}
