@@ -1,9 +1,17 @@
-<div class="container" id="create-review">
+<div class="box-grey" id="create-review">
+  <h4>Create Review</h4>
   <form action="/article/{{ album.Article.album_id }}/create_review" method="post">
-    {{ form3.rating() }}
-    <h3 class="star_rating" id="create_review"></h3>
-    {{ form3.review() }}
-    {{ form3.submit() }}
+    <div class="input-group mb-2">
+      {{ form3.review(class_="form-control", placeholder="[Optional] Write review here ...") }}
+    </div>
+    <div class="d-flex flex-row justify-content-start">
+      <div class="input-group min-w-content">
+        <label for="choose_rating" class="input-group-text">Rating</label>
+        {{ form3.rating(class_="form-control form-select") }}
+        <span class="star_rating input-group-text" id="create_review"></span>
+      </div>
+      {{ form3.submit(class_="btn btn-primary ms-2") }}
+    </div>
   </form>
   {% with messages = get_flashed_messages(category_filter=['review_error']) %}
     {% if messages %}
