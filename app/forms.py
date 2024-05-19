@@ -56,5 +56,5 @@ class CreateReview(FlaskForm):
         (9, "4.5"),
         (10, "5"),
     ], name="choose_rating", coerce=int)
-    review = TextAreaField("Write a review (optional):", name="review")
+    review = TextAreaField("Write a review (optional)...", name="review")
     submit = SubmitField('Submit')
