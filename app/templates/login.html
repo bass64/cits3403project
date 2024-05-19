@@ -27,7 +27,7 @@
             <!--Error messages when user not found-->
             {% with messages = get_flashed_messages(category_filter=["login_failed"]) %}
             {% if messages %}
-                <div style="color: red">
+                <div class="alert alert-danger mt-2 mb-0" style="color: red">
                     {{ messages[0] }}
                 </div>
             {% endif %}
@@ -69,7 +69,7 @@
             <!--Error messages when username taken-->
             {% with messages = get_flashed_messages(category_filter=['signup_error']) %}
             {% if messages %}
-                <div style="color: red">
+                <div class="alert alert-danger mt-2 mb-0" style="color: red">
                     {{ messages[0] }}
                 </div>
             {% endif %}

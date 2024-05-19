@@ -8,14 +8,16 @@
       <div class="input-group min-w-content">
         <label for="choose_rating" class="input-group-text">Rating</label>
         {{ form3.rating(class_="form-control form-select") }}
-        <span class="star_rating input-group-text" id="create_review"></span>
+        <span class="star_rating input-group-text" id="create_review" style="font-size:large;"></span>
       </div>
       {{ form3.submit(class_="btn btn-primary ms-2") }}
     </div>
   </form>
   {% with messages = get_flashed_messages(category_filter=['review_error']) %}
     {% if messages %}
+    <div class="alert alert-danger mt-2 mb-0">
       <span style="color: red;">{{ messages[0] }} </span>
+    </div>
     {% endif %}
   {% endwith %}
 </div>
